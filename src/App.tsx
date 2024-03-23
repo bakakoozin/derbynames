@@ -1,21 +1,24 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react'
 import './App.css'
 import { Counter } from './components/counter/counter'
+import { Pokemon } from './components/pokemon/pokemon'
+import { useDebounce } from './hooks/debounce.hook'
+import { TicTacToe } from './components/tic-tac-toe/tic-tac-toe'
 
 function App() {
+  const [name, setName] = useState('pikachu')
+  const debouncedName = useDebounce<string>(name, 1000)
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>TUTO APP</h1>
+        <TicTacToe />
       <div className="card">
+        <input 
+        type="texte" 
+        value={name} 
+        onChange={(e) => setName(e.target.value)} 
+        />
+        <Pokemon name={debouncedName}/>
         <Counter />
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR

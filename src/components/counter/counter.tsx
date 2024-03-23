@@ -1,4 +1,4 @@
-//import styles from './counter.module.css';
+import styles from './counter.module.css';
 
 import { useState } from "react"
 
@@ -10,6 +10,8 @@ export function Counter() {
     }
 
     return (
-        <button onClick={handleClick}>count is {count}</button>
+        <button className={styles.container} onClick={handleClick}>
+            count is {count}
+        </button>
     )
 }
