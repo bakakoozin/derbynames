@@ -20,13 +20,10 @@ function App() {
         />
         <Pokemon name={debouncedName}/>
         <Counter />
-        <p>
+        <p className='text-600 mt-10'>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

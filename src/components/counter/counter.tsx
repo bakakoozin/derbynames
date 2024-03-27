@@ -1,5 +1,3 @@
-import styles from './counter.module.css';
-
 import { useState } from "react"
 
 export function Counter() {
@@ -10,7 +8,7 @@ export function Counter() {
     }
 
     return (
-        <button className={styles.container} onClick={handleClick}>
+        <button className="mt-12 bg-900 hover:bg-800 font-medium text-xs-1rem px-5 py-2.75" onClick={handleClick}>
             count is {count}
         </button>
     )

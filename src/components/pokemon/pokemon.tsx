@@ -38,12 +38,15 @@ export function Pokemon({ name }: PokemonProps) {
     if (error) return <h1>Error: {error}</h1>
     if (!pokemon) return <h1>No pokemon</h1>
     return (
-        <div className={styles.container}>
-            <h1>{pokemon.name}</h1>
-            <div>poids: {pokemon.weight}</div>
+        <div className='bg-300 p-8 border-solid border-2 border-100 rounded-xl'>
+            <h1 className='text-800'>{pokemon.name}</h1>
+            <div className='text-800 font-bold'>poids: {pokemon.weight}</div>
+            <div className='flex flex-row justify-center'>
+            {pokemon.sprites.front_default && <div><img src={pokemon.sprites.front_default} /></div>}
             {pokemon.sprites.back_default && <div><img src={pokemon.sprites.back_default} /></div>}
-            <div>Abilities</div>
-            <div className={styles.abilities}>
+            </div>
+            <div className='text-800 font-bold'>Abilities</div>
+            <div className='text-100 flex flex-col gap-16 border-solid border-2 border-700 bg-800 rounded-md p-4'>
                 {pokemon?.abilities.map((ability) => (<div key={ability.slot}>
                     <div className={styles.abilityName}>{ability.ability.name}</div>
                 </div>))}
