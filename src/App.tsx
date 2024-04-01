@@ -1,27 +1,14 @@
-import { useState } from 'react'
+
 import './App.css'
-import { Counter } from './components/counter/counter'
-import { Pokemon } from './components/pokemon/pokemon'
-import { useDebounce } from './hooks/debounce.hook'
-import { TicTacToe } from './components/tic-tac-toe/tic-tac-toe'
 
 function App() {
-  const [name, setName] = useState('pikachu')
-  const debouncedName = useDebounce<string>(name, 1000)
   return (
     <>
-      <h1>TUTO APP</h1>
-        <TicTacToe />
+      <h1>Derbynames</h1>
       <div className="card">
-        <input 
-        type="texte" 
-        value={name} 
-        onChange={(e) => setName(e.target.value)} 
-        />
-        <Pokemon name={debouncedName}/>
-        <Counter />
+        <img src='./src/assets/carotte.png'></img>
         <p className='text-600 mt-10'>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Site en cours de contruction
         </p>
       </div>
     </>
