@@ -6,9 +6,9 @@ function App() {
     <>
       <h1>Derbynames</h1>
       <div className="card">
-        <img src='./src/assets/carotte.png'></img>
-        <p className='text-600 mt-10'>
-          Site en cours de contruction
+        <img className='size-96' src='./src/assets/carotte.png'></img>
+        <p className='text-600 mt-10 text-xl'>
+          Site en cours de construction
         </p>
       </div>
     </>
