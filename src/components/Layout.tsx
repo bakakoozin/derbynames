@@ -3,12 +3,12 @@ import { Header } from "../pages/header";
 
 export function Layout() {
     return <div>
-        <header>
+        <header className="bg-400">
             <Header />
         </header>
         <main>
             <Outlet />
         </main>
-        <footer>footer</footer>
+        <footer className="mt-10">footer</footer>
     </div>
 }

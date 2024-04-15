@@ -38,7 +38,7 @@ export function Pokemon({ name }: PokemonProps) {
     if (error) return <h1>Error: {error}</h1>
     if (!pokemon) return <h1>No pokemon</h1>
     return (
-        <div className='bg-300 p-8 border-solid border-2 border-100 rounded-xl'>
+        <div className='bg-300 p-8 border-solid border-2 border-100 rounded-xl max-w-72'>
             <h1 className='text-800'>{pokemon.name}</h1>
             <div className='text-800 font-bold'>poids: {pokemon.weight}</div>
             <div className='flex flex-row justify-center'>
