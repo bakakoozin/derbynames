@@ -4,13 +4,13 @@ import { Footer } from "../pages/footer";
 
 export function Layout() {
     return <div>
-        <header className="bg-400">
+        <header className="bg-300">
             <Header />
         </header>
         <main>
             <Outlet />
         </main>
-        <footer className="bg-400">
+        <footer>
             <Footer />
         </footer>
     </div>

@@ -11,7 +11,7 @@ async function handleFetch() {
 useEffect(() => {handleFetch()},[])
 
     return (
-        <div className='bg-300 p-8 border-solid border-2 border-100 rounded-xl max-w-72'>
-            <h1 className='text-800'>{'voilà'}</h1>
+        <div>
+            <p className="text-600">{'voilà'}</p>
         </div>)
 }
