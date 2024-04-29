@@ -11,13 +11,13 @@ export function Header() {
             <div>
                 <label htmlFor="derby-name-search">Recherchez un Derby Name</label>
                 <div className="flex flex-row space-x-2">
-                    <input className="border-solid border-2 border-100 rounded-lg bg-200" type="search" id="derby-name-search" />
+                    <input className="border-solid border-2 border-100 rounded-lg bg-200 text-600 p-1.5" type="search" id="derby-name-search" />
                     <button className="p-1 hover:bg-500 hover:text-200 hover:border-200">Recherche</button>
                 </div>
             </div>
             <div className="flex flex-row p-10 space-x-8 place-self-auto">
                 <p>Contact</p>
-                <Link to=""><p className="hover:text-400">Home</p></Link>
+                <Link to=""><p className="hover:text-500">Home</p></Link>
             </div>
         </div>
     )
