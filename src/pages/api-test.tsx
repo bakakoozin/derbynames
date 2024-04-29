@@ -7,7 +7,7 @@ export function ApiTestRender() {
         <div>
 
             <div>
-                <h1 className='text-800'><ApiTest /></h1>
+                <ApiTest />
             </div>
 
         </div>
