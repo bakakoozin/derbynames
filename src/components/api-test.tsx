@@ -1,10 +1,8 @@
-//import { useEffect } from "react"
-
 import { useState } from "react"
 
 export function ApiTest() {
     const [formData, setFormData] = useState({
-        derbyNamePost: "",
+        name: "",
         number: ""
     });
 
@@ -16,18 +14,15 @@ export function ApiTest() {
     async function handleSubmit(event: { preventDefault: () => void; }) {
         event.preventDefault();
         try {
-            const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/todos', {
+            const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/derbynames', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({name:formData.name,numRoster:formData.number})
             });
             if (response.ok) {
                 console.log('Données envoyées avec succès !');
                 // Réinitialiser le formulaire après l'envoi des données
                 setFormData({
-                    derbyNamePost: "",
+                    name: "",
                     number: ""
                 });
             } else {
@@ -46,18 +41,18 @@ export function ApiTest() {
                         <label htmlFor="derby-name-post">Entrez votre Derby name :</label>
                         <input
                             className="border-solid border-2 border-100 rounded-lg bg-200 text-600 p-1.5"
-                            type="text" id="derby-name-post"
-                            name="derby-name-ajout"
-                            value={formData.derbyNamePost} onChange={handleChange}
+                            type="text" id="name"
+                            name="name"
+                            value={formData.name} onChange={handleChange}
                         />
                     </div>
                     <div className="p-4 flex flex-row space-x-2">
-                        <label htmlFor="number-post">Entrez votre numéro de joueureuse :</label>
+                        <label htmlFor="number">Entrez votre numéro de joueureuse :</label>
                         <input
                             className="border-solid border-2 border-100 rounded-lg bg-200 text-600 p-1.5 max-w-24"
                             type="text"
-                            id="number-post"
-                            name="number-post"
+                            id="number"
+                            name="number"
                             value={formData.number} onChange={handleChange}
                         />
                     </div>
@@ -70,7 +65,7 @@ export function ApiTest() {
     );
 
     /*async function handleFetch() {
-        const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/todos')
+        const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/derbynames')
         const data = await response.json()
         console.log(data)
     }

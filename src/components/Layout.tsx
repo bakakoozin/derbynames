@@ -3,11 +3,11 @@ import { Header } from "../pages/header";
 import { Footer } from "../pages/footer";
 
 export function Layout() {
-    return <div>
-        <header className="bg-300">
+    return <div id="page" className='bg-b1 bg-cover'>
+        <header>
             <Header />
         </header>
-        <main>
+        <main id="content">
             <Outlet />
         </main>
         <footer>
