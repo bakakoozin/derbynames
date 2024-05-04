@@ -16,7 +16,7 @@ export function ApiTest() {
         try {
             const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/derbynames', {
                 method: 'POST',
-                body: JSON.stringify({name:formData.name,numRoster:formData.number})
+                body: JSON.stringify({ name: formData.name, numRoster: formData.number })
             });
             if (response.ok) {
                 console.log('Données envoyées avec succès !');
@@ -34,8 +34,8 @@ export function ApiTest() {
     }
 
     return (
-        <div className="flex flex-col  items-center py-28">
-            <div className="flex flex-col shadow-md shadow-400 text-100 bg-400 p-10 rounded-xl">
+        <div style={{ backgroundColor: 'rgba(174, 181, 191, 0.4)' }}>
+            <div className="flex flex-col shadow-md text-100 p-10 rounded-xl">
                 <form onSubmit={handleSubmit}>
                     <div className="p-4 flex flex-row space-x-2">
                         <label htmlFor="derby-name-post">Entrez votre Derby name :</label>

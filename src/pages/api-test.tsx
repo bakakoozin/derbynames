@@ -4,12 +4,12 @@ export function ApiTestRender() {
 
 
     return (
-        <div>
-
-            <div>
+        <div className='flex flex-col w-max'>
+<div></div>
+            <div className="flex flex-col grow items-center">
                 <ApiTest />
             </div>
-
+<div></div>
         </div>
     );
 }

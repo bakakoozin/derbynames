@@ -1,4 +1,4 @@
-export function Liste() {
+export function ListeDerbynames() {
 
     return (
         <div>
