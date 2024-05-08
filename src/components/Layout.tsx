@@ -5,14 +5,14 @@ import { Menu } from "../pages/menu"
 
 export function Layout() {
     return <div id="page" className='bg-b1 bg-cover'>
-        <header>
+        <header className="shadow-md">
             <Header />
         </header>
-        <main id="content" className="flex flex-row items-center">
-            <div>
+        <main id="content" className="flex flex-row">
+            <div className='w-80'>
                 <Menu />
             </div>
-            <div>
+            <div className="w-full">
                 <Outlet />
             </div>
         </main>

@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 import { Logo } from '../components/logo'
-import { Search } from "../components/search";
 
 export function Header() {
     return (
@@ -9,10 +8,8 @@ export function Header() {
                 <Link to="">
                     <Logo />
                 </Link>
-                <div>
-                    <Search />
-                </div>
-                <div className="flex flex-row p-10 space-x-8 place-self-auto">
+                <p className="text-2xl opacity-60 font-light">Bienvenue sur l'application <span className="font-bold">DerbyNames</span> France</p>
+                <div className="flex flex-row p-5 space-x-8 place-self-auto">
                     <p>Contact</p>
                     <Link to=""><p className="hover:text-500">Home</p></Link>
                 </div>

@@ -8,6 +8,7 @@ const config: Config = {
   ],
   theme: {
     colors: {
+      50: 'rgba(242, 238, 235, 0.5)',
       100: '#F2EEEB',
       200: '#AEB5BF',
       300: '#9298A6',
@@ -16,6 +17,7 @@ const config: Config = {
       600: '#060A0D',
       //300: 'rgba(146, 152, 166, 0,8)',
       //200: 'rgba(174, 181, 191, 0.8)',
+      //50: 'rgba(242, 238, 235, 0.8)'
     },
 backgroundImage: {
   'b1': "url(./home_back.png)",

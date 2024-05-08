@@ -34,7 +34,6 @@ export function Search() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="derby-name-search">Recherchez un Derby Name</label>
                 <div className="flex flex-row space-x-2">
                     <input
                         className="border-solid border-2 border-100 rounded-lg bg-200 text-600 p-1.5"
