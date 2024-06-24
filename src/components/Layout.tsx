@@ -4,16 +4,14 @@ import { Footer } from "../pages/footer"
 import { Menu } from "../pages/menu"
 
 export function Layout() {
-    return <div id="page" className='bg-b1 bg-cover'>
-        <header className="shadow-md">
+    return <div className='bg-100 text-600 w-full h-[100dvh] grid grid-rows-[auto_1fr_auto]'>
             <Header />
-        </header>
-        <main id="content" className="flex flex-row">
-            <div className='w-80'>
+        <main className="grid grid-cols-[minmax(200px,15vw)_1fr]">
                 <Menu />
-            </div>
-            <div className="w-full">
-                <Outlet />
+            <div className="relative h-full w-full">
+                <div className="absolute inset-0 overflow-y-auto z-10">
+                    <Outlet />
+                </div>
             </div>
         </main>
         <footer>

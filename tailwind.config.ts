@@ -7,6 +7,10 @@ const config: Config = {
     './components/**/*.{js,jsx,ts,tsx}'
   ],
   theme: {
+    fontFamily: {
+      sans: ['Open Sans', 'sans-serif'],
+      oswald:['Oswald', 'sans-serif']
+    },
     colors: {
       50: 'rgba(242, 238, 235, 0.5)',
       100: '#F2EEEB',
@@ -15,6 +19,8 @@ const config: Config = {
       400: '#5C6673',
       500: '#565952',
       600: '#060A0D',
+      cancel:"#706e68",
+      transparent:"rgba(0,0,0,0)"
       //300: 'rgba(146, 152, 166, 0,8)',
       //200: 'rgba(174, 181, 191, 0.8)',
       //50: 'rgba(242, 238, 235, 0.8)'

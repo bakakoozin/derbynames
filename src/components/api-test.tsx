@@ -1,69 +1,60 @@
-import { useState } from "react"
 
-export function ApiTest() {
-    const [formData, setFormData] = useState({
-        name: "",
-        number: ""
-    });
+type ApiTestProps = {
+    onClose: ()=> void
+}
 
-    function handleChange(event: { target: { name: string; value: string; }; }) {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
-    }
+export function ApiTest({onClose}: ApiTestProps) {
 
-    async function handleSubmit(event: { preventDefault: () => void; }) {
+
+    async function handleSubmit(event: any) {
         event.preventDefault();
+        const formData = new FormData(event.target)
         try {
             const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/derbynames', {
                 method: 'POST',
-                body: JSON.stringify({ name: formData.name, numRoster: formData.number })
+                body: JSON.stringify({ name: formData.get('name'), numRoster:formData.get('numRoster') })
             });
+
             if (response.ok) {
                 console.log('Données envoyées avec succès !');
                 // Réinitialiser le formulaire après l'envoi des données
-                setFormData({
-                    name: "",
-                    number: ""
-                });
-            } else {
+            } 
+            else {
                 console.error('Échec de l\'envoi des données.');
             }
         } catch (error) {
             console.error('Erreur lors de l\'envoi des données :', error);
+        } finally {
+            onClose()
         }
     }
 
     return (
-        <div style={{ backgroundColor: 'rgba(174, 181, 191, 0.4)' }}>
-            <div className="flex flex-col shadow-md text-100 p-10 rounded-xl">
-                <form onSubmit={handleSubmit}>
-                    <div className="p-4 flex flex-row space-x-2">
-                        <label htmlFor="derby-name-post">Entrez votre Derby name :</label>
-                        <input
-                            className="border-solid border-2 border-100 rounded-lg bg-200 text-600 p-1.5"
-                            type="text" id="name"
-                            name="name"
-                            value={formData.name} onChange={handleChange}
-                        />
-                    </div>
-                    <div className="p-4 flex flex-row space-x-2">
-                        <label htmlFor="number">Entrez votre numéro de joueureuse :</label>
-                        <input
-                            className="border-solid border-2 border-100 rounded-lg bg-200 text-600 p-1.5 max-w-24"
-                            type="text"
-                            id="number"
-                            name="number"
-                            value={formData.number} onChange={handleChange}
-                        />
-                    </div>
-                    <div className="p-4"><p>Votre club</p></div>
-                    <div className="p-4"><p>Votre adresse mail</p></div>
-                    <div className="pt-10 flex flex-col items-center">
-                        <button className="bg-300 p-1 hover:bg-500 hover:text-200 hover:border-200" type="submit">Envoyer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-2">
+                <fieldset className="flex flex-col gap-2">
+                    <label htmlFor="derby-name-post">Entrez votre Derby name :</label>
+                    <input
+                        className="input"
+                        type="text" 
+                        id="name"
+                        name="name"
+                    />
+                </fieldset>
+                <fieldset className="flex flex-col gap-2">
+                    <label htmlFor="numRoster">Entrez votre numéro de joueureuse :</label>
+                    <input
+                        className="input"
+                        type="text"
+                        id="numRoster"
+                        name="numRoster"
+                    />
+                </fieldset>
+
+                <div className="flex justify-between gap-2">
+                    <button type="reset" onClick={onClose} className="btn-cancel">Annuler</button>
+                    <button className="btn" type="submit">Envoyer</button>
+                </div>
+            </form>
     );
 
     /*async function handleFetch() {
