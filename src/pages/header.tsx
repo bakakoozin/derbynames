@@ -9,8 +9,8 @@ export function Header() {
             </Link>
             
             <div className="flex p-2 space-x-8 place-self-auto">
-                <p>Contact</p>
-                <Link to=""><p className="hover:text-500">Home</p></Link>
+                <p className="font-oswald">Contact</p>
+                <Link to=""><p className="font-oswald hover:text-300">Accueil</p></Link>
             </div>
         </header>
   

@@ -22,10 +22,13 @@
 
 @layer base {
   h1 {
-    @apply text-2xl;
+    @apply text-2xl font-oswald;
   }
   h2 {
-    @apply text-xl;
+    @apply text-xl font-oswald;
+  }
+  .footer {
+    @apply bg-500 text-100 font-oswald bottom-0 w-full flex flex-row p-4 place-items-center place-content-between;
   }
 }
 
