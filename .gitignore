@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.env
+
+derby-back
+cloudflare-worker-rest-api-atlas
