@@ -1,10 +1,10 @@
+import { dc } from '../utils/dynamic-classes';
 
-type ApiTestProps = {
-    onClose: ()=> void
+type AddDerbynameFormProps = {
+    onClose?: ()=> void
 }
 
-export function ApiTest({onClose}: ApiTestProps) {
-
+export function AddDerbynameForm({onClose}: AddDerbynameFormProps) {
 
     async function handleSubmit(event: any) {
         event.preventDefault();
@@ -12,20 +12,21 @@ export function ApiTest({onClose}: ApiTestProps) {
         try {
             const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/derbynames', {
                 method: 'POST',
-                body: JSON.stringify({ name: formData.get('name'), numRoster:formData.get('numRoster') })
+                body: JSON.stringify({ name: formData.get('name'), numRoster:formData.get('numRoster'), email:formData.get('email') }),
             });
 
             if (response.ok) {
                 console.log('Données envoyées avec succès !');
                 // Réinitialiser le formulaire après l'envoi des données
             } 
+            
             else {
                 console.error('Échec de l\'envoi des données.');
             }
         } catch (error) {
             console.error('Erreur lors de l\'envoi des données :', error);
         } finally {
-            onClose()
+            onClose?.()
         }
     }
 
@@ -38,6 +39,7 @@ export function ApiTest({onClose}: ApiTestProps) {
                         type="text" 
                         id="name"
                         name="name"
+                        required
                     />
                 </fieldset>
                 <fieldset className="flex flex-col gap-2">
@@ -47,29 +49,26 @@ export function ApiTest({onClose}: ApiTestProps) {
                         type="text"
                         id="numRoster"
                         name="numRoster"
+                        required
+                    />
+                </fieldset>
+                <fieldset className="flex flex-col gap-2">
+                    <label htmlFor="email">Entrez email:</label>
+                    <input
+                        className="input"
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
                     />
                 </fieldset>
 
                 <div className="flex justify-between gap-2">
-                    <button type="reset" onClick={onClose} className="btn-cancel">Annuler</button>
+                    <button type="reset" onClick={onClose} className={dc('btn-cancel', [!onClose,'hidden'])}>Annuler</button>
                     <button className="btn" type="submit">Envoyer</button>
                 </div>
             </form>
     );
-
-    /*async function handleFetch() {
-        const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/derbynames')
-        const data = await response.json()
-        console.log(data)
-    }
-
-    useEffect(() => { handleFetch() }, [])
-
-    return (
-        <div>
-            <p className="text-600">{'voilà'}</p>
-        </div>)*/
-
 }
 
 

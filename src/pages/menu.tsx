@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Modal } from '../components/modal'
-import { ApiTest } from '../components/api-test'
+import { AddDerbynameForm } from '../components/add-derbyname-form'
 
 export function Menu() {
   return (
     <div className='flex flex-col gap-2 p-2'>
       <Modal button={(onClick) => <div onClick={onClick} className="btn">AJOUTER MON DERBY NAME</div>} >
-        {(onClose) => <ApiTest onClose={onClose} />}
+        {(onClose) => <AddDerbynameForm onClose={onClose} />}
       </Modal>
       <Link to="/liste-derbynames" className="btn">
           LISTE DERBY NAMES
