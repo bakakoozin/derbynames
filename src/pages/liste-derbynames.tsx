@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react"
 import { Search } from "../components/search";
+import { toast } from 'react-toastify';
 
 export function ListeDerbynames() {
 
@@ -12,9 +13,9 @@ export function ListeDerbynames() {
         try{
             const response = await fetch(import.meta.env.VITE_BASE_URL_API + '/derbynames');
             setDerbyNames( await response.json())
+            if(!response.ok) throw new Error("Erreur lors de la récupération des derby names")
         } catch(e){
-            //TODO à gérer
-
+            toast.error("Erreur lors de la récupération des derby names")
         } finally{
             setLoading(false)
         }

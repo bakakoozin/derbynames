@@ -18,7 +18,7 @@ export function ListeClubs() {
             setLoading(false)
         }
     }
-console.log(clubs)
+
     useEffect(
         ()=>{
             getClub()

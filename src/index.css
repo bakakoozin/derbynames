@@ -17,9 +17,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
-
 @layer base {
   h1 {
     @apply text-2xl font-oswald;
@@ -41,6 +38,7 @@
     @apply bg-cancel text-100 px-1 py-2 font-oswald text-lg flex items-center justify-center cursor-pointer border border-100 border-opacity-0 transition-colors ease-in-out duration-200 hover:border-cancel hover:bg-100 hover:text-cancel hover:border-opacity-100
   }
 
+  select,
   .input {
     @apply bg-100 text-500 px-1 py-2  border border-500 transition-colors ease-in-out duration-200 outline-none focus:border-b-200 focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent  hover:border-opacity-100
   }
