@@ -52,3 +52,160 @@
     filter: grayscale(100%);
   }
 }
+
+@keyframes wheel-roll {
+  from {
+    transform: rotate(180deg) translateZ(0);
+  }
+  to {
+    transform: rotate(360deg) translateZ(0);
+  }
+}
+
+.animate-spin {
+  animation: wheel-roll 1s linear infinite;
+}
+
+
+/* LOADER ---- à convertir en tailswind */
+
+.wheel,
+.border_wheel,
+.inside_wheel,
+.inside_wheel:before,
+.whole_wheel,
+.whole_wheel:before,
+.whole_wheel:after,
+.wheel:before,
+.screw:before {
+  border-radius: 50%;
+}
+
+.border_wheel,
+.inside_wheel,
+.inside_wheel:before,
+.whole_wheel,
+.whole_wheel:before,
+.whole_wheel:after,
+.screw:before,
+.wheel:before,
+.screw {
+  position: absolute;
+}
+
+.wheel {
+  --wheel-size: 3rem;
+  position: relative;
+  background: black;
+  width: var(--wheel-size);
+  height: var(--wheel-size);
+}
+
+.wheel:before {
+  content: "";
+  top: 1%;
+  right: 1%;
+  left: 1%;
+  bottom: 1%;
+  background: rgba(255, 255, 255, 0.5);
+  clip-path: ellipse(50% 42% at 50% 50%);
+  animation: wheel_roll 1s linear infinite;
+}
+
+.border_wheel {
+  top: 5%;
+  right: 5%;
+  left: 5%;
+  bottom: 5%;
+  background: #d4d402;
+}
+
+.inside_wheel {
+  top: 10%;
+  right: 10%;
+  left: 10%;
+  bottom: 10%;
+  background: #b02209;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.inside_wheel:before {
+  content: "";
+  top: 2%;
+  right: 2%;
+  left: 2%;
+  bottom: 2%;
+  background: rgba(255, 255, 255, 0.2);
+  clip-path: ellipse(50% 26% at 50% 50%);
+  animation: wheel_roll 300ms linear infinite;
+}
+
+.whole_wheel {
+  top: 15%;
+  right: 15%;
+  left: 15%;
+  bottom: 15%;
+  background: #911c07;
+}
+
+.whole_wheel:after {
+  content: "";
+  top: 20%;
+  right: 20%;
+  left: 20%;
+  bottom: 20%;
+  background: #7a1907;
+  clip-path: ellipse(50% 46% at 50% 50%);
+  animation: wheel_roll 200ms linear infinite;
+}
+
+.whole_wheel:before {
+  content: "";
+  top: 10%;
+  right: 10%;
+  left: 10%;
+  bottom: 10%;
+  background: rgba(255, 255, 255, 0.05);
+  clip-path: ellipse(50% 46% at 50% 50%);
+  animation: wheel_roll 200ms linear infinite;
+}
+
+.screw {
+  background: #b8b8b8;
+  top: 35%;
+  right: 35%;
+  left: 35%;
+  bottom: 35%;
+  clip-path: polygon(
+    50% 0%,
+    90% 20%,
+    100% 60%,
+    75% 100%,
+    25% 100%,
+    0% 60%,
+    10% 20%
+  );
+  z-index: 10;
+}
+
+.screw:before {
+  content: "";
+  background: rgba(255, 255, 255, 0.5);
+  top: 20%;
+  right: 20%;
+  left: 20%;
+  bottom: 20%;
+}
+
+@keyframes wheel_roll {
+  from {
+    transform: rotate(180deg) translateZ(0);
+  }
+
+  to {
+    transform: rotate(360deg) translateZ(0);
+  }
+}

@@ -1,5 +1,6 @@
 import { Modal } from "../components/modal";
 
+
 export function Home() {
 
     return (

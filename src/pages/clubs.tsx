@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react"
 
-export function ListeClubs() {
+export function Clubs() {
 
     const [clubs, setClubs] = useState([])
     const [loading, setLoading] = useState(false)
@@ -28,12 +28,14 @@ export function ListeClubs() {
     if(loading) return <div>chargement...</div>
 
     return (
-        <div>
-            <div className="flex flex-col items-center">
-            <h1 className="opacity-70 pt-5">LES CLUBS DE <span className="font-bold">ROLLER DERBY</span> EN FRANCE</h1>
-                {
-                    clubs.map(club=><div key={club.id}>{club.titre}</div>)                
-                    }
+        <div className="grid h-full grid-rows-[auto_1fr] items-center">
+            <div className="flex-1 w-full flex justify-between item-center gap-2 p-3 bg-[100]">
+                <h1 className="opacity-70 pt-5">LISTE DES <span className="font-bold">CLUBS</span></h1>
+            </div>
+            <div className="h-full relative">
+                <div className="absolute inset-0 overflow-y-auto p-2 flex flex-col">
+                    {clubs.map(club=><div key={club.id}  className="p-2  odd:bg-[rgba(0,0,0,0.05)]">{club.titre}</div>)}
+                </div>
             </div>
         </div>
     );
