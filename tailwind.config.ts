@@ -20,7 +20,9 @@ const config: Config = {
       500: '#565952',
       600: '#060A0D',
       cancel:"#706e68",
-      transparent:"rgba(0,0,0,0)"
+      transparent:"rgba(0,0,0,0)",
+      valid: '#468246',
+      invalid: '#782b25',
       //300: 'rgba(146, 152, 166, 0,8)',
       //200: 'rgba(174, 181, 191, 0.8)',
       //50: 'rgba(242, 238, 235, 0.8)'

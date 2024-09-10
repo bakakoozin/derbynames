@@ -2,11 +2,27 @@ import { useState, useEffect } from "react"
 import { Search } from "../components/search";
 import { toast } from 'react-toastify';
 import { Loader } from "../ui/loader";
+import { useSearchParams } from "react-router-dom";
 
 export function Derbynames() {
 
-    const [derbyNames, setDerbyNames] = useState<{ name: string, numRoster: string }[]>([])
+    const [derbyNames, setDerbyNames] = useState<{ name: string, numRoster: string, club: string }[]>([])
     const [loading, setLoading] = useState(false)
+    const [searchParams] = useSearchParams();
+    const search = searchParams.get("search") || "";
+
+
+    function dbNamefilter(dName: { name: string, numRoster: string }) {
+
+        if (!search) return true
+
+        const name = dName.name.toLowerCase().trim()
+        const cleanSearch = search.toLowerCase().trim()
+
+
+        return name.includes(cleanSearch)
+
+    }
 
     async function getDerbyName() {
 
@@ -39,10 +55,34 @@ export function Derbynames() {
             <div className="h-full relative">
                 <div className="absolute inset-0 overflow-y-auto p-2 flex flex-col">
                     {
+                        derbyNames
+                            .filter(dbNamefilter)
+                            .map((dName) => <div key={dName.name} className="p-2  odd:bg-[rgba(0,0,0,0.05)] flex gap-3 items-center justify-between">
+                                <div className="flex gap-2 items-center">
+                                    <div className="bg-500 text-100 p-3 w-24 text-center">
+                                        {dName.numRoster}
+                                    </div>
 
+                                    <div className="text-lg font-bold">
+                                        {dName.name}
+                                    </div>
+                                </div>
 
-                        derbyNames.map((dName) => <div key={dName.name} className="p-2  odd:bg-[rgba(0,0,0,0.05)]">{dName.name} - {dName.numRoster}</div>)
+                                <div className="flex justify-end italic">
+                                    {dName.club || '--'}
+                                </div>
+                            </div>
+                            )
                     }
+
+                    {
+                        derbyNames.filter(dbNamefilter).length === 0 && <div className="flex justify-center h-full items-center">
+
+                            <div className="bg-500 text-100 p-3 text-lg">Aucun derby name ne correspond à votre recherche</div>
+                        </div>
+
+                    }
+
                 </div>
             </div>
         </div>

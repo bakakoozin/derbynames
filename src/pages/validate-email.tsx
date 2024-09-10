@@ -20,8 +20,7 @@ export function ValidateEmail() {
         body: JSON.stringify({ token: params.token  })
       });
       const resJson = await response.json();
-      console.log(resJson);
-     // navigate("/derbyname/validate-email/" + resJson.slug );
+      navigate("/derbynames?search=" + resJson.name );
     } catch (error) { 
       console.log(error);
      toast.error("Erreur lors de la validation de l'email");
@@ -37,7 +36,9 @@ export function ValidateEmail() {
 
   return <div className="h-full flex flex-col items-center gap-2">
     <h1 className="text-500 text-5xl font-bold text-center">{"Validation de l'email"}</h1>
-    <p className="italic text-center">{params.token}</p>
+    <p className="italic text-center">
+      {"Validation de l'email en cours..."}
+    </p>
     {loading && <Loader />}
   </div>
 } 
