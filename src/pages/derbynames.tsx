@@ -11,14 +11,12 @@ export function Derbynames() {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("search") || "";
 
-
     function dbNamefilter(dName: { name: string, numRoster: string }) {
 
         if (!search) return true
 
         const name = dName.name.toLowerCase().trim()
         const cleanSearch = search.toLowerCase().trim()
-
 
         return name.includes(cleanSearch)
 
@@ -38,11 +36,9 @@ export function Derbynames() {
         }
     }
 
-    useEffect(
-        () => {
-            getDerbyName()
-        }
-        , [])
+    useEffect(() => {
+        getDerbyName()
+    }, [])
 
     if (loading) return <div className="flex h-full items-center justify-center"><Loader /></div>
 
@@ -77,7 +73,6 @@ export function Derbynames() {
 
                     {
                         derbyNames.filter(dbNamefilter).length === 0 && <div className="flex justify-center h-full items-center">
-
                             <div className="bg-500 text-100 p-3 text-lg">Aucun derby name ne correspond à votre recherche</div>
                         </div>
 

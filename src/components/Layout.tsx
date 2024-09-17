@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom"
-import { Header } from "../pages/header"
-import { Footer } from "../pages/footer"
-import { Menu } from "../pages/menu"
+import { Header } from "./header"
+import { Menu } from "./menu"
 
 export function Layout() {
-    return <div className='bg-100 text-600 w-full h-[100dvh] grid grid-rows-[auto_1fr_auto]'>
+    return <div className='bg-100 text-600 w-full h-[100dvh] grid grid-rows-[auto_1fr]'>
             <Header />
         <main className="grid grid-cols-[minmax(200px,15vw)_1fr]">
                 <Menu />
@@ -14,8 +13,5 @@ export function Layout() {
                 </div>
             </div>
         </main>
-        <footer>
-            <Footer />
-        </footer>
     </div>
 }

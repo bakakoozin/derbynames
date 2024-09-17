@@ -24,6 +24,9 @@
   h2 {
     @apply text-xl font-oswald;
   }
+  h3 {
+    @apply text-lg font-oswald;
+  }
   .footer {
     @apply bg-500 text-100 font-oswald bottom-0 w-full flex flex-row p-4 place-items-center place-content-between;
   }

@@ -1,29 +1,26 @@
 import {useState, useEffect} from "react"
+import { toast } from "react-toastify";
 
 export function Clubs() {
 
-    const [clubs, setClubs] = useState([])
+    const [clubs, setClubs] = useState<{id:string,titre:string}[]>([])
     const [loading, setLoading] = useState(false)
 
     async function getClub(){
-
         setLoading(true)
         try{
             const response = await fetch(import.meta.env.VITE_DERBY_FRANCE_URL_API + 'clubs');
             setClubs( await response.json())
         } catch(e){
-            //TODO à gérer
-
+            toast.error("Erreur lors de la récupération des clubs")
         } finally{
             setLoading(false)
         }
     }
 
-    useEffect(
-        ()=>{
-            getClub()
-        }
-    ,[])
+    useEffect(()=>{
+        getClub()
+    },[])
 
     if(loading) return <div>chargement...</div>
 
