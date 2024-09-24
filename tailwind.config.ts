@@ -23,6 +23,7 @@ const config: Config = {
       transparent:"rgba(0,0,0,0)",
       valid: '#468246',
       invalid: '#782b25',
+      blur:'rgba(0, 0,0, 0.3)',
       //300: 'rgba(146, 152, 166, 0,8)',
       //200: 'rgba(174, 181, 191, 0.8)',
       //50: 'rgba(242, 238, 235, 0.8)'
