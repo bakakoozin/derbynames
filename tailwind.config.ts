@@ -7,10 +7,11 @@ const config: Config = {
     './components/**/*.{js,jsx,ts,tsx}'
   ],
   theme: {
-    fontFamily: {
-      sans: ['Open Sans', 'sans-serif'],
-      oswald:['Oswald', 'sans-serif']
-    },
+      fontFamily: {
+        sans: ['Open Sans', 'sans-serif'],
+        oswald: ['Oswald', 'sans-serif'],
+      },
+    
     colors: {
       50: 'rgba(242, 238, 235, 0.5)',
       100: '#F2EEEB',
@@ -24,13 +25,7 @@ const config: Config = {
       valid: '#468246',
       invalid: '#782b25',
       blur:'rgba(0, 0,0, 0.3)',
-      //300: 'rgba(146, 152, 166, 0,8)',
-      //200: 'rgba(174, 181, 191, 0.8)',
-      //50: 'rgba(242, 238, 235, 0.8)'
-    },
-backgroundImage: {
-  'b1': "url(./home_back.png)",
-}
+    }
 
   },
   plugins: [],
