@@ -69,7 +69,7 @@ export function ClubSelector({defaultValue = 'autre',name, onChange}: ClubSelect
   if(loading) return <div className='input'>Chargement des clubs...</div>
  
 
-  return <select name={name || 'club'} value={selectedClub} onChange={handleSelect} className='lowercase'>
+  return <select name={name || 'club'} value={selectedClub} onChange={handleSelect} className='lowercase w-full'>
     {
       clubs.map(club => <option
         className='truncate  first-letter:uppercase' 
