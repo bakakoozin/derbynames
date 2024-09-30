@@ -17,7 +17,7 @@ export function ClubSelector({defaultValue = 'autre',name, onChange}: ClubSelect
   const [selectedClub, setSelectedClub] = useState(defaultValue);
   const [loading, setLoading] = useState(false)
 
-  function handleSelect(e:any){
+  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>){
     setSelectedClub(e.target.value)
     if(onChange){
       const club = clubs.find(club => club.id === e.target.value)
@@ -37,10 +37,10 @@ export function ClubSelector({defaultValue = 'autre',name, onChange}: ClubSelect
           if(!response.ok) throw new Error('Erreur lors de la récupération des clubs')
       
             const cl = resJson
-            .reduce((acc:any, club:any) => {
-              const name =  club?.titre_court || club?.titre
+            .reduce((acc:{id:string,name:string}[], club:{id:string,titre:string, titre_court:string}) => {
+              const name =   club?.titre || club?.titre_court
               if(!name) return acc
-              if(!acc.find((c:any) => name === c.name)){
+              if(!acc.find((c) => name === c.name)){
                 acc.push({
                   name,
                   id: club.id
@@ -49,10 +49,10 @@ export function ClubSelector({defaultValue = 'autre',name, onChange}: ClubSelect
               return acc
             }
             ,[defaultChoice]) 
-          setClubs(cl.sort((a:any, b:any) => a.name.localeCompare(b.name))
+          setClubs(cl.sort((a:{name:string}, b:{name:string}) => a.name.localeCompare(b.name))
           )
       } catch(e){
-        toast.error(e as any)
+        toast.error(e as string)
 
       } finally{
           setLoading(false)
