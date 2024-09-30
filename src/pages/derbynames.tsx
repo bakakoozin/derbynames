@@ -53,6 +53,7 @@ export function Derbynames() {
                     {
                         derbyNames
                             .filter(dbNamefilter)
+                            .sort((a, b) => a.name.localeCompare(b.name))
                             .map((dName) => <div key={dName.name} className="p-2  odd:bg-[rgba(0,0,0,0.05)] flex gap-3 items-center justify-between">
                                 <div className="flex gap-2 items-center">
                                     <div className="bg-500 text-100 p-3 w-24 text-center">
