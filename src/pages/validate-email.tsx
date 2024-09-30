@@ -20,6 +20,7 @@ export function ValidateEmail() {
         body: JSON.stringify({ token: params.token  })
       });
       const resJson = await response.json();
+      toast.success("Email validé avec succès");
       navigate("/derbynames?search=" + resJson.name );
     } catch (error) { 
       console.log(error);

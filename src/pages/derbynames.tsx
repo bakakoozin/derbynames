@@ -44,7 +44,7 @@ export function Derbynames() {
 
     return (
         <div className="grid h-full grid-rows-[auto_1fr] items-center">
-            <div className="flex-1 w-full flex justify-between item-center gap-2 p-3 bg-[100]">
+            <div className="flex-1 w-full flex flex-wrap justify-between item-center gap-2 p-3 bg-[100]">
                 <h1 className="opacity-70 pt-5">LISTE DES <span className="font-bold">DERBY NAMES</span></h1>
                 <Search />
             </div>

@@ -9,7 +9,7 @@ const sections = [
       },
       {
         title: "Contact",
-        content: "Formulaire de contact et email disponible si dessous",
+        content: "Formulaire de contact et email disponible ci-dessous",
         link: {
           href: 'https://linktr.ee/bakadev',
           label:  "Lien vers le formulaire de contact",

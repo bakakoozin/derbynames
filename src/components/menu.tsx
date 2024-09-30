@@ -16,7 +16,7 @@ export function Menu() {
     Array(3).fill(0).map((_, i) => <div key={i} className={`h-2 w-8 bg-500`} />)
   }
   </div>
-  <div data-open={isOpen} className="fixed inset-0 backdrop-filter backdrop-blur-sm z-[880] bg-blur transition-color pointer-events-none data-[open=false]:opacity-0 md:opacity-0">
+  <div data-open={isOpen} className="fixed inset-0 backdrop-filter backdrop-blur-sm z-[880] bg-blur transition-color data-[open=false]:pointer-events-none data-[open=false]:opacity-0 md:opacity-0">
     <div className="fixed inset-0 bg-base-primary opacity-10" />
   </div>
 <div 
