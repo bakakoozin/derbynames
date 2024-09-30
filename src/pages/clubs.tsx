@@ -31,7 +31,7 @@ export function Clubs() {
             </div>
             <div className="h-full relative">
                 <div className="absolute inset-0 overflow-y-auto p-2 flex flex-col">
-                    {clubs.sort((a, b) => a?.titre?.localeCompare(b?.titre ||'')).map(club=><div key={club.id}  className="p-2  odd:bg-[rgba(0,0,0,0.05)]">{club.titre}</div>)}
+                    {clubs.map(club=><div key={club.id}  className="p-2  odd:bg-[rgba(0,0,0,0.05)]">{club.titre}</div>)}
                 </div>
             </div>
         </div>
