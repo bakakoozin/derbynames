@@ -1,86 +1,83 @@
-import { useState,useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { For, createEffect, createSignal } from "solid-js";
+import { toast } from "~/ui/Toast";
+
+type Club = {
+  id: string;
+  name: string;
+};
 
 type ClubSelectorProps = {
-  defaultValue?: string,
-  name?: string,
-  onChange?: (club: {
-    name: string
-    id: string
-  }) => void
-}
+  defaultValue?: string;
+  name?: string;
+  onChange?: (club: { name: string; id: string }) => void;
+};
 
-export function ClubSelector({defaultValue = 'autre',name, onChange}: ClubSelectorProps){
-  
-  const defaultChoice  = {name: '=== AUTRE ===', id: 'autre'};
-  const [clubs, setClubs] = useState([defaultChoice]);
-  const [selectedClub, setSelectedClub] = useState(defaultValue);
-  const [loading, setLoading] = useState(false)
+export function ClubSelector({ defaultValue = 'autre', name, onChange }: ClubSelectorProps) {
+  const defaultChoice: Club = { id: 'autre', name: '=== AUTRE ===' };
+  const [clubs, setClubs] = createSignal<Club[]>([defaultChoice]);
+  const [selectedClubId, setSelectedClubId] = createSignal<string>(defaultValue);
+  const [loading, setLoading] = createSignal(true);
+  const [error, setError] = createSignal<string | null>(null);
 
-  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>){
-    setSelectedClub(e.target.value)
-    if(onChange){
-      const club = clubs.find(club => club.id === e.target.value)
-      if(club) onChange({
-        name: club.name,
-        id: club.id
-      })
+  async function getClubs() {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/clubs');
+      const clubsData: Club[] = await response.json();
+      setClubs(clubsData.length === 0 ? [defaultChoice] : clubsData);
+    } catch (error: any) {
+      toast.error('Erreur de chargement', error.message || 'Erreur de chargement');
+      setClubs([defaultChoice]);
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function getClub(){
+  createEffect(() => {
+    getClubs();
+  });
 
-      setLoading(true)
-      try{
-          const response = await fetch(import.meta.env.VITE_DERBY_FRANCE_URL_API + 'clubs');
-          const resJson = await response.json();
-          if(!response.ok) throw new Error('Erreur lors de la récupération des clubs')
-      
-            const cl = resJson
-            .reduce((acc:{id:string,name:string}[], club:{id:string,titre:string, titre_court:string}) => {
-              const name =   club?.titre || club?.titre_court
-              if(!name) return acc
-              if(!acc.find((c) => name === c.name)){
-                acc.push({
-                  name,
-                  id: club.id
-                })
-              }
-              return acc
-            }
-            ,[defaultChoice]) 
-          setClubs(cl.sort((a:{name:string}, b:{name:string}) => a.name.localeCompare(b.name))
-          )
-      } catch(e){
-        toast.error(e as string)
+  function handleSelect(e: Event) {
+    const target = e.target as HTMLSelectElement;
+    const clubId = target.value;
+    setSelectedClubId(clubId);
 
-      } finally{
-          setLoading(false)
+    if (onChange) {
+      const club = clubs().find(c => c.id === clubId);
+      if (club) {
+        onChange({
+          name: club.name,
+          id: club.id
+        });
       }
+    }
   }
 
-  useEffect(
-      ()=>{
-          getClub()
-      }
-  ,[])
-
-
-  if(loading) return <div className='input'>Chargement des clubs...</div>
- 
-
-  return <select name={name || 'club'} value={selectedClub} onChange={handleSelect} className='lowercase w-full'>
-    {
-      clubs.map(club => <option
-        className='truncate  first-letter:uppercase' 
-
-        key={club.id} 
-        value={club.id}
-        >
-            {club.name}
-      </option>)
-    }
-  
-</select>
-
+  return (
+    <>
+      {loading() && (
+        <div class='input'>Chargement des clubs...</div>
+      )}
+      {error() && (
+        <div class='text-invalid text-xs italic mb-1'>{error()}</div>
+      )}
+      <select
+        name={name || 'club'}
+        value={selectedClubId()}
+        onChange={handleSelect}
+        class='input w-full'
+        disabled={loading()}
+      >
+        <For each={clubs()}>
+          {(club) => (
+            <option value={club.id}>
+              {club.name}
+            </option>
+          )}
+        </For>
+      </select>
+    </>
+  );
 }

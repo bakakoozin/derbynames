@@ -1,32 +1,36 @@
-import { useState, ReactElement } from "react"
+import { createSignal, JSX } from "solid-js"
 
 type ModalProps = {
-    children: (closeModal: () => void) => ReactElement
-    button: (openModal: () => void) => ReactElement
-    closeButton?:boolean
+  children: JSX.Element
+  button: JSX.Element
+  closeButton?: boolean
 }
 
-export function Modal({ children, button,closeButton }: ModalProps) {
-    const [open, setOpen] = useState(false)
+const [open, setOpen] = createSignal(false)
 
-    function handleOpen() {
-        setOpen(true)
-    }
-    function handleClose() {
-        setOpen(false)
-    }
-    return <>
-        {button(handleOpen)}
-        {open && <div className="fixed inset-0 bg-opacity-50 bg-600 flex items-center justify-center z-50">
-            <div className="max-w-[500px] p-2 bg-100  m-2 border border-500 ">
-               {closeButton && 
-                    <div className="flex justify-end">
-                        <button onClick={handleClose} className="btn">Fermer</button>
-                    </div>
-                }
-                
-                {children(handleClose)}
-            </div>
-        </div>}
-    </>
+export const modal = {
+  open() {
+    setOpen(true)
+  },
+  close() {
+    setOpen(false)
+  }
+
+}
+export function Modal(props: ModalProps) {
+
+  return <>
+    {props.button}
+    {open() && <div class="fixed inset-0 bg-opacity-50 bg-600 flex items-center justify-center z-50">
+      <div class="max-w-[500px] p-2 bg-dn-100  m-2 border border-dn-500 ">
+        {props.closeButton &&
+          <div class="flex justify-end">
+            <button onClick={modal.close} class="btn">Fermer</button>
+          </div>
+        }
+
+        {props.children}
+      </div>
+    </div>}
+  </>
 }
