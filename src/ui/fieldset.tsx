@@ -1,16 +1,17 @@
+import { JSX } from "solid-js";
 
 type FieldsetProps = {
-  children: React.ReactNode;
+  children: JSX.Element;
   label?: string;
   name?: string;
 };
 
 export function Fieldset(props: FieldsetProps) {
-const { children, label, name } = props;
 
-  return  <fieldset className="flex flex-col gap-2">
-  {label && <label htmlFor={name || ''}>{label}{" :"}</label>}
-  {children}
-</fieldset>
+
+  return <fieldset class="flex flex-col gap-2">
+    {props.label && <label for={props.name || ''}>{props.label}{" :"}</label>}
+    {props.children}
+  </fieldset>
 
 }

@@ -1,18 +1,22 @@
-//Bibliothèques externes
-import { useEffect, useState } from "react"
+import { createEffect, createSignal, Accessor } from "solid-js"
 
-export function useDebounce<T>(value: T, delay?: number): T {
-    //State
-    const [debouncedValue, setDebouncedValue] = useState<T>(value)
+export function useDebounce<T>(value: T | Accessor<T>, delay: number = 500) {
+  // Si c'est un accessor, on l'utilise directement, sinon on crée une fonction qui retourne la valeur
+  const getValue: Accessor<T> = typeof value === 'function'
+    ? (value as Accessor<T>)
+    : () => value as T;
 
-    //Effect
-    useEffect(() => {
-        const timer = setTimeout(() => setDebouncedValue(value), delay || 500)
+  const [debouncedValue, setDebouncedValue] = createSignal<T>(getValue())
 
-        return () => {
-            clearTimeout(timer)
-        }
-    }, [value, delay])
+  createEffect(() => {
+    // Lire la valeur actuelle pour déclencher la réactivité
+    const currentValue = getValue();
+    const timer = setTimeout(() => setDebouncedValue(() => currentValue), delay)
 
-    return debouncedValue
+    return () => {
+      clearTimeout(timer)
+    }
+  })
+
+  return debouncedValue
 }

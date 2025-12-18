@@ -1,14 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   font-family: "Open Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: #F2EEEB;
-  color-scheme: light dark;
+  color-scheme: light;
   background-color: #F2EEEB;
 
   font-synthesis: none;
@@ -17,46 +15,82 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@theme {
+  /* Configuration des polices */
+  --font-display: "Oswald", sans-serif;
+
+  /* Configuration des couleurs personnalisées */
+  --color-dn-50: rgba(242, 238, 235, 0.5);
+  --color-dn-100: #F2EEEB;
+  --color-dn-200: #AEB5BF;
+  --color-dn-300: #9298A6;
+  --color-dn-400: #5C6673;
+  --color-dn-500: #565952;
+  --color-dn-600: #060A0D;
+  --color-dn-cancel: #706e68;
+  --color-dn-transparent: rgba(0, 0, 0, 0);
+  --color-dn-valid: #468246;
+  --color-dn-invalid: #782b25;
+  --color-dn-blur: rgba(0, 0, 0, 0.3);
+}
+
+
+
+
 @layer base {
+
+  body {
+    @apply text-dn-600;
+  }
+
   h1 {
-    @apply text-2xl font-oswald;
+    @apply text-2xl font-display;
   }
+
   h2 {
-    @apply text-xl font-oswald;
+    @apply text-xl font-display;
   }
+
   .footer {
-    @apply bg-500 text-100 font-oswald bottom-0 w-full flex flex-row p-4 place-items-center place-content-between;
+    @apply bg-dn-500 text-dn-100 font-display bottom-0 w-full flex flex-row p-4 place-items-center place-content-between;
   }
 }
 
+.font-display {
+  font-family: 'Oswald', sans-serif;
+}
+
+.filter-none {
+  filter: none;
+}
+
+.filter-grayscale {
+  filter: grayscale(100%);
+}
+
+
 @layer components {
+
   .btn {
-    @apply bg-500 text-100 px-1 py-2 font-oswald text-lg flex items-center justify-center cursor-pointer border border-100 border-opacity-0 transition-colors ease-in-out duration-200 hover:border-500 hover:bg-100 hover:text-500 hover:border-opacity-100
+    @apply bg-dn-500 text-dn-100 px-1 py-2 font-display text-lg flex items-center justify-center cursor-pointer border border-dn-100  transition-colors ease-in-out duration-200 hover:border-dn-500 hover:bg-dn-100 hover:text-dn-500 hover:border-transparent
   }
 
   .btn-cancel {
-    @apply bg-cancel text-100 px-1 py-2 font-oswald text-lg flex items-center justify-center cursor-pointer border border-100 border-opacity-0 transition-colors ease-in-out duration-200 hover:border-cancel hover:bg-100 hover:text-cancel hover:border-opacity-100
+    @apply bg-dn-transparent text-dn-500 px-1 py-2 font-display text-lg flex items-center justify-center cursor-pointer border border-dn-500  transition-colors ease-in-out duration-200 hover:bg-dn-100 hover:text-dn-cancel hover:border-transparent
   }
 
   select,
   .input {
-    @apply bg-100 text-500 px-1 py-2  border border-500 transition-colors ease-in-out duration-200 outline-none focus:border-b-200 focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent  hover:border-opacity-100
+    @apply bg-dn-100 text-dn-500 px-1 py-2 border border-dn-500 transition-colors ease-in-out duration-200 outline-none focus:border-b-dn-200 focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent hover:border-transparent
   }
 }
 
-@layer utilities {
-  .filter-none {
-    filter: none;
-  }
-  .filter-grayscale {
-    filter: grayscale(100%);
-  }
-}
 
 @keyframes wheel-roll {
   from {
     transform: rotate(180deg) translateZ(0);
   }
+
   to {
     transform: rotate(360deg) translateZ(0);
   }
@@ -184,15 +218,13 @@
   right: 35%;
   left: 35%;
   bottom: 35%;
-  clip-path: polygon(
-    50% 0%,
-    90% 20%,
-    100% 60%,
-    75% 100%,
-    25% 100%,
-    0% 60%,
-    10% 20%
-  );
+  clip-path: polygon(50% 0%,
+      90% 20%,
+      100% 60%,
+      75% 100%,
+      25% 100%,
+      0% 60%,
+      10% 20%);
   z-index: 10;
 }
 

@@ -1,30 +1,31 @@
-import { useSearchParams } from "react-router-dom";
+import { createSignal } from "solid-js";
+import { useDebounce } from "~/hooks/debounce.hook";
+
+export const [searchValue, setSearchValue] = createSignal("");
 
 export function Search() {
+  // Debounce de 300ms pour la valeur de recherche
+  const debouncedSearch = useDebounce(searchValue, 300);
 
+  function handleChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    const newValue = target.value;
+    setSearchValue(newValue);
+  }
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const search = searchParams.get("search") || "";
-
-
-    async function handleSearch(value: string) {
-        setSearchParams({ search: value });
-    }
-
-    return (
-
-        <div className="flex flex-row space-x-2">
-            <label className="hidden">Recherche</label>
-            <input
-                name="derby-name-search"
-                className="input"
-                type="search" 
-                id="derby-name-search"
-                placeholder="Recherche"
-                autoFocus
-                defaultValue={search}
-               onChange={(e) => handleSearch(e.target.value)} />
-        </div>
-
-    )
+  return (
+    <div class="flex flex-row space-x-2">
+      <label class="hidden" for="derby-name-search">Recherche</label>
+      <input
+        class="input"
+        type="search"
+        id="derby-name-search"
+        name="derby-name-search"
+        placeholder="Recherche"
+        autofocus
+        value={searchValue()}
+        onInput={handleChange}
+      />
+    </div>
+  );
 }
