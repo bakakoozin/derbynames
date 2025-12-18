@@ -1,0 +1,3536 @@
+{
+  "exportDate": "2025-11-20T20:40:57.477Z",
+  "namespaceId": "b6fb1f7f7d7c415887f48ad8030d7c72",
+  "totalKeys": 507,
+  "keys": [
+    {
+      "name": "#Super Chiante",
+      "value": {
+        "name": "#Super Chiante",
+        "numRoster": "357",
+        "email": "n.lebert@gmail.com",
+        "club": {
+          "name": "ROLLER DERBY NANTES ATLANTIQUE",
+          "id": "W442013684"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "#super chiante",
+      "value": "n.lebert@gmail.com"
+    },
+    {
+      "name": "A.GREVRAND@GMAIL.COM",
+      "value": {
+        "name": "mel pops",
+        "numRoster": "3",
+        "email": "A.GREVRAND@GMAIL.COM",
+        "club": { "name": "ARRD", "id": "W763011787" }
+      }
+    },
+    {
+      "name": "Alain Chabite",
+      "value": {
+        "name": "Alain Chabite",
+        "numRoster": "984",
+        "email": "maxime.bodier@gmail.com",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Anju la morue",
+      "value": {
+        "name": "Anju la morue",
+        "numRoster": "3118",
+        "email": "ajguesdon@outlook.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "BELLATRIX",
+      "value": {
+        "name": "BELLATRIX",
+        "numRoster": "3211",
+        "email": "anais.valsaque16@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Barrique",
+      "value": {
+        "name": "Barrique",
+        "numRoster": "911",
+        "email": "barriqueades@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Baston la Baffe",
+      "value": {
+        "name": "Baston la Baffe",
+        "numRoster": "109",
+        "email": "lea.ledoux14@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Candice Hection",
+      "value": {
+        "name": "Candice Hection",
+        "numRoster": "48",
+        "email": "candicepasquier@gmail.com",
+        "club": {
+          "name": "CLUB ROLLER DERBY 38 - THE CANNIBAL MARMOTS",
+          "id": "W381011276"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Carpenter",
+      "value": {
+        "name": "Carpenter",
+        "numRoster": "12",
+        "email": "joris.menuge@gmail.com",
+        "club": { "name": "ROLLER DERBY LILLE", "id": "W595018178" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "CatNyx",
+      "value": {
+        "name": "CatNyx",
+        "numRoster": "205",
+        "email": "emmie.guichet@lurd.fr",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Coco Javel",
+      "value": {
+        "name": "Coco Javel",
+        "numRoster": "5",
+        "email": "cocojavel5@gmail.com",
+        "club": {
+          "name": "MARSEILLE ROLLER DERBY CLUB (MRDC)",
+          "id": "W133016701"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Connie Merry",
+      "value": {
+        "name": "Connie Merry",
+        "numRoster": "765",
+        "email": "constanceherry@gmail.com",
+        "club": { "name": "AUVER'NIAKS ROLLER DERBY", "id": "W632013298" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Creep Suzette",
+      "value": {
+        "name": "Creep Suzette",
+        "numRoster": "11",
+        "email": "camille.binet14@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Discopath",
+      "value": {
+        "name": "Discopath",
+        "numRoster": "7",
+        "email": "nirisoa@famillechapal.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Dobby Nouz",
+      "value": {
+        "name": "Dobby Nouz",
+        "numRoster": "95",
+        "email": "maureen.esteban95@gmail.com",
+        "club": { "name": "LIMOGES ROLLER-SKATING", "id": "W872000502" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Défon'Stouf",
+      "value": {
+        "name": "Défon'Stouf",
+        "numRoster": "44",
+        "email": "stephbirgand@hotmail.fr",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Fauve Kipeu",
+      "value": {
+        "name": "Fauve Kipeu",
+        "numRoster": "9",
+        "email": "nolwenn.mespoulede@rocketmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Florensic",
+      "value": {
+        "name": "Florensic",
+        "numRoster": "673",
+        "email": "florence.prinzivalle@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Flynn Rider",
+      "value": {
+        "name": "Flynn Rider",
+        "numRoster": "13",
+        "email": "matthieu.thielleux@laposte.net",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Force Trankill",
+      "value": {
+        "name": "Force Trankill",
+        "numRoster": "13",
+        "email": "christelle.rovetta@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Fracasse Noisette",
+      "value": {
+        "name": "Fracasse Noisette",
+        "numRoster": "626",
+        "email": "estelle200295@hotmail.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Francky Grinçant",
+      "value": {
+        "name": "Francky Grinçant",
+        "numRoster": "40",
+        "email": "franckmeunier27@gmail.com",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Fripouille Deluxe",
+      "value": {
+        "name": "Fripouille Deluxe",
+        "numRoster": "109",
+        "email": "l347edoux@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "HacKoeur",
+      "value": {
+        "name": "HacKoeur",
+        "numRoster": "4",
+        "email": "saphirarozas@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Hannibal Lectriss",
+      "value": {
+        "name": "Hannibal Lectriss",
+        "numRoster": "23",
+        "email": "anais.chauvigny@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Harley Couine",
+      "value": {
+        "name": "Harley Couine",
+        "numRoster": "22",
+        "email": "raphou84@hotmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Harley Gouine",
+      "value": {
+        "name": "Harley Gouine",
+        "numRoster": "16",
+        "email": "lhd.adpub@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Hell Liz",
+      "value": {
+        "name": "Hell Liz",
+        "numRoster": "66",
+        "email": "elise.picard16@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Horny Coco",
+      "value": {
+        "name": "Horny Coco",
+        "numRoster": "765",
+        "email": "constanceherry@gmail.com",
+        "club": { "name": "AUVER'NIAKS ROLLER DERBY", "id": "W632013298" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Jacquotte",
+      "value": {
+        "name": "Jacquotte",
+        "numRoster": "9",
+        "email": "marine.jacquot95@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Jeanne Pauline Paulette",
+      "value": {
+        "name": "Jeanne Pauline Paulette",
+        "numRoster": "56",
+        "email": "lauregvh@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Johnny Croquemort",
+      "value": {
+        "name": "Johnny Croquemort",
+        "numRoster": "27",
+        "email": "jennymaree72@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Joris'prudence",
+      "value": {
+        "name": "Joris'prudence",
+        "numRoster": "12",
+        "email": "joris.menuge@gmail.com",
+        "club": { "name": "ROLLER DERBY LILLE", "id": "W595018178" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Kar'Hapax",
+      "value": {
+        "name": "Kar'Hapax",
+        "numRoster": "42",
+        "email": "chloe.laurent@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Karma Sutura",
+      "value": {
+        "name": "Karma Sutura",
+        "numRoster": "1347",
+        "email": "m.eva.nisi@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Kate Busherie",
+      "value": {
+        "name": "Kate Busherie",
+        "numRoster": "242",
+        "email": "chloe.chat1991@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Kraby",
+      "value": {
+        "name": "Kraby",
+        "numRoster": "84",
+        "email": "camille.margot@hotmail.fr",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Le G",
+      "value": {
+        "name": "Le G",
+        "numRoster": "59",
+        "email": "g.deroo@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "LoLo Tuerie",
+      "value": {
+        "name": "LoLo Tuerie",
+        "numRoster": "1999",
+        "email": "leonore.desuzinges@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Lor'Imortelle",
+      "value": {
+        "name": "Lor'Imortelle",
+        "numRoster": "1999",
+        "email": "loriek.beck@gmail.com",
+        "club": { "name": "ROLLER DERBY CLUB BASTIACCIU", "id": "W2B2002731" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Louise",
+      "value": {
+        "name": "Louise",
+        "numRoster": "1312",
+        "email": "laurianne.cadot@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Louise-Michel",
+      "value": {
+        "name": "Louise-Michel",
+        "numRoster": "71",
+        "email": "louise.dolowy@gmail.com",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Léo de Hurlevent",
+      "value": {
+        "name": "Léo de Hurlevent",
+        "numRoster": "3703",
+        "email": "eleonorebernal@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Ma Raie Chère",
+      "value": {
+        "name": "Ma Raie Chère",
+        "numRoster": "1667",
+        "email": "emmanuelle.joly99@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Macbernik",
+      "value": {
+        "name": "Macbernik",
+        "numRoster": "15",
+        "email": "lucile.jorland@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Mad'Nu(t)s",
+      "value": {
+        "name": "Mad'Nu(t)s",
+        "numRoster": "1667",
+        "email": "emmanuelle.joly99@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Marie Hellish",
+      "value": {
+        "name": "Marie Hellish",
+        "numRoster": "911",
+        "email": "marieeli.tran@gmail.com",
+        "club": { "name": "POITIERS ROLLER DERBY", "id": "W863005594" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Marigag2@Hotmail.com",
+      "value": {
+        "name": "Ukunéné",
+        "numRoster": "12",
+        "email": "Marigag2@Hotmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "Marrakech butt’her",
+      "value": {
+        "name": "Marrakech butt’her",
+        "numRoster": "212",
+        "email": "sboualaoui01@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Mash Mollo",
+      "value": {
+        "name": "Mash Mollo",
+        "numRoster": "263",
+        "email": "besse.morgane@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Mini Pelle",
+      "value": {
+        "name": "Mini Pelle",
+        "numRoster": "3615",
+        "email": "marinapouteau@gmail.com",
+        "club": { "name": "ANJOU ROLLER DERBY", "id": "W491013981" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Minky Leurre",
+      "value": {
+        "name": "Minky Leurre",
+        "numRoster": "987",
+        "email": "camille.guerin2012@yahoo.fr",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Miss Tystep",
+      "value": {
+        "name": "Miss Tystep",
+        "numRoster": "20",
+        "email": "lehna.andre@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Mélissalace",
+      "value": {
+        "name": "Mélissalace",
+        "numRoster": "13",
+        "email": "m.cappelaire@hotmail.fr",
+        "club": {
+          "name": "ASSOCIATION BEASTIE DERBY GIRLS",
+          "id": "W513002677"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Mélo Drame",
+      "value": {
+        "name": "Mélo Drame",
+        "numRoster": "26",
+        "email": "melo.mmazancieux@proton.me",
+        "club": { "name": "PINK BLOCK ROLLER DERBY", "id": "W313028491" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Ordalie",
+      "value": {
+        "name": "Ordalie",
+        "numRoster": "2814",
+        "email": "ddarive@yahoo.fr",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Para d'Occ",
+      "value": {
+        "name": "Para d'Occ",
+        "numRoster": "8112",
+        "email": "paillemarianne@gmail.com",
+        "club": { "name": "ROLLER DERBY TOULOUSE (RDT)", "id": "W313013628" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Patrick Fiori Road",
+      "value": {
+        "name": "Patrick Fiori Road",
+        "numRoster": "984",
+        "email": "maxime.bodier@gmail.com",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Pin’Pon",
+      "value": {
+        "name": "Pin’Pon",
+        "numRoster": "0640",
+        "email": "maylis.caubet@hotmail.fr",
+        "club": {
+          "name": "EUSKAL ROLLER DERBY ET COMPAGNIE",
+          "id": "W641007705"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "PlatyNate",
+      "value": {
+        "name": "PlatyNate",
+        "numRoster": "639",
+        "email": "fmn.couturier@gmail.com",
+        "club": {
+          "name": "LES QUADS DE PARIS ROLLER DERBY",
+          "id": "W751213935"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Poison Emy",
+      "value": {
+        "name": "Poison Emy",
+        "numRoster": "17",
+        "email": "emiliechailloux@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Pomelo Jamderson",
+      "value": {
+        "name": "Pomelo Jamderson",
+        "numRoster": "719",
+        "email": "sarah.haim@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Pompétasse",
+      "value": {
+        "name": "Pompétasse",
+        "numRoster": "63",
+        "email": "chloe.fournier165@gmail.com",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Prepuscule",
+      "value": {
+        "name": "Prepuscule",
+        "numRoster": "468",
+        "email": "tricoire.jordan49@gmail.com",
+        "club": {
+          "name": "ROLLER DERBY NANTES ATLANTIQUE",
+          "id": "W442013684"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "PunKiss",
+      "value": {
+        "name": "PunKiss",
+        "numRoster": "170",
+        "email": "stephaniepamies@hotmail.com",
+        "club": { "name": "=== AUTRE ===", "id": "autre" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Pâte @ chouette",
+      "value": {
+        "name": "Pâte @ chouette",
+        "numRoster": "180",
+        "email": "pate.a.chouette@protonmail.com",
+        "club": { "name": "PINK BLOCK ROLLER DERBY", "id": "W313028491" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Queen à Man",
+      "value": {
+        "name": "Queen à Man",
+        "numRoster": "912",
+        "email": "schardt.meloe@gmail.com",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Rainbow Smash",
+      "value": {
+        "name": "Rainbow Smash",
+        "numRoster": "142",
+        "email": "sakikurugi@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Rest Oli",
+      "value": {
+        "name": "Rest Oli",
+        "numRoster": "170",
+        "email": "frickcion@gmail.com",
+        "club": { "name": "ROLLER DERBY BREST", "id": "W291005088" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Rouliette Russe",
+      "value": {
+        "name": "Rouliette Russe",
+        "numRoster": "2",
+        "email": "juliette.cermeno@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Saoule Wrecker",
+      "value": {
+        "name": "Saoule Wrecker",
+        "numRoster": "418",
+        "email": "pauline.bouchereau@gmail.com",
+        "club": { "name": "LUTECE DESTROYEUSES", "id": "W751212013" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Scar-amouche!",
+      "value": {
+        "name": "Scar-amouche!",
+        "numRoster": "6868",
+        "email": "reeves.scarlett@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Simone d’Abreuvoir",
+      "value": {
+        "name": "Simone d’Abreuvoir",
+        "numRoster": "67",
+        "email": "emilie.faivre@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Sirius Lee",
+      "value": {
+        "name": "Sirius Lee",
+        "numRoster": "9001",
+        "email": "sirina.nhouyvanisvong@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Sissi Brindacier",
+      "value": {
+        "name": "Sissi Brindacier",
+        "numRoster": "348",
+        "email": "cyrielle.joannard@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "So Fiak",
+      "value": {
+        "name": "So Fiak",
+        "numRoster": "72",
+        "email": "sofia.samri@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "StarPass Navigo",
+      "value": {
+        "name": "StarPass Navigo",
+        "numRoster": "94",
+        "email": "fairereel@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Starfish",
+      "value": {
+        "name": "Starfish",
+        "numRoster": "10",
+        "email": "c.richaub@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Storm Yorke",
+      "value": {
+        "name": "Storm Yorke",
+        "numRoster": "11",
+        "email": "cyrilpebre@gmail.com",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Tinus",
+      "value": {
+        "name": "Tinus",
+        "numRoster": "025",
+        "email": "galipienso.m@gmail.com",
+        "club": { "name": "CAMOUFLAGE STREET CLUB", "id": "W492000770" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Twist-Her",
+      "value": {
+        "name": "Twist-Her",
+        "numRoster": "959",
+        "email": "elisa.tordella@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Ukunéné",
+      "value": {
+        "name": "Ukunéné",
+        "numRoster": "12",
+        "email": "Marigag2@Hotmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Valkilla",
+      "value": {
+        "name": "Valkilla",
+        "numRoster": "999",
+        "email": "aureline.loeuillet-vrhovac@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Venice Bitch",
+      "value": {
+        "name": "Venice Bitch",
+        "numRoster": "1984",
+        "email": "matthieu.daladouire@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "VileCocotte",
+      "value": {
+        "name": "VileCocotte",
+        "numRoster": "42",
+        "email": "cecile.cleach@laposte.net",
+        "club": { "name": "BADASS", "id": "W922007272" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Wanheda",
+      "value": {
+        "name": "Wanheda",
+        "numRoster": "101",
+        "email": "erickagerard@hotmail.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Weirdough",
+      "value": {
+        "name": "Weirdough",
+        "numRoster": ".",
+        "email": "ach.bourgin.allais@gmail.com",
+        "club": { "name": "PARIS ROLLER DERBY", "id": "W751204141" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Wonder mama",
+      "value": {
+        "name": "Wonder mama",
+        "numRoster": "5",
+        "email": "aude.pimont@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Youri Margarine",
+      "value": {
+        "name": "Youri Margarine",
+        "numRoster": "984",
+        "email": "maxime.bodier@gmail.com",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "Zbra Kadabra",
+      "value": {
+        "name": "Zbra Kadabra",
+        "numRoster": "69",
+        "email": "opack@zbra.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "a.garestier@gmail.com",
+      "value": {
+        "name": "Modiie",
+        "numRoster": "19",
+        "email": "a.garestier@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "ach.bourgin.allais@gmail.com",
+      "value": {
+        "name": "Weirdough",
+        "numRoster": ".",
+        "email": "ach.bourgin.allais@gmail.com",
+        "club": { "name": "PARIS ROLLER DERBY", "id": "W751204141" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "acothenet@gmail.com",
+      "value": {
+        "name": "Danton Cute",
+        "numRoster": "606",
+        "email": "acothenet@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "ajguesdon@outlook.com",
+      "value": {
+        "name": "Anju la morue",
+        "numRoster": "3118",
+        "email": "ajguesdon@outlook.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "alain chabite",
+      "value": "maxime.bodier@gmail.com"
+    },
+    {
+      "name": "alize.saint-andre@hotmail.fr",
+      "value": {
+        "name": "Fatal Zefear",
+        "numRoster": "64",
+        "email": "alize.saint-andre@hotmail.fr",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "anais.chauvigny@gmail.com",
+      "value": {
+        "name": "Hannibal Lectriss",
+        "numRoster": "23",
+        "email": "anais.chauvigny@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "anais.valsaque16@gmail.com",
+      "value": {
+        "name": "BELLATRIX",
+        "numRoster": "3211",
+        "email": "anais.valsaque16@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "andy kp",
+      "value": "mocho.sandra@live.fr"
+    },
+    {
+      "name": "anju la morue",
+      "value": "ajguesdon@outlook.com"
+    },
+    {
+      "name": "archi'bûchesse",
+      "value": "michelon.fanny@gmail.com"
+    },
+    {
+      "name": "arlo maman bobo",
+      "value": "mati.arlo@proton.me"
+    },
+    {
+      "name": "attention au chien !",
+      "value": "josephine.coulonnier@gmail.com"
+    },
+    {
+      "name": "aude.pimont@gmail.com",
+      "value": {
+        "name": "Wonder mama",
+        "numRoster": "5",
+        "email": "aude.pimont@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "audreydgs@gmail.com",
+      "value": {
+        "name": "Crash Bambi coot",
+        "numRoster": "30",
+        "email": "audreydgs@gmail.com",
+        "club": { "name": "ANJOU ROLLER DERBY", "id": "W491013981" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "aureline.loeuillet-vrhovac@lurd.fr",
+      "value": {
+        "name": "Valkilla",
+        "numRoster": "999",
+        "email": "aureline.loeuillet-vrhovac@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "b@bouteiller.contact",
+      "value": {
+        "name": "자유전자",
+        "numRoster": "95",
+        "email": "b@bouteiller.contact",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "bar accoudée",
+      "value": "lise.becherel@gmail.com"
+    },
+    {
+      "name": "barriqueades@gmail.com",
+      "value": {
+        "name": "Dorhinocéros",
+        "numRoster": "911",
+        "email": "barriqueades@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "baston la baffe",
+      "value": "lea.ledoux14@gmail.com"
+    },
+    {
+      "name": "bellatrix",
+      "value": "anais.valsaque16@gmail.com"
+    },
+    {
+      "name": "besse.morgane@gmail.com",
+      "value": {
+        "name": "Mash Mollo",
+        "numRoster": "263",
+        "email": "besse.morgane@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "bionic",
+      "value": "nola8m@gmail.com"
+    },
+    {
+      "name": "bourgeois slayer",
+      "value": "ch.dignat@outlook.fr"
+    },
+    {
+      "name": "c.gamper@laposte.net",
+      "value": {
+        "name": "clé de 13",
+        "numRoster": "12",
+        "email": "c.gamper@laposte.net",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "c.richaub@gmail.com",
+      "value": {
+        "name": "Starfish",
+        "numRoster": "10",
+        "email": "c.richaub@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "cafoutch'",
+      "value": "nora.bertone@gmail.com"
+    },
+    {
+      "name": "camille.bertrandsahal@gmail.com",
+      "value": {
+        "name": "Robert de Nitro",
+        "numRoster": "2000",
+        "email": "camille.bertrandsahal@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "camille.binet14@gmail.com",
+      "value": {
+        "name": "Creep Suzette",
+        "numRoster": "11",
+        "email": "camille.binet14@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "camille.guerin2012@yahoo.fr",
+      "value": {
+        "name": "Minky Leurre",
+        "numRoster": "987",
+        "email": "camille.guerin2012@yahoo.fr",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "camille.margot@hotmail.fr",
+      "value": {
+        "name": "Kraby",
+        "numRoster": "84",
+        "email": "camille.margot@hotmail.fr",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "candice hection",
+      "value": "candicepasquier@gmail.com"
+    },
+    {
+      "name": "candicepasquier@gmail.com",
+      "value": {
+        "name": "Candice Hection",
+        "numRoster": "48",
+        "email": "candicepasquier@gmail.com",
+        "club": {
+          "name": "CLUB ROLLER DERBY 38 - THE CANNIBAL MARMOTS",
+          "id": "W381011276"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "caouan'bunga",
+      "value": "clemiwague@orange.fr"
+    },
+    {
+      "name": "carpenter",
+      "value": "joris.menuge@gmail.com"
+    },
+    {
+      "name": "cashew later",
+      "value": "mondot.ambre@gmail.com"
+    },
+    {
+      "name": "catnyx",
+      "value": "emmie.guichet@lurd.fr"
+    },
+    {
+      "name": "cecile.cleach@laposte.net",
+      "value": {
+        "name": "VileCocotte",
+        "numRoster": "42",
+        "email": "cecile.cleach@laposte.net",
+        "club": { "name": "BADASS", "id": "W922007272" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "ch.dignat@outlook.fr",
+      "value": {
+        "name": "Bourgeois Slayer",
+        "numRoster": "526",
+        "email": "ch.dignat@outlook.fr",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "chloe.chat1991@gmail.com",
+      "value": {
+        "name": "Kate Busherie",
+        "numRoster": "242",
+        "email": "chloe.chat1991@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "chloe.fournier165@gmail.com",
+      "value": {
+        "name": "Pompétasse",
+        "numRoster": "63",
+        "email": "chloe.fournier165@gmail.com",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "chloe.laurent@lurd.fr",
+      "value": {
+        "name": "Kar'Hapax",
+        "numRoster": "42",
+        "email": "chloe.laurent@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "christelle.rovetta@gmail.com",
+      "value": {
+        "name": "Force Trankill",
+        "numRoster": "13",
+        "email": "christelle.rovetta@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "clara.m.martin69@gmail.com",
+      "value": {
+        "name": "Jane Hostile",
+        "numRoster": "320",
+        "email": "clara.m.martin69@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "cle.m01@live.fr",
+      "value": {
+        "name": "dragonfly aka libellule",
+        "numRoster": "101",
+        "email": "cle.m01@live.fr",
+        "club": {
+          "name": "MARSEILLE ROLLER DERBY CLUB (MRDC)",
+          "id": "W133016701"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "clemiwague@orange.fr",
+      "value": {
+        "name": "Caouan'bunga",
+        "numRoster": "42",
+        "email": "clemiwague@orange.fr",
+        "club": { "name": "ROLLER DERBY COEUR DES VOSGES", "id": "W881008894" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "clé de 13",
+      "value": "c.gamper@laposte.net"
+    },
+    {
+      "name": "coco",
+      "value": "coralieloicq@gmail.com"
+    },
+    {
+      "name": "coco javel",
+      "value": "cocojavel5@gmail.com"
+    },
+    {
+      "name": "cocojavel5@gmail.com",
+      "value": {
+        "name": "Coco Javel",
+        "numRoster": "5",
+        "email": "cocojavel5@gmail.com",
+        "club": {
+          "name": "MARSEILLE ROLLER DERBY CLUB (MRDC)",
+          "id": "W133016701"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "connie merry",
+      "value": "constanceherry@gmail.com"
+    },
+    {
+      "name": "constanceherry@gmail.com",
+      "value": {
+        "name": "Connie Merry",
+        "numRoster": "765",
+        "email": "constanceherry@gmail.com",
+        "club": { "name": "AUVER'NIAKS ROLLER DERBY", "id": "W632013298" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "coralieloicq@gmail.com",
+      "value": {
+        "name": "COcO",
+        "numRoster": "5",
+        "email": "coralieloicq@gmail.com",
+        "club": { "name": "ROLLER DERBY COEUR DES VOSGES", "id": "W881008894" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "crapulax",
+      "value": "domitille.gaillard@gmail.com"
+    },
+    {
+      "name": "crash bambi coot",
+      "value": "audreydgs@gmail.com"
+    },
+    {
+      "name": "creep suzette",
+      "value": "camille.binet14@gmail.com"
+    },
+    {
+      "name": "cynthia anger",
+      "value": "cynthia.bembo@gmail.com"
+    },
+    {
+      "name": "cynthia.bembo@gmail.com",
+      "value": {
+        "name": "Cynthia Anger",
+        "numRoster": "55",
+        "email": "cynthia.bembo@gmail.com",
+        "club": { "name": "BADASS", "id": "W922007272" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "cyrielle.joannard@gmail.com",
+      "value": {
+        "name": "Sissi Brindacier",
+        "numRoster": "348",
+        "email": "cyrielle.joannard@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "cyrielle.vaillant@laposte.net",
+      "value": {
+        "name": "Kyra",
+        "numRoster": "21",
+        "email": "cyrielle.vaillant@laposte.net",
+        "club": { "name": "=== AUTRE ===", "id": "autre" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "cyrilpebre@gmail.com",
+      "value": {
+        "name": "Storm Yorke",
+        "numRoster": "11",
+        "email": "cyrilpebre@gmail.com",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "danton cute",
+      "value": "acothenet@gmail.com"
+    },
+    {
+      "name": "daria track",
+      "value": "paulinetabouret@hotmail.fr"
+    },
+    {
+      "name": "dark-en-ciel",
+      "value": "nahema.pvh@hotmail.fr"
+    },
+    {
+      "name": "ddarive@yahoo.fr",
+      "value": {
+        "name": "Ordalie",
+        "numRoster": "2814",
+        "email": "ddarive@yahoo.fr",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "discopath",
+      "value": "nirisoa@famillechapal.fr"
+    },
+    {
+      "name": "dobby nouz",
+      "value": "maureen.esteban95@gmail.com"
+    },
+    {
+      "name": "domitille.gaillard@gmail.com",
+      "value": {
+        "name": "Crapulax",
+        "numRoster": "666",
+        "email": "domitille.gaillard@gmail.com",
+        "club": { "name": "ANJOU ROLLER DERBY", "id": "W491013981" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "dorhinocéros",
+      "value": "barriqueades@gmail.com"
+    },
+    {
+      "name": "dr channibale",
+      "value": "lunabeen@free.fr"
+    },
+    {
+      "name": "dragonfly aka libellule",
+      "value": "cle.m01@live.fr"
+    },
+    {
+      "name": "défon'stouf",
+      "value": "stephbirgand@hotmail.fr"
+    },
+    {
+      "name": "eleonorebernal@gmail.com",
+      "value": {
+        "name": "Léo de Hurlevent",
+        "numRoster": "3703",
+        "email": "eleonorebernal@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "eli.elicorne@protonmail.com",
+      "value": {
+        "name": "Élicorne",
+        "numRoster": "067",
+        "email": "eli.elicorne@protonmail.com",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "elisa.tordella@lurd.fr",
+      "value": {
+        "name": "Twist-Her",
+        "numRoster": "959",
+        "email": "elisa.tordella@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "elise.picard16@gmail.com",
+      "value": {
+        "name": "Hell Liz",
+        "numRoster": "66",
+        "email": "elise.picard16@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "emilie.faivre@lurd.fr",
+      "value": {
+        "name": "Simone d’Abreuvoir",
+        "numRoster": "67",
+        "email": "emilie.faivre@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "emiliechailloux@gmail.com",
+      "value": {
+        "name": "Poison Emy",
+        "numRoster": "17",
+        "email": "emiliechailloux@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "emiline-dauzou@lilo.org",
+      "value": {
+        "name": "Gliss'Emi",
+        "numRoster": "126",
+        "email": "emiline-dauzou@lilo.org",
+        "club": { "name": "ARRD", "id": "W763011787" }
+      }
+    },
+    {
+      "name": "emmanuelle.joly99@gmail.com",
+      "value": {
+        "name": "Ma Raie Chère",
+        "numRoster": "1667",
+        "email": "emmanuelle.joly99@gmail.com",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "emmie.guichet@lurd.fr",
+      "value": {
+        "name": "CatNyx",
+        "numRoster": "205",
+        "email": "emmie.guichet@lurd.fr",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "erickagerard@hotmail.fr",
+      "value": {
+        "name": "Wanheda",
+        "numRoster": "101",
+        "email": "erickagerard@hotmail.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "estelle200295@hotmail.fr",
+      "value": {
+        "name": "Fracasse Noisette",
+        "numRoster": "626",
+        "email": "estelle200295@hotmail.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "fairereel@gmail.com",
+      "value": {
+        "name": "StarPass Navigo",
+        "numRoster": "94",
+        "email": "fairereel@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "fatal zefear",
+      "value": "alize.saint-andre@hotmail.fr"
+    },
+    {
+      "name": "fauve kipeu",
+      "value": "nolwenn.mespoulede@rocketmail.com"
+    },
+    {
+      "name": "feu sacrum",
+      "value": "lheranval@gmail.com"
+    },
+    {
+      "name": "florence.prinzivalle@lurd.fr",
+      "value": {
+        "name": "Florensic",
+        "numRoster": "673",
+        "email": "florence.prinzivalle@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "florensic",
+      "value": "florence.prinzivalle@lurd.fr"
+    },
+    {
+      "name": "flynn rider",
+      "value": "matthieu.thielleux@laposte.net"
+    },
+    {
+      "name": "fmn.couturier@gmail.com",
+      "value": {
+        "name": "PlatyNate",
+        "numRoster": "639",
+        "email": "fmn.couturier@gmail.com",
+        "club": {
+          "name": "LES QUADS DE PARIS ROLLER DERBY",
+          "id": "W751213935"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "force trankill",
+      "value": "christelle.rovetta@gmail.com"
+    },
+    {
+      "name": "fracasse noisette",
+      "value": "estelle200295@hotmail.fr"
+    },
+    {
+      "name": "franckmeunier27@gmail.com",
+      "value": {
+        "name": "Francky Grinçant",
+        "numRoster": "40",
+        "email": "franckmeunier27@gmail.com",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "francky grinçant",
+      "value": "franckmeunier27@gmail.com"
+    },
+    {
+      "name": "franky grinçant",
+      "value": "franckmeunier27@gmail.com"
+    },
+    {
+      "name": "frickcion@gmail.com",
+      "value": {
+        "name": "Rest Oli",
+        "numRoster": "170",
+        "email": "frickcion@gmail.com",
+        "club": { "name": "ROLLER DERBY BREST", "id": "W291005088" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "fripouille deluxe",
+      "value": "l347edoux@gmail.com"
+    },
+    {
+      "name": "g.deroo@gmail.com",
+      "value": {
+        "name": "Le G",
+        "numRoster": "59",
+        "email": "g.deroo@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "gaelle.dubois08@gmail.com",
+      "value": {
+        "name": "Raton Casseur",
+        "numRoster": "3630",
+        "email": "gaelle.dubois08@gmail.com",
+        "club": { "name": "ANJOU ROLLER DERBY", "id": "W491013981" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "galipienso.m@gmail.com",
+      "value": {
+        "name": "Tinus",
+        "numRoster": "025",
+        "email": "galipienso.m@gmail.com",
+        "club": { "name": "CAMOUFLAGE STREET CLUB", "id": "W492000770" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "gen_100217",
+      "value": "b@bouteiller.contact"
+    },
+    {
+      "name": "gen_100970",
+      "value": "lehna.andre@lurd.fr"
+    },
+    {
+      "name": "gen_112471",
+      "value": "lucile.jorland@gmail.com"
+    },
+    {
+      "name": "gen_118399",
+      "value": "a.garestier@gmail.com"
+    },
+    {
+      "name": "gen_127003",
+      "value": "christelle.rovetta@gmail.com"
+    },
+    {
+      "name": "gen_129471",
+      "value": "lucie.bno@gmail.com"
+    },
+    {
+      "name": "gen_136857",
+      "value": "constanceherry@gmail.com"
+    },
+    {
+      "name": "gen_139665",
+      "value": "emmie.guichet@lurd.fr"
+    },
+    {
+      "name": "gen_152807",
+      "value": "Marigag2@Hotmail.com"
+    },
+    {
+      "name": "gen_157025",
+      "value": "camille.binet14@gmail.com"
+    },
+    {
+      "name": "gen_165849",
+      "value": "laurianne.cadot@gmail.com"
+    },
+    {
+      "name": "gen_171610",
+      "value": "jeromine_m@yahoo.fr"
+    },
+    {
+      "name": "gen_183369",
+      "value": "violainegarsault@yahoo.fr"
+    },
+    {
+      "name": "gen_185673",
+      "value": "constanceherry@gmail.com"
+    },
+    {
+      "name": "gen_190328",
+      "value": "cyrielle.vaillant@laposte.net"
+    },
+    {
+      "name": "gen_191346",
+      "value": "lheranval@gmail.com"
+    },
+    {
+      "name": "gen_194740",
+      "value": "lehna.andre@lurd.fr"
+    },
+    {
+      "name": "gen_196495",
+      "value": "emmanuelle.joly99@gmail.com"
+    },
+    {
+      "name": "gen_220509",
+      "value": "raphou84@hotmail.com"
+    },
+    {
+      "name": "gen_221357",
+      "value": "cyrielle.joannard@gmail.com"
+    },
+    {
+      "name": "gen_239837",
+      "value": "sofia.samri@lurd.fr"
+    },
+    {
+      "name": "gen_254558",
+      "value": "b@bouteiller.contact"
+    },
+    {
+      "name": "gen_254800",
+      "value": "matthieu.daladouire@gmail.com"
+    },
+    {
+      "name": "gen_258128",
+      "value": "sirina.nhouyvanisvong@gmail.com"
+    },
+    {
+      "name": "gen_264349",
+      "value": "l347edoux@gmail.com"
+    },
+    {
+      "name": "gen_272487",
+      "value": "chloe.laurent@lurd.fr"
+    },
+    {
+      "name": "gen_284167",
+      "value": "acothenet@gmail.com"
+    },
+    {
+      "name": "gen_287534",
+      "value": "chloe.fournier165@gmail.com"
+    },
+    {
+      "name": "gen_291468",
+      "value": "leonore.desuzinges@lurd.fr"
+    },
+    {
+      "name": "gen_320666",
+      "value": "franckmeunier27@gmail.com"
+    },
+    {
+      "name": "gen_322593",
+      "value": "roller@poudot.fr"
+    },
+    {
+      "name": "gen_324345",
+      "value": "nirisoa@famillechapal.fr"
+    },
+    {
+      "name": "gen_325544",
+      "value": "franckmeunier27@gmail.com"
+    },
+    {
+      "name": "gen_336529",
+      "value": "sakikurugi@gmail.com"
+    },
+    {
+      "name": "gen_337219",
+      "value": "c.gamper@laposte.net"
+    },
+    {
+      "name": "gen_346415",
+      "value": "maxime.bodier@gmail.com"
+    },
+    {
+      "name": "gen_347339",
+      "value": "imeli2601@gmail.com"
+    },
+    {
+      "name": "gen_357261",
+      "value": "maxime.bodier@gmail.com"
+    },
+    {
+      "name": "gen_381347",
+      "value": "fmn.couturier@gmail.com"
+    },
+    {
+      "name": "gen_381711",
+      "value": "candicepasquier@gmail.com"
+    },
+    {
+      "name": "gen_382730",
+      "value": "c.richaub@gmail.com"
+    },
+    {
+      "name": "gen_384921",
+      "value": "erickagerard@hotmail.fr"
+    },
+    {
+      "name": "gen_404062",
+      "value": "emmanuelle.joly99@gmail.com"
+    },
+    {
+      "name": "gen_404162",
+      "value": "reeves.scarlett@gmail.com"
+    },
+    {
+      "name": "gen_410353",
+      "value": "maylis.caubet@hotmail.fr"
+    },
+    {
+      "name": "gen_421827",
+      "value": "eli.elicorne@protonmail.com"
+    },
+    {
+      "name": "gen_424304",
+      "value": "marieeli.tran@gmail.com"
+    },
+    {
+      "name": "gen_426972",
+      "value": "ach.bourgin.allais@gmail.com"
+    },
+    {
+      "name": "gen_429965",
+      "value": "aude.pimont@gmail.com"
+    },
+    {
+      "name": "gen_432245",
+      "value": "mgentil.pro@gmail.com"
+    },
+    {
+      "name": "gen_433108",
+      "value": "A.GREVRAND@GMAIL.COM"
+    },
+    {
+      "name": "gen_434322",
+      "value": "emiline-dauzou@lilo.org"
+    },
+    {
+      "name": "gen_434504",
+      "value": "clemiwague@orange.fr"
+    },
+    {
+      "name": "gen_443451",
+      "value": "juliette.cermeno@gmail.com"
+    },
+    {
+      "name": "gen_460499",
+      "value": "frickcion@gmail.com"
+    },
+    {
+      "name": "gen_464187",
+      "value": "lucile.jorland@gmail.com"
+    },
+    {
+      "name": "gen_467250",
+      "value": "sboualaoui01@gmail.com"
+    },
+    {
+      "name": "gen_468515",
+      "value": "besse.morgane@gmail.com"
+    },
+    {
+      "name": "gen_471568",
+      "value": "pate.a.chouette@protonmail.com"
+    },
+    {
+      "name": "gen_474871",
+      "value": "emiliechailloux@gmail.com"
+    },
+    {
+      "name": "gen_477972",
+      "value": "anais.chauvigny@gmail.com"
+    },
+    {
+      "name": "gen_478884",
+      "value": "schardt.meloe@gmail.com"
+    },
+    {
+      "name": "gen_482770",
+      "value": "chloe.fournier165@gmail.com"
+    },
+    {
+      "name": "gen_483607",
+      "value": "paulinetabouret@hotmail.fr"
+    },
+    {
+      "name": "gen_487112",
+      "value": "n.lebert@gmail.com"
+    },
+    {
+      "name": "gen_490297",
+      "value": "maryloupetot@gmail.com"
+    },
+    {
+      "name": "gen_491799",
+      "value": "tricoire.jordan49@gmail.com"
+    },
+    {
+      "name": "gen_495099",
+      "value": "josephine.coulonnier@gmail.com"
+    },
+    {
+      "name": "gen_495546",
+      "value": "florence.prinzivalle@lurd.fr"
+    },
+    {
+      "name": "gen_500808",
+      "value": "clara.m.martin69@gmail.com"
+    },
+    {
+      "name": "gen_504509",
+      "value": "fairereel@gmail.com"
+    },
+    {
+      "name": "gen_518727",
+      "value": "sabii_p@hotmail.com"
+    },
+    {
+      "name": "gen_537883",
+      "value": "michelon.fanny@gmail.com"
+    },
+    {
+      "name": "gen_542379",
+      "value": "melo.mmazancieux@proton.me"
+    },
+    {
+      "name": "gen_547523",
+      "value": "marine.jacquot95@gmail.com"
+    },
+    {
+      "name": "gen_548836",
+      "value": "galipienso.m@gmail.com"
+    },
+    {
+      "name": "gen_553155",
+      "value": "m.eva.nisi@gmail.com"
+    },
+    {
+      "name": "gen_554671",
+      "value": "ddarive@yahoo.fr"
+    },
+    {
+      "name": "gen_560122",
+      "value": "marinapouteau@gmail.com"
+    },
+    {
+      "name": "gen_565807",
+      "value": "maxime.bodier@gmail.com"
+    },
+    {
+      "name": "gen_567400",
+      "value": "nola8m@gmail.com"
+    },
+    {
+      "name": "gen_569244",
+      "value": "mati.arlo@proton.me"
+    },
+    {
+      "name": "gen_570845",
+      "value": "sarahgrulay@hotmail.fr"
+    },
+    {
+      "name": "gen_578194",
+      "value": "cyrilpebre@gmail.com"
+    },
+    {
+      "name": "gen_588016",
+      "value": "alize.saint-andre@hotmail.fr"
+    },
+    {
+      "name": "gen_596326",
+      "value": "estelle200295@hotmail.fr"
+    },
+    {
+      "name": "gen_596511",
+      "value": "cocojavel5@gmail.com"
+    },
+    {
+      "name": "gen_597309",
+      "value": "lunabeen@free.fr"
+    },
+    {
+      "name": "gen_602971",
+      "value": "yuldorgutierrez200@gmail.com"
+    },
+    {
+      "name": "gen_607959",
+      "value": "barriqueades@gmail.com"
+    },
+    {
+      "name": "gen_612860",
+      "value": "nolwenn.mespoulede@rocketmail.com"
+    },
+    {
+      "name": "gen_613587",
+      "value": "lauregvh@gmail.com"
+    },
+    {
+      "name": "gen_614997",
+      "value": "camille.bertrandsahal@gmail.com"
+    },
+    {
+      "name": "gen_631097",
+      "value": "paillemarianne@gmail.com"
+    },
+    {
+      "name": "gen_647533",
+      "value": "meghan.fillias@lurd.fr"
+    },
+    {
+      "name": "gen_659804",
+      "value": "cyrilpebre@gmail.com"
+    },
+    {
+      "name": "gen_664652",
+      "value": "joris.menuge@gmail.com"
+    },
+    {
+      "name": "gen_670361",
+      "value": "elise.picard16@gmail.com"
+    },
+    {
+      "name": "gen_674862",
+      "value": "stephaniepamies@hotmail.com"
+    },
+    {
+      "name": "gen_689630",
+      "value": "coralieloicq@gmail.com"
+    },
+    {
+      "name": "gen_696840",
+      "value": "sarah.bryndzia@laposte.net"
+    },
+    {
+      "name": "gen_697225",
+      "value": "camille.guerin2012@yahoo.fr"
+    },
+    {
+      "name": "gen_700397",
+      "value": "emiliechailloux@gmail.com"
+    },
+    {
+      "name": "gen_741538",
+      "value": "lea.ledoux14@gmail.com"
+    },
+    {
+      "name": "gen_746027",
+      "value": "jennymaree72@gmail.com"
+    },
+    {
+      "name": "gen_748831",
+      "value": "loriek.beck@gmail.com"
+    },
+    {
+      "name": "gen_753355",
+      "value": "mondot.ambre@gmail.com"
+    },
+    {
+      "name": "gen_767165",
+      "value": "ajguesdon@outlook.com"
+    },
+    {
+      "name": "gen_768082",
+      "value": "cle.m01@live.fr"
+    },
+    {
+      "name": "gen_773136",
+      "value": "lhd.adpub@gmail.com"
+    },
+    {
+      "name": "gen_776908",
+      "value": "lea.ledoux14@gmail.com"
+    },
+    {
+      "name": "gen_787161",
+      "value": "domitille.gaillard@gmail.com"
+    },
+    {
+      "name": "gen_788211",
+      "value": "cecile.cleach@laposte.net"
+    },
+    {
+      "name": "gen_792492",
+      "value": "chloe.chat1991@gmail.com"
+    },
+    {
+      "name": "gen_798622",
+      "value": "besse.morgane@gmail.com"
+    },
+    {
+      "name": "gen_800330",
+      "value": "b@bouteiller.contact"
+    },
+    {
+      "name": "gen_804883",
+      "value": "pariciaurore@gmail.com"
+    },
+    {
+      "name": "gen_806378",
+      "value": "audreydgs@gmail.com"
+    },
+    {
+      "name": "gen_816951",
+      "value": "elisa.tordella@lurd.fr"
+    },
+    {
+      "name": "gen_824885",
+      "value": "maxime.bodier@gmail.com"
+    },
+    {
+      "name": "gen_840839",
+      "value": "aureline.loeuillet-vrhovac@lurd.fr"
+    },
+    {
+      "name": "gen_849093",
+      "value": "gaelle.dubois08@gmail.com"
+    },
+    {
+      "name": "gen_856004",
+      "value": "galipienso.m@gmail.com"
+    },
+    {
+      "name": "gen_858979",
+      "value": "eleonorebernal@gmail.com"
+    },
+    {
+      "name": "gen_860242",
+      "value": "lise.becherel@gmail.com"
+    },
+    {
+      "name": "gen_872696",
+      "value": "manachophelie@gmail.com"
+    },
+    {
+      "name": "gen_880712",
+      "value": "lehna.andre@lurd.fr"
+    },
+    {
+      "name": "gen_881024",
+      "value": "m.cappelaire@hotmail.fr"
+    },
+    {
+      "name": "gen_882870",
+      "value": "b@bouteiller.contact"
+    },
+    {
+      "name": "gen_890173",
+      "value": "louise.dolowy@gmail.com"
+    },
+    {
+      "name": "gen_893127",
+      "value": "mocho.sandra@live.fr"
+    },
+    {
+      "name": "gen_897067",
+      "value": "saphirarozas@gmail.com"
+    },
+    {
+      "name": "gen_927136",
+      "value": "maureen.esteban95@gmail.com"
+    },
+    {
+      "name": "gen_938096",
+      "value": "nahema.pvh@hotmail.fr"
+    },
+    {
+      "name": "gen_940518",
+      "value": "emilie.faivre@lurd.fr"
+    },
+    {
+      "name": "gen_941004",
+      "value": "tricoire.jordan49@gmail.com"
+    },
+    {
+      "name": "gen_942464",
+      "value": "pauline.bouchereau@gmail.com"
+    },
+    {
+      "name": "gen_951822",
+      "value": "camille.margot@hotmail.fr"
+    },
+    {
+      "name": "gen_956575",
+      "value": "anais.valsaque16@gmail.com"
+    },
+    {
+      "name": "gen_966170",
+      "value": "tricoire.jordan49@gmail.com"
+    },
+    {
+      "name": "gen_969035",
+      "value": "ch.dignat@outlook.fr"
+    },
+    {
+      "name": "gen_976974",
+      "value": "opack@zbra.fr"
+    },
+    {
+      "name": "gen_977047",
+      "value": "matthieu.thielleux@laposte.net"
+    },
+    {
+      "name": "gen_978336",
+      "value": "sandy.steele@hotmail.fr"
+    },
+    {
+      "name": "gen_979706",
+      "value": "stephbirgand@hotmail.fr"
+    },
+    {
+      "name": "gen_981080",
+      "value": "g.deroo@gmail.com"
+    },
+    {
+      "name": "gen_984010",
+      "value": "cynthia.bembo@gmail.com"
+    },
+    {
+      "name": "gen_986452",
+      "value": "joris.menuge@gmail.com"
+    },
+    {
+      "name": "gen_990646",
+      "value": "nora.bertone@gmail.com"
+    },
+    {
+      "name": "gen_993439",
+      "value": "cyrilpebre@gmail.com"
+    },
+    {
+      "name": "gen_995762",
+      "value": "sarah.haim@lurd.fr"
+    },
+    {
+      "name": "gen_998838",
+      "value": "camille.margot@hotmail.fr"
+    },
+    {
+      "name": "gik-gik coyo'tux",
+      "value": {
+        "name": "gik-gik coyo'tux",
+        "numRoster": "120",
+        "email": "roller@poudot.fr",
+        "club": { "name": "AM SPORTS", "id": "W212001111" },
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "gliss'emi",
+      "value": "emiline-dauzou@lilo.org"
+    },
+    {
+      "name": "hackoeur",
+      "value": "saphirarozas@gmail.com"
+    },
+    {
+      "name": "hannibal lectriss",
+      "value": "anais.chauvigny@gmail.com"
+    },
+    {
+      "name": "hannibal wrecker",
+      "value": "sandy.steele@hotmail.fr"
+    },
+    {
+      "name": "harley couine",
+      "value": "raphou84@hotmail.com"
+    },
+    {
+      "name": "harley gouine",
+      "value": "lhd.adpub@gmail.com"
+    },
+    {
+      "name": "hell liz",
+      "value": "elise.picard16@gmail.com"
+    },
+    {
+      "name": "horny coco",
+      "value": "constanceherry@gmail.com"
+    },
+    {
+      "name": "imeli2601@gmail.com",
+      "value": {
+        "name": "Nutty San",
+        "numRoster": "26",
+        "email": "imeli2601@gmail.com",
+        "club": { "name": "ARRD", "id": "W763011787" }
+      }
+    },
+    {
+      "name": "jacquotte",
+      "value": "marine.jacquot95@gmail.com"
+    },
+    {
+      "name": "jane hostile",
+      "value": "clara.m.martin69@gmail.com"
+    },
+    {
+      "name": "jeanne pauline paulette",
+      "value": "lauregvh@gmail.com"
+    },
+    {
+      "name": "jejou",
+      "value": "jeromine_m@yahoo.fr"
+    },
+    {
+      "name": "jennymaree72@gmail.com",
+      "value": {
+        "name": "Johnny Croquemort",
+        "numRoster": "27",
+        "email": "jennymaree72@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "jeromine_m@yahoo.fr",
+      "value": {
+        "name": "Jejou",
+        "numRoster": "133",
+        "email": "jeromine_m@yahoo.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "johnny croquemort",
+      "value": "jennymaree72@gmail.com"
+    },
+    {
+      "name": "joris'prudence",
+      "value": "joris.menuge@gmail.com"
+    },
+    {
+      "name": "joris.menuge@gmail.com",
+      "value": {
+        "name": "Joris'prudence",
+        "numRoster": "12",
+        "email": "joris.menuge@gmail.com",
+        "club": { "name": "ROLLER DERBY LILLE", "id": "W595018178" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "josephine.coulonnier@gmail.com",
+      "value": {
+        "name": "Attention au chien !",
+        "numRoster": "022",
+        "email": "josephine.coulonnier@gmail.com",
+        "club": { "name": "NANTES ROLLER DERBY", "id": "W442007085" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "juliette.cermeno@gmail.com",
+      "value": {
+        "name": "Rouliette Russe",
+        "numRoster": "2",
+        "email": "juliette.cermeno@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "kar'hapax",
+      "value": "chloe.laurent@lurd.fr"
+    },
+    {
+      "name": "karma sutura",
+      "value": "m.eva.nisi@gmail.com"
+    },
+    {
+      "name": "kate busherie",
+      "value": "chloe.chat1991@gmail.com"
+    },
+    {
+      "name": "kraby",
+      "value": "camille.margot@hotmail.fr"
+    },
+    {
+      "name": "kyra",
+      "value": "cyrielle.vaillant@laposte.net"
+    },
+    {
+      "name": "l347edoux@gmail.com",
+      "value": {
+        "name": "Fripouille Deluxe",
+        "numRoster": "109",
+        "email": "l347edoux@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "lauregvh@gmail.com",
+      "value": {
+        "name": "Jeanne Pauline Paulette",
+        "numRoster": "56",
+        "email": "lauregvh@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "laurianne.cadot@gmail.com",
+      "value": {
+        "name": "Louise",
+        "numRoster": "1312",
+        "email": "laurianne.cadot@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "le g",
+      "value": "g.deroo@gmail.com"
+    },
+    {
+      "name": "lea.ledoux14@gmail.com",
+      "value": {
+        "name": "Baston la Baffe",
+        "numRoster": "109",
+        "email": "lea.ledoux14@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "lehna.andre@lurd.fr",
+      "value": {
+        "name": "Miss Tystep",
+        "numRoster": "20",
+        "email": "lehna.andre@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "leonore.desuzinges@lurd.fr",
+      "value": {
+        "name": "LoLo Tuerie",
+        "numRoster": "1999",
+        "email": "leonore.desuzinges@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "lhd.adpub@gmail.com",
+      "value": {
+        "name": "Harley Gouine",
+        "numRoster": "16",
+        "email": "lhd.adpub@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "lheranval@gmail.com",
+      "value": {
+        "name": "Feu Sacrum",
+        "numRoster": "0118",
+        "email": "lheranval@gmail.com",
+        "club": { "name": "ARRD", "id": "W763011787" }
+      }
+    },
+    {
+      "name": "lise.becherel@gmail.com",
+      "value": {
+        "name": "Bar Accoudée",
+        "numRoster": "203",
+        "email": "lise.becherel@gmail.com",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "lolo tuerie",
+      "value": "leonore.desuzinges@lurd.fr"
+    },
+    {
+      "name": "lor'imortelle",
+      "value": "loriek.beck@gmail.com"
+    },
+    {
+      "name": "loriek.beck@gmail.com",
+      "value": {
+        "name": "Lor'Imortelle",
+        "numRoster": "1999",
+        "email": "loriek.beck@gmail.com",
+        "club": { "name": "ROLLER DERBY CLUB BASTIACCIU", "id": "W2B2002731" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "louise",
+      "value": "laurianne.cadot@gmail.com"
+    },
+    {
+      "name": "louise-michel",
+      "value": "louise.dolowy@gmail.com"
+    },
+    {
+      "name": "louise.dolowy@gmail.com",
+      "value": {
+        "name": "Louise-Michel",
+        "numRoster": "71",
+        "email": "louise.dolowy@gmail.com",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "lucie.bno@gmail.com",
+      "value": {
+        "name": "Metallycra",
+        "numRoster": "13",
+        "email": "lucie.bno@gmail.com",
+        "club": { "name": "ARRD", "id": "W763011787" }
+      }
+    },
+    {
+      "name": "lucile.jorland@gmail.com",
+      "value": {
+        "name": "Macbernik",
+        "numRoster": "15",
+        "email": "lucile.jorland@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "lunabeen@free.fr",
+      "value": {
+        "name": "Dr Channibale",
+        "numRoster": "37",
+        "email": "lunabeen@free.fr",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "léo de hurlevent",
+      "value": "eleonorebernal@gmail.com"
+    },
+    {
+      "name": "m.cappelaire@hotmail.fr",
+      "value": {
+        "name": "Mélissalace",
+        "numRoster": "13",
+        "email": "m.cappelaire@hotmail.fr",
+        "club": {
+          "name": "ASSOCIATION BEASTIE DERBY GIRLS",
+          "id": "W513002677"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "m.eva.nisi@gmail.com",
+      "value": {
+        "name": "Karma Sutura",
+        "numRoster": "1347",
+        "email": "m.eva.nisi@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "ma raie chère",
+      "value": "emmanuelle.joly99@gmail.com"
+    },
+    {
+      "name": "macbernik",
+      "value": "lucile.jorland@gmail.com"
+    },
+    {
+      "name": "mad'nu(t)s",
+      "value": "emmanuelle.joly99@gmail.com"
+    },
+    {
+      "name": "manachophelie@gmail.com",
+      "value": {
+        "name": "Suika poppins",
+        "numRoster": "77",
+        "email": "manachophelie@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "marie hellish",
+      "value": "marieeli.tran@gmail.com"
+    },
+    {
+      "name": "marieeli.tran@gmail.com",
+      "value": {
+        "name": "Marie Hellish",
+        "numRoster": "911",
+        "email": "marieeli.tran@gmail.com",
+        "club": { "name": "POITIERS ROLLER DERBY", "id": "W863005594" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "marinapouteau@gmail.com",
+      "value": {
+        "name": "Mini Pelle",
+        "numRoster": "3615",
+        "email": "marinapouteau@gmail.com",
+        "club": { "name": "ANJOU ROLLER DERBY", "id": "W491013981" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "marine.jacquot95@gmail.com",
+      "value": {
+        "name": "Jacquotte",
+        "numRoster": "9",
+        "email": "marine.jacquot95@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "marrakech butt’her",
+      "value": "sboualaoui01@gmail.com"
+    },
+    {
+      "name": "maryloupetot@gmail.com",
+      "value": {
+        "name": "Riquitta",
+        "numRoster": "137",
+        "email": "maryloupetot@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "mash mollo",
+      "value": "besse.morgane@gmail.com"
+    },
+    {
+      "name": "mati.arlo@proton.me",
+      "value": {
+        "name": "Arlo Maman Bobo",
+        "numRoster": "505",
+        "email": "mati.arlo@proton.me",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "matthieu.daladouire@gmail.com",
+      "value": {
+        "name": "Venice Bitch",
+        "numRoster": "1984",
+        "email": "matthieu.daladouire@gmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "matthieu.thielleux@laposte.net",
+      "value": {
+        "name": "Flynn Rider",
+        "numRoster": "13",
+        "email": "matthieu.thielleux@laposte.net",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "maureen.esteban95@gmail.com",
+      "value": {
+        "name": "Dobby Nouz",
+        "numRoster": "95",
+        "email": "maureen.esteban95@gmail.com",
+        "club": { "name": "LIMOGES ROLLER-SKATING", "id": "W872000502" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "maxime.bodier@gmail.com",
+      "value": {
+        "name": "Alain Chabite",
+        "numRoster": "984",
+        "email": "maxime.bodier@gmail.com",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "maylis.caubet@hotmail.fr",
+      "value": {
+        "name": "Pin’Pon",
+        "numRoster": "0640",
+        "email": "maylis.caubet@hotmail.fr",
+        "club": {
+          "name": "EUSKAL ROLLER DERBY ET COMPAGNIE",
+          "id": "W641007705"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "meghan sparkle",
+      "value": "meghan.fillias@lurd.fr"
+    },
+    {
+      "name": "meghan.fillias@lurd.fr",
+      "value": {
+        "name": "Meghan Sparkle",
+        "numRoster": "639",
+        "email": "meghan.fillias@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "mel pops",
+      "value": "A.GREVRAND@GMAIL.COM"
+    },
+    {
+      "name": "melo.mmazancieux@proton.me",
+      "value": {
+        "name": "Mélo Drame",
+        "numRoster": "26",
+        "email": "melo.mmazancieux@proton.me",
+        "club": { "name": "PINK BLOCK ROLLER DERBY", "id": "W313028491" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "metallycra",
+      "value": "lucie.bno@gmail.com"
+    },
+    {
+      "name": "mgentil.pro@gmail.com",
+      "value": {
+        "name": "Simone de Bagarre",
+        "numRoster": "1337",
+        "email": "mgentil.pro@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "michelon.fanny@gmail.com",
+      "value": {
+        "name": "Archi'Bûchesse",
+        "numRoster": "1420",
+        "email": "michelon.fanny@gmail.com",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "mini pelle",
+      "value": "marinapouteau@gmail.com"
+    },
+    {
+      "name": "minky leurre",
+      "value": "camille.guerin2012@yahoo.fr"
+    },
+    {
+      "name": "miss tystep",
+      "value": "lehna.andre@lurd.fr"
+    },
+    {
+      "name": "mocho.sandra@live.fr",
+      "value": {
+        "name": "Andy KP",
+        "numRoster": "64",
+        "email": "mocho.sandra@live.fr",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "modiie",
+      "value": "a.garestier@gmail.com"
+    },
+    {
+      "name": "mondot.ambre@gmail.com",
+      "value": {
+        "name": "Cashew Later",
+        "numRoster": "07",
+        "email": "mondot.ambre@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "mélissalace",
+      "value": "m.cappelaire@hotmail.fr"
+    },
+    {
+      "name": "mélo drame",
+      "value": "melo.mmazancieux@proton.me"
+    },
+    {
+      "name": "n.lebert@gmail.com",
+      "value": {
+        "name": "#Super Chiante",
+        "numRoster": "357",
+        "email": "n.lebert@gmail.com",
+        "club": {
+          "name": "ROLLER DERBY NANTES ATLANTIQUE",
+          "id": "W442013684"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "nahema.pvh@hotmail.fr",
+      "value": {
+        "name": "Dark-en-Ciel",
+        "numRoster": "192",
+        "email": "nahema.pvh@hotmail.fr",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "nirisoa@famillechapal.fr",
+      "value": {
+        "name": "Discopath",
+        "numRoster": "7",
+        "email": "nirisoa@famillechapal.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "nola8m@gmail.com",
+      "value": {
+        "name": "Bionic",
+        "numRoster": "3628",
+        "email": "nola8m@gmail.com",
+        "club": { "name": "ANJOU ROLLER DERBY", "id": "W491013981" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "nolwenn.mespoulede@rocketmail.com",
+      "value": {
+        "name": "Fauve Kipeu",
+        "numRoster": "9",
+        "email": "nolwenn.mespoulede@rocketmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "nora.bertone@gmail.com",
+      "value": {
+        "name": "Cafoutch'",
+        "numRoster": "7272",
+        "email": "nora.bertone@gmail.com",
+        "club": {
+          "name": "MARSEILLE ROLLER DERBY CLUB (MRDC)",
+          "id": "W133016701"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "nutty san",
+      "value": "imeli2601@gmail.com"
+    },
+    {
+      "name": "opack@zbra.fr",
+      "value": {
+        "name": "Zbra Kadabra",
+        "numRoster": "69",
+        "email": "opack@zbra.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "ordalie",
+      "value": "ddarive@yahoo.fr"
+    },
+    {
+      "name": "paillemarianne@gmail.com",
+      "value": {
+        "name": "Para d'Occ",
+        "numRoster": "8112",
+        "email": "paillemarianne@gmail.com",
+        "club": { "name": "ROLLER DERBY TOULOUSE (RDT)", "id": "W313013628" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "panda furieux",
+      "value": "violainegarsault@yahoo.fr"
+    },
+    {
+      "name": "para d'occ",
+      "value": "paillemarianne@gmail.com"
+    },
+    {
+      "name": "pariciaurore@gmail.com",
+      "value": {
+        "name": "Tiger",
+        "numRoster": "262",
+        "email": "pariciaurore@gmail.com",
+        "club": { "name": "PHOENIX ROLLER DERBY", "id": "W922016676" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "pate.a.chouette@protonmail.com",
+      "value": {
+        "name": "Pâte @ chouette",
+        "numRoster": "180",
+        "email": "pate.a.chouette@protonmail.com",
+        "club": { "name": "PINK BLOCK ROLLER DERBY", "id": "W313028491" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "patrick fiori road",
+      "value": "maxime.bodier@gmail.com"
+    },
+    {
+      "name": "pauline.bouchereau@gmail.com",
+      "value": {
+        "name": "Saoule Wrecker",
+        "numRoster": "418",
+        "email": "pauline.bouchereau@gmail.com",
+        "club": { "name": "LUTECE DESTROYEUSES", "id": "W751212013" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "paulinetabouret@hotmail.fr",
+      "value": {
+        "name": "Daria Track",
+        "numRoster": "108",
+        "email": "paulinetabouret@hotmail.fr",
+        "club": { "name": "ARRD", "id": "W763011787" }
+      }
+    },
+    {
+      "name": "pin’pon",
+      "value": "maylis.caubet@hotmail.fr"
+    },
+    {
+      "name": "platynate",
+      "value": "fmn.couturier@gmail.com"
+    },
+    {
+      "name": "poison emy",
+      "value": "emiliechailloux@gmail.com"
+    },
+    {
+      "name": "pomelo jamderson",
+      "value": "sarah.haim@lurd.fr"
+    },
+    {
+      "name": "pompétasse",
+      "value": "chloe.fournier165@gmail.com"
+    },
+    {
+      "name": "prepuscule",
+      "value": "tricoire.jordan49@gmail.com"
+    },
+    {
+      "name": "pugna",
+      "value": "yuldorgutierrez200@gmail.com"
+    },
+    {
+      "name": "punkiss",
+      "value": "stephaniepamies@hotmail.com"
+    },
+    {
+      "name": "pâte @ chouette",
+      "value": "pate.a.chouette@protonmail.com"
+    },
+    {
+      "name": "queen à man",
+      "value": "schardt.meloe@gmail.com"
+    },
+    {
+      "name": "rainbow smash",
+      "value": "sakikurugi@gmail.com"
+    },
+    {
+      "name": "raphou84@hotmail.com",
+      "value": {
+        "name": "Harley Couine",
+        "numRoster": "22",
+        "email": "raphou84@hotmail.com",
+        "club": {
+          "name": "CATA - CALEBRUTES AND TAMPONNEUSES ASSOCIATION",
+          "id": "W751228035"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "raton casseur",
+      "value": "gaelle.dubois08@gmail.com"
+    },
+    {
+      "name": "reeves.scarlett@gmail.com",
+      "value": {
+        "name": "Scar-amouche!",
+        "numRoster": "6868",
+        "email": "reeves.scarlett@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "rest oli",
+      "value": "frickcion@gmail.com"
+    },
+    {
+      "name": "riquitta",
+      "value": "maryloupetot@gmail.com"
+    },
+    {
+      "name": "robert de nitro",
+      "value": "camille.bertrandsahal@gmail.com"
+    },
+    {
+      "name": "roller@poudot.fr",
+      "value": {
+        "name": "gik-gik coyo'tux",
+        "numRoster": "120",
+        "email": "roller@poudot.fr",
+        "club": { "name": "AM SPORTS", "id": "W212001111" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "rouliette russe",
+      "value": "juliette.cermeno@gmail.com"
+    },
+    {
+      "name": "sabii_p@hotmail.com",
+      "value": {
+        "name": "Sab’Otage",
+        "numRoster": "1001",
+        "email": "sabii_p@hotmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "sab’otage",
+      "value": "sabii_p@hotmail.com"
+    },
+    {
+      "name": "saka saka",
+      "value": "sarah.bryndzia@laposte.net"
+    },
+    {
+      "name": "sakikurugi@gmail.com",
+      "value": {
+        "name": "Rainbow Smash",
+        "numRoster": "142",
+        "email": "sakikurugi@gmail.com",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "sandy.steele@hotmail.fr",
+      "value": {
+        "name": "Hannibal Wrecker",
+        "numRoster": "110",
+        "email": "sandy.steele@hotmail.fr",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "saoule wrecker",
+      "value": "pauline.bouchereau@gmail.com"
+    },
+    {
+      "name": "saphirarozas@gmail.com",
+      "value": {
+        "name": "HacKoeur",
+        "numRoster": "4",
+        "email": "saphirarozas@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "sarah.bryndzia@laposte.net",
+      "value": {
+        "name": "Saka saka",
+        "numRoster": "135",
+        "email": "sarah.bryndzia@laposte.net",
+        "club": { "name": "ANJOU ROLLER DERBY", "id": "W491013981" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "sarah.haim@lurd.fr",
+      "value": {
+        "name": "Pomelo Jamderson",
+        "numRoster": "719",
+        "email": "sarah.haim@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "sarahgrulay@hotmail.fr",
+      "value": {
+        "name": "Trackarys",
+        "numRoster": "80",
+        "email": "sarahgrulay@hotmail.fr",
+        "club": { "name": "ARRD", "id": "W763011787" }
+      }
+    },
+    {
+      "name": "sboualaoui01@gmail.com",
+      "value": {
+        "name": "Marrakech butt’her",
+        "numRoster": "212",
+        "email": "sboualaoui01@gmail.com",
+        "club": {
+          "name": "WHEELSPIRIT - ROLLER DERBY CLUB",
+          "id": "W543005694"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "scar-amouche!",
+      "value": "reeves.scarlett@gmail.com"
+    },
+    {
+      "name": "schardt.meloe@gmail.com",
+      "value": {
+        "name": "Queen à Man",
+        "numRoster": "912",
+        "email": "schardt.meloe@gmail.com",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "simone de bagarre",
+      "value": "mgentil.pro@gmail.com"
+    },
+    {
+      "name": "simone d’abreuvoir",
+      "value": "emilie.faivre@lurd.fr"
+    },
+    {
+      "name": "sirina.nhouyvanisvong@gmail.com",
+      "value": {
+        "name": "Sirius Lee",
+        "numRoster": "9001",
+        "email": "sirina.nhouyvanisvong@gmail.com",
+        "club": { "name": "ROLLER DERBY BORDEAUX CLUB", "id": "W332009928" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "sirius lee",
+      "value": "sirina.nhouyvanisvong@gmail.com"
+    },
+    {
+      "name": "sissi brindacier",
+      "value": "cyrielle.joannard@gmail.com"
+    },
+    {
+      "name": "so fiak",
+      "value": "sofia.samri@lurd.fr"
+    },
+    {
+      "name": "sofia.samri@lurd.fr",
+      "value": {
+        "name": "So Fiak",
+        "numRoster": "72",
+        "email": "sofia.samri@lurd.fr",
+        "club": { "name": "LYON UNITED ROLLER DERBY", "id": "W691084182" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "starfish",
+      "value": "c.richaub@gmail.com"
+    },
+    {
+      "name": "starpass navigo",
+      "value": "fairereel@gmail.com"
+    },
+    {
+      "name": "stephaniepamies@hotmail.com",
+      "value": {
+        "name": "PunKiss",
+        "numRoster": "170",
+        "email": "stephaniepamies@hotmail.com",
+        "club": { "name": "=== AUTRE ===", "id": "autre" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "stephbirgand@hotmail.fr",
+      "value": {
+        "name": "Défon'Stouf",
+        "numRoster": "44",
+        "email": "stephbirgand@hotmail.fr",
+        "club": { "name": "LE HAVRE ROLLER DERBY", "id": "W762005244" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "storm yorke",
+      "value": "cyrilpebre@gmail.com"
+    },
+    {
+      "name": "suika poppins",
+      "value": "manachophelie@gmail.com"
+    },
+    {
+      "name": "tata",
+      "value": "b@bouteiller.contact"
+    },
+    {
+      "name": "tiger",
+      "value": "pariciaurore@gmail.com"
+    },
+    {
+      "name": "tinus",
+      "value": "galipienso.m@gmail.com"
+    },
+    {
+      "name": "trackarys",
+      "value": "sarahgrulay@hotmail.fr"
+    },
+    {
+      "name": "tricoire.jordan49@gmail.com",
+      "value": {
+        "name": "Prepuscule",
+        "numRoster": "468",
+        "email": "tricoire.jordan49@gmail.com",
+        "club": {
+          "name": "ROLLER DERBY NANTES ATLANTIQUE",
+          "id": "W442013684"
+        },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "twist-her",
+      "value": "elisa.tordella@lurd.fr"
+    },
+    {
+      "name": "ukunéné",
+      "value": "Marigag2@Hotmail.com"
+    },
+    {
+      "name": "valkilla",
+      "value": "aureline.loeuillet-vrhovac@lurd.fr"
+    },
+    {
+      "name": "venice bitch",
+      "value": "matthieu.daladouire@gmail.com"
+    },
+    {
+      "name": "vilecocotte",
+      "value": "cecile.cleach@laposte.net"
+    },
+    {
+      "name": "violainegarsault@yahoo.fr",
+      "value": {
+        "name": "PANDA FURIEUX",
+        "numRoster": "92",
+        "email": "violainegarsault@yahoo.fr",
+        "club": {},
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "wanheda",
+      "value": "erickagerard@hotmail.fr"
+    },
+    {
+      "name": "weirdough",
+      "value": "ach.bourgin.allais@gmail.com"
+    },
+    {
+      "name": "wonder mama",
+      "value": "aude.pimont@gmail.com"
+    },
+    {
+      "name": "youri margarine",
+      "value": "maxime.bodier@gmail.com"
+    },
+    {
+      "name": "yuldorgutierrez200@gmail.com",
+      "value": {
+        "name": "Pugna",
+        "numRoster": "77",
+        "email": "yuldorgutierrez200@gmail.com",
+        "club": { "name": "PANAM SQUAD", "id": "W751215727" },
+        "emailConfirmed": false
+      }
+    },
+    {
+      "name": "zbra kadabra",
+      "value": "opack@zbra.fr"
+    },
+    {
+      "name": "Élicorne",
+      "value": {
+        "name": "Élicorne",
+        "numRoster": "067",
+        "email": "eli.elicorne@protonmail.com",
+        "club": {},
+        "emailConfirmed": true
+      }
+    },
+    {
+      "name": "élicorne",
+      "value": "eli.elicorne@protonmail.com"
+    },
+    {
+      "name": "자유전자",
+      "value": {
+        "name": "자유전자",
+        "numRoster": "95",
+        "email": "b@bouteiller.contact",
+        "club": {
+          "name": "ASSOCIATION ROUEN ROLLER DERBY - MAROMME (ARRD)",
+          "id": "W763011787"
+        },
+        "emailConfirmed": true
+      }
+    }
+  ]
+}
