@@ -23,7 +23,7 @@ function IntLink(props: Link) {
 
 
   return <A href={props.link}
-    class="btn transition-transform data-[current='true']:translate-x-2 data-[current='true']:border-dn-500 data-[current='true']:text-dn-500 data-[current='true']:bg-dn-100" data-current={!!props.pathname.match(props.regex)} >
+    class="btn transition-transform data-[current='true']:translate-x-2 data-[current='true']:border-dn-500 data-[current='true']:text-dn-500 data-[current='true']:bg-dn-100" data-current={props.link === '/' ? props.pathname === '/' : !!props.pathname.match(props.regex)} >
     {props.text}
   </A>
 }

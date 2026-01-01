@@ -86,19 +86,6 @@ export async function POST(event: APIEvent) {
       });
     }
 
-    // Vérifier aussi si l'email est déjà utilisé avec un derbyname confirmé
-    const existingEmail = await db
-      .select()
-      .from(derbynamesTable)
-      .where(eq(derbynamesTable.email, email))
-      .limit(1);
-
-    if (existingEmail.length > 0 && existingEmail[0].emailConfirmed) {
-      return new Response(JSON.stringify({ error: "email déjà utilisé" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
 
     // Génération du code et du token
     const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -108,6 +95,29 @@ export async function POST(event: APIEvent) {
     // Déterminer le clubId (null si pas de club ou si club.id === 'autre')
     const clubId = club && club.id !== 'autre' ? club.id : null;
 
+  // Vérifier aussi si l'email est déjà utilisé avec un derbyname confirmé
+    const existingEmail = await db
+      .select()
+      .from(derbynamesTable)
+      .where(eq(derbynamesTable.email, email))
+      .limit(1);
+
+    if (existingEmail.length > 0 && existingEmail[0].emailConfirmed) {
+
+      // TODO:
+      /* 
+      -créer un lien avec le nouveau derbyname, numéro de roster, id club
+      -envoyer un email avec le lien
+      -le lien doit contenir le token d'email et le derbyname
+      -nouveau endpoint pour gérer la confirmation de l'email avec le nouveau derbyname et save en base de données
+      -modifier pour dire "ajouter / modifier derbyname"
+      */
+      return new Response(JSON.stringify({ error: "email déjà utilisé" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    
     // Insérer ou mettre à jour le derbyname
     try {
       await db.insert(derbynamesTable).values({
