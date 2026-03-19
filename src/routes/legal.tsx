@@ -96,7 +96,7 @@ const sections: Section[] = [
         title: "Soutien",
         content: "",
         link: {
-          href: "https://ko-fi.com/bakadev",
+          href: "https://linktr.ee/bakadev",
           label: "Lien vers le Link.tree de Cyril Pebre",
         },
       },
