@@ -140,7 +140,7 @@ export default function Legal() {
 
       <div class="h-full relative">
         <div class="absolute inset-0 overflow-y-auto p-4 flex justify-center">
-          <div class="w-full max-w-[720px] flex flex-col gap-3">
+          <div class="w-full max-w-180 flex flex-col gap-3">
             <For each={sections}>
               {(section) => (
                 <section class="border border-dn-500/40 bg-white/60 p-4 shadow-sm">
