@@ -4,6 +4,7 @@ import { Suspense } from "solid-js";
 import "./app.css";
 import { Logo } from '~/components/logo';
 import { Menu } from '~/components/menu';
+import { AnnouncementModal } from '~/components/announcement-modal';
 import { ToastContainer } from './ui/Toast';
 import { Meta, MetaProvider, Title } from '@solidjs/meta'
 
@@ -25,6 +26,7 @@ export default function App() {
             <Meta name="apple-mobile-web-app-status-bar-style" content="black" />
           </MetaProvider>
           <ToastContainer />
+          <AnnouncementModal />
 
           <div class='bg-dn-100 text-600 w-full h-[100dvh] grid grid-rows-[auto_1fr]'>
             <header class="flex py-2 pr-2 pl-12 md:pl-2  place-items-center place-content-between ">
