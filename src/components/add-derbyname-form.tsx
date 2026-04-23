@@ -1,4 +1,4 @@
-import { ClubSelector } from './clubs-selector';
+import { ClubSelector, type ClubSelection } from './clubs-selector';
 import { createSignal, createEffect } from 'solid-js';
 import { Fieldset } from '../ui/fieldset';
 import { useDebounce } from '../hooks/debounce.hook';
@@ -8,8 +8,13 @@ type AddDerbyNameFormProps = {
   onClose?: () => void
 }
 
+const initialClub: ClubSelection = {
+  kind: 'existing',
+  club: { id: 'autre', name: '=== AUTRE ===' },
+};
+
 export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
-  const [club, setClub] = createSignal<{ id: string, name: string } | undefined>(undefined)
+  const [clubSel, setClubSel] = createSignal<ClubSelection>(initialClub)
   const [search, setSearch] = createSignal('')
   const [isUsed, setIsUsed] = createSignal(false)
   const debouncedSearch = useDebounce(search, 500)
@@ -17,23 +22,43 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
   async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     if (isUsed()) return
+
+    const sel = clubSel();
+    if (sel.kind === 'create') {
+      const nm = sel.club.name.trim();
+      if (nm.length < 2) {
+        toast.error('Club', 'Indiquez un nom de club d’au moins 2 caractères.');
+        return;
+      }
+    }
+
     const formData = new FormData(event.target as HTMLFormElement);
 
     try {
+      const body: Record<string, unknown> = {
+        name: formData.get('name'),
+        numRoster: formData.get('numRoster'),
+        email: formData.get('email'),
+      };
+
+      if (sel.kind === 'create') {
+        body.newClub = sel.club;
+      } else {
+        body.club = sel.club;
+      }
+
       const response = await fetch('/api/derbynames', {
         method: 'POST',
-        body: JSON.stringify({
-          name: formData.get('name'),
-          numRoster: formData.get('numRoster'),
-          email: formData.get('email'),
-          club
-        }),
+        body: JSON.stringify(body),
       });
 
-      if (!response.ok) throw new Error(response.statusText);
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({})) as { error?: string };
+        throw new Error(err.error || response.statusText);
+      }
       toast.success('Vous allez recevoir un mail pour confirmer !')
-    } catch (error) {
-      toast.error('Erreur lors de l\'envoi des données :' + error)
+    } catch (error: unknown) {
+      toast.error('Erreur lors de l\'envoi des données :' + (error instanceof Error ? error.message : error))
       console.error('Erreur lors de l\'envoi des données :', error);
     } finally {
       onClose?.()
@@ -42,8 +67,6 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
 
   const handleCheck = async () => {
     try {
-      const params = new URLSearchParams()
-      params.set('derbyName', debouncedSearch().toString())
       const response = await fetch('api/check/' + debouncedSearch())
       if (!response.ok) throw new Error(response.statusText)
       const { count } = await response.json()
@@ -102,7 +125,7 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
       </Fieldset>
 
       <Fieldset label='Sélectionnez votre club' name="club">
-        <ClubSelector onChange={setClub} name="club" />
+        <ClubSelector onChange={setClubSel} name="club" />
       </Fieldset>
 
       <div class="flex justify-between gap-2">
@@ -112,5 +135,4 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
     </form >
   );
 }
-
 

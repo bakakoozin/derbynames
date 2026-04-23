@@ -1,0 +1,21 @@
+{
+  "includeKeywords": [
+    "ROLLER DERBY",
+    "ROLL DERBY",
+    "DERBY",
+    "FLAT TRACK",
+    "WFTDA",
+    "QUAD SKATE",
+    "LOW DOWN",
+    "ROLLER GIRLS",
+    "BAD GIRLS",
+    "KILLER QUEENS",
+    "LEAGUE",
+    "ASSOCIATION DE ROLLER",
+    "SKATE PARQUES",
+    "QUAD SKATE",
+    "ROTOR"
+  ],
+  "excludeKeywords": ["PLONGÉE", "NATATION", "FOOT", "VOLLEY", "PETANQUE"],
+  "minKeywordScore": 1
+}

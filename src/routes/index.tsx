@@ -6,14 +6,37 @@ type Derbyname = {
   derbyname: string;
   numRoster: string;
   clubName: string | null;
+  department: string | null;
 };
+
+type ClubOpt = { id: string; name: string; department?: string | null };
 
 export default function Home() {
   const [derbyNames, setDerbyNames] = createSignal<Derbyname[]>([]);
   const [loading, setLoading] = createSignal(true);
+  const [clubs, setClubs] = createSignal<ClubOpt[]>([]);
+  const [filterClubId, setFilterClubId] = createSignal<string>("all");
+  const [filterDept, setFilterDept] = createSignal<string>("all");
 
   createEffect(() => {
-    fetch("/api/derbynames")
+    fetch("/api/clubs")
+      .then((res) => res.json())
+      .then((list: ClubOpt[]) => {
+        setClubs(list.filter((c) => c.id !== "autre"));
+      })
+      .catch(() => setClubs([]));
+  });
+
+  createEffect(() => {
+    setLoading(true);
+    const params = new URLSearchParams();
+    const cid = filterClubId();
+    const dept = filterDept();
+    if (cid && cid !== "all") params.set("clubId", cid);
+    if (dept && dept !== "all") params.set("department", dept);
+    const qs = params.toString();
+
+    fetch(`/api/derbynames${qs ? `?${qs}` : ""}`)
       .then((res) => res.json())
       .then((names: Derbyname[]) => {
         setDerbyNames(names);
@@ -24,6 +47,19 @@ export default function Home() {
         setLoading(false);
       });
   });
+
+  const departments = (): string[] => {
+    const depts = new Set<string>();
+    for (const c of clubs()) {
+      const d = c.department?.trim();
+      if (d) depts.add(d);
+    }
+    derbyNames().forEach((d) => {
+      const x = d.department?.trim();
+      if (x) depts.add(x);
+    });
+    return [...depts].sort((a, b) => a.localeCompare(b));
+  };
 
   const filteredNames = (): Derbyname[] => {
     const names = derbyNames();
@@ -36,15 +72,53 @@ export default function Home() {
       (dName: Derbyname) =>
         dName.derbyname.toLowerCase().includes(search) ||
         dName.numRoster.toLowerCase().includes(search) ||
-        (dName.clubName && dName.clubName.toLowerCase().includes(search))
+        (dName.clubName && dName.clubName.toLowerCase().includes(search)),
     );
   };
-
 
   return (
     <div class="grid h-full grid-rows-[auto_1fr] items-center">
       <div class="w-full flex flex-wrap justify-between items-center gap-2 p-3">
-        <h1 class="text-dn-600 h-full flex items-center gap-1 line-clamp-0 m-0"> Liste des <span class=" font-bold"> DERBY NAMES</span></h1><Search />
+        <h1 class="text-dn-600 h-full flex items-center gap-1 line-clamp-0 m-0">
+          Liste des <span class=" font-bold"> DERBY NAMES</span>
+        </h1>
+        <div class="flex flex-wrap gap-2 items-center">
+          <label class="flex flex-col text-xs text-dn-500">
+            Club
+            <select
+              class="input text-sm min-w-[10rem]"
+              value={filterClubId()}
+              onChange={(e) => setFilterClubId(e.currentTarget.value)}
+            >
+              <option value="all">Tous</option>
+              <For each={clubs()}>
+                {(c) => (
+                  <option value={c.id}>
+                    {c.name}
+                  </option>
+                )}
+              </For>
+            </select>
+          </label>
+          <label class="flex flex-col text-xs text-dn-500">
+            Département
+            <select
+              class="input text-sm min-w-[8rem]"
+              value={filterDept()}
+              onChange={(e) => setFilterDept(e.currentTarget.value)}
+            >
+              <option value="all">Tous</option>
+              <For each={departments()}>
+                {(d) => (
+                  <option value={d}>
+                    {d}
+                  </option>
+                )}
+              </For>
+            </select>
+          </label>
+          <Search />
+        </div>
       </div>
       <div class="h-full relative">
         <div class="absolute inset-0 overflow-y-auto p-2 flex flex-col">

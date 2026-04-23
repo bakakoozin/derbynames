@@ -5,6 +5,9 @@ import { Loader } from "~/ui/loader";
 type Club = {
   id: string;
   name: string;
+  website?: string | null;
+  department?: string | null;
+  logoUrl?: string | null;
 };
 
 export default function ClubsPage() {
@@ -33,7 +36,8 @@ export default function ClubsPage() {
 
     return all.filter((club) =>
       club.name.toLowerCase().includes(search) ||
-      club.id.toLowerCase().includes(search)
+      club.id.toLowerCase().includes(search) ||
+      (club.department && club.department.toLowerCase().includes(search)),
     );
   };
 
@@ -59,13 +63,28 @@ export default function ClubsPage() {
             <div class="flex flex-col gap-2">
               <For each={filteredClubs()}>
                 {(club) => (
-                  <div class="p-2 odd:bg-[rgba(0,0,0,0.05)] flex gap-3 items-center">
+                  <div class="p-2 odd:bg-[rgba(0,0,0,0.05)] flex gap-3 items-center flex-wrap">
                     <div class="bg-dn-500 text-dn-100 p-3 w-32 text-center text-xs md:text-sm uppercase tracking-wide">
                       {club.id}
                     </div>
-                    <div class="flex-1 flex items-center">
+                    <div class="flex-1 flex flex-col gap-1 min-w-[12rem]">
                       <div class="font-display text-dn-600">
                         {club.name}
+                      </div>
+                      <div class="text-xs text-dn-500 flex flex-wrap gap-2">
+                        {club.department && (
+                          <span>Dép. {club.department}</span>
+                        )}
+                        {club.website && (
+                          <a
+                            href={club.website.startsWith("http") ? club.website : `https://${club.website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="underline"
+                          >
+                            Site
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -86,5 +105,3 @@ export default function ClubsPage() {
     </div>
   );
 }
-
-
