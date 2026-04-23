@@ -10,7 +10,7 @@ type AddDerbyNameFormProps = {
 
 const initialClub: ClubSelection = {
   kind: 'existing',
-  club: { id: 'autre', name: '=== AUTRE ===' },
+  club: { id: 'autre', name: 'Autre / non listé' },
 };
 
 export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
@@ -81,7 +81,7 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
   })
 
   return (
-    <form onSubmit={handleSubmit} class="flex flex-col gap-3 p-2">
+    <form onSubmit={handleSubmit} class="flex min-w-0 w-full max-w-full flex-col gap-3 p-2 box-border">
       <Fieldset label='Entrez votre Derby name' name='name'>
         <input
           class="input"

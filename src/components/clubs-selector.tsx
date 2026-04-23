@@ -1,4 +1,4 @@
-import { For, createEffect, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import { toast } from "~/ui/Toast";
 import { useDebounce } from "~/hooks/debounce.hook";
 
@@ -33,16 +33,37 @@ type ClubSelectorProps = {
 
 const CREATE_ID = "__create__";
 
-const AUTRE: Club = { id: "autre", name: "=== AUTRE ===" };
-const CREATE_CHOICE: Club = {
+const AUTRE: Club = { id: "autre", name: "Autre / non listé" };
+const CREATE_META: Club = {
   id: CREATE_ID,
-  name: "➕ Créer un nouveau club (après validation email)",
+  name: "Créer un nouveau club",
 };
 
+const RESULTS_BOX_H = "h-56";
+
+/** Icône plus en aplats (trait plein, style du site) */
+function IconPlus(props: { class?: string }) {
+  return (
+    <svg
+      class={props.class}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.75" />
+    </svg>
+  );
+}
+
 export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSelectorProps) {
-  const [clubs, setClubs] = createSignal<Club[]>([AUTRE, CREATE_CHOICE]);
+  const [clubs, setClubs] = createSignal<Club[]>([AUTRE]);
   const [selectedClubId, setSelectedClubId] = createSignal<string>(defaultValue);
-  const [loading, setLoading] = createSignal(true);
+  const [pinnedClub, setPinnedClub] = createSignal<Club | null>(null);
+
+  const [initialFetchDone, setInitialFetchDone] = createSignal(false);
+  const [blockingLoad, setBlockingLoad] = createSignal(true);
+  const [refreshing, setRefreshing] = createSignal(false);
   const [clubSearch, setClubSearch] = createSignal("");
   const debouncedSearch = useDebounce(clubSearch, 350);
 
@@ -50,25 +71,57 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
   const [createDept, setCreateDept] = createSignal("");
   const [createWebsite, setCreateWebsite] = createSignal("");
 
+  let fetchGeneration = 0;
+
+  function mergePinned(rows: Club[]): Club[] {
+    const pin = pinnedClub();
+    if (
+      pin &&
+      pin.id !== "autre" &&
+      pin.id !== CREATE_ID &&
+      !rows.some((c) => c.id === pin.id)
+    ) {
+      return [pin, ...rows];
+    }
+    return rows;
+  }
+
   async function loadClubs(q: string) {
-    setLoading(true);
+    const gen = ++fetchGeneration;
+
+    if (!initialFetchDone()) {
+      setBlockingLoad(true);
+    } else {
+      setRefreshing(true);
+    }
+
     try {
       const qs = q.trim() ? `?q=${encodeURIComponent(q.trim())}` : "";
       const response = await fetch(`/api/clubs${qs}`);
       const clubsData = (await response.json()) as Club[];
-      const base =
+
+      if (gen !== fetchGeneration) return;
+
+      let base =
         clubsData.length === 0
           ? []
           : clubsData.filter((c) => c.id !== "autre" && c.id !== CREATE_ID);
-      setClubs([AUTRE, ...base, CREATE_CHOICE]);
+      base = mergePinned(base);
+
+      base.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      setClubs([AUTRE, ...base]);
     } catch (error: unknown) {
+      if (gen !== fetchGeneration) return;
       toast.error(
         "Erreur de chargement",
         error instanceof Error ? error.message : "Erreur de chargement",
       );
-      setClubs([AUTRE, CREATE_CHOICE]);
+      setClubs([AUTRE]);
     } finally {
-      setLoading(false);
+      if (gen !== fetchGeneration) return;
+      setBlockingLoad(false);
+      setRefreshing(false);
+      setInitialFetchDone(true);
     }
   }
 
@@ -109,50 +162,153 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
     }
   });
 
-  function handleSelect(e: Event) {
-    const target = e.target as HTMLSelectElement;
-    setSelectedClubId(target.value);
+  function pickClub(club: Club) {
+    if (club.id === "autre" || club.id === CREATE_ID) {
+      setPinnedClub(null);
+    } else {
+      setPinnedClub(club);
+    }
+    setSelectedClubId(club.id);
   }
 
+  function startCreateFlow() {
+    const q = debouncedSearch().trim();
+    if (q.length >= 2) {
+      setCreateName(q);
+    }
+    pickClub(CREATE_META);
+  }
+
+  /** Lignes clubs hors « autre » (pour message vide filtré) */
+  const clubsSansAutre = (): Club[] => clubs().filter((c) => c.id !== "autre");
+
+  const hasSearchQuery = (): boolean => debouncedSearch().trim().length >= 1;
+
   return (
-    <div class="flex flex-col gap-2">
-      <label class="text-xs text-dn-500" for="club-search">
-        Rechercher un club
-      </label>
-      <input
-        id="club-search"
-        class="input w-full"
-        type="search"
-        placeholder="Tapez pour filtrer…"
-        value={clubSearch()}
-        onInput={(e) => setClubSearch(e.currentTarget.value)}
-      />
+    <div class="flex min-h-0 min-w-0 w-full max-w-full flex-col gap-2 overflow-x-hidden">
+      <input type="hidden" name={name || "club"} value={selectedClubId()} />
 
-      {loading() && <div class="input opacity-70">Chargement des clubs…</div>}
-      {!loading() && (
-        <select
-          name={name || "club"}
-          id="club-select"
-          value={selectedClubId()}
-          onChange={handleSelect}
-          class="input w-full"
-        >
-          <For each={clubs()}>
-            {(club) => (
-              <option value={club.id}>
-                {club.name}
-              </option>
-            )}
-          </For>
-        </select>
-      )}
+      <div class="flex shrink-0 items-center gap-2">
+        <label class="flex-1 flex flex-col gap-1 text-xs text-dn-500" for="club-search">
+          <span class="flex items-center gap-2">
+            Rechercher un club
+            <Show when={refreshing()}>
+              <span
+                class="inline-block size-3 animate-pulse rounded-full bg-dn-500/60"
+                title="Actualisation…"
+              />
+            </Show>
+          </span>
+          <input
+            id="club-search"
+            class="input w-full"
+            type="search"
+            placeholder="Tapez pour filtrer la liste…"
+            value={clubSearch()}
+            onInput={(e) => setClubSearch(e.currentTarget.value)}
+            autocomplete="off"
+          />
+        </label>
+      </div>
 
-      {selectedClubId() === CREATE_ID && (
-        <div class="flex flex-col gap-2 p-2 border border-dn-500/30 rounded">
-          <p class="text-xs italic text-dn-500">
-            Le club sera créé en base uniquement après validation de votre adresse email.
-          </p>
-          <label class="text-xs" for="new-club-name">
+      <div
+        class={`relative flex min-h-0 min-w-0 w-full shrink-0 flex-col overflow-hidden border border-dn-500 bg-dn-100 ${RESULTS_BOX_H}`}
+      >
+        <Show when={blockingLoad()}>
+          <div class="flex h-full items-center justify-center px-3 text-sm text-dn-500">
+            Chargement des clubs…
+          </div>
+        </Show>
+
+        <Show when={!blockingLoad()}>
+          <div class="flex h-full min-h-0 flex-col">
+            <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-gutter:stable]">
+              <For each={clubs()}>
+                {(club) => {
+                  const selected = () => selectedClubId() === club.id;
+                  return (
+                  <button
+                    type="button"
+                    aria-pressed={selected()}
+                    class={`flex w-full cursor-pointer gap-3 items-center p-2 text-left transition ${
+                      selected()
+                        ? "border-l-4 border-dn-500 bg-dn-500/25 shadow-[inset_0_0_0_1px_rgba(86,89,82,0.12)]"
+                        : "odd:bg-[rgba(0,0,0,0.05)] hover:bg-dn-500/15"
+                    }`}
+                    onClick={() => pickClub(club)}
+                  >
+                    <Show
+                      when={club.id === "autre"}
+                      fallback={
+                        <>
+                          <div
+                            class={`flex h-10 min-w-[3rem] shrink-0 items-center justify-center px-1 text-center text-xs font-display tabular-nums ${
+                              selected()
+                                ? "bg-dn-600 text-dn-100"
+                                : "bg-dn-500 text-dn-100"
+                            }`}
+                          >
+                            {club.department?.trim() || "—"}
+                          </div>
+                          <span
+                            class={`min-w-0 flex-1 truncate font-display ${
+                              selected() ? "font-semibold text-dn-600" : "text-dn-600"
+                            }`}
+                          >
+                            {club.name}
+                          </span>
+                        </>
+                      }
+                    >
+                      <div
+                        class={`flex h-10 min-w-[3rem] shrink-0 items-center justify-center border text-xs font-display ${
+                          selected()
+                            ? "border-dn-600 bg-dn-600 text-dn-100"
+                            : "border-dn-500 bg-dn-100 text-dn-500"
+                        }`}
+                      >
+                        —
+                      </div>
+                      <span
+                        class={`min-w-0 flex-1 truncate font-display ${
+                          selected() ? "font-semibold text-dn-600" : "text-dn-600"
+                        }`}
+                      >
+                        {club.name}
+                      </span>
+                    </Show>
+                  </button>
+                  );
+                }}
+              </For>
+
+              <Show when={hasSearchQuery() && clubsSansAutre().length === 0}>
+                <div class="break-words px-3 py-4 text-center text-sm text-dn-500">
+                  Aucun club ne correspond à « {debouncedSearch().trim()} ».
+                </div>
+              </Show>
+            </div>
+
+            <Show when={hasSearchQuery()}>
+              <div class="shrink-0 border-t border-dn-500/40 bg-dn-100 p-1.5">
+                <button
+                  type="button"
+                  class="btn flex w-full cursor-pointer items-center justify-center gap-2 py-2 font-display text-base"
+                  onClick={() => startCreateFlow()}
+                >
+                  <IconPlus class="size-4 shrink-0 text-dn-100" />
+                  Créer ce club
+                </button>
+              </div>
+            </Show>
+          </div>
+        </Show>
+      </div>
+
+      <Show when={selectedClubId() === CREATE_ID}>
+        <div class="flex shrink-0 flex-col gap-2 border border-dn-500 bg-dn-100 p-3">
+          <p class="font-display text-sm text-dn-600">Nouveau club</p>
+          <label class="text-xs text-dn-500" for="new-club-name">
             Nom du club *
           </label>
           <input
@@ -162,7 +318,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
             value={createName()}
             onInput={(e) => setCreateName(e.currentTarget.value)}
           />
-          <label class="text-xs" for="new-club-dept">
+          <label class="text-xs text-dn-500" for="new-club-dept">
             Département (optionnel)
           </label>
           <input
@@ -173,7 +329,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
             value={createDept()}
             onInput={(e) => setCreateDept(e.currentTarget.value)}
           />
-          <label class="text-xs" for="new-club-web">
+          <label class="text-xs text-dn-500" for="new-club-web">
             Site web (optionnel)
           </label>
           <input
@@ -185,7 +341,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
             onInput={(e) => setCreateWebsite(e.currentTarget.value)}
           />
         </div>
-      )}
+      </Show>
     </div>
   );
 }

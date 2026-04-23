@@ -13,6 +13,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Scrollbars — alignées sur dn-500 / dn-600 et fond dn-100 */
+  --dn-scrollbar-thumb: #565952;
+  --dn-scrollbar-thumb-hover: #060a0d;
+  --dn-scrollbar-track: #e5e2de;
 }
 
 @theme {
@@ -36,6 +41,31 @@
 
 
 
+
+/* Barres de défilement (Firefox + Chromium / Safari / Edge) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--dn-scrollbar-thumb) var(--dn-scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--dn-scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--dn-scrollbar-thumb);
+  border-radius: 9999px;
+  border: 2px solid var(--dn-scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--dn-scrollbar-thumb-hover);
+}
 
 @layer base {
 
