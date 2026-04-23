@@ -68,7 +68,10 @@ export async function POST(event: APIEvent) {
       email: _email,
       club: _club,
       newClub: _newClub,
+      clubOnly: _clubOnly,
     } = body;
+
+    const clubOnly = _clubOnly === true;
 
     const isNameValid = typeof _name === "string" && _name.length > 0;
     const isNumRosterValid =
@@ -81,16 +84,21 @@ export async function POST(event: APIEvent) {
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,15}$/.test(_email);
 
     const regex = /<script|<ifr|<em|<img|javascript:/i;
-    if (regex.test(_name) || regex.test(_numRoster) || regex.test(_email)) {
+    if (
+      regex.test(_email) ||
+      (!clubOnly && (regex.test(String(_name)) || regex.test(String(_numRoster))))
+    ) {
       return new Response(JSON.stringify({ error: "données invalides" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    const name = _name.trim();
-    const email = _email.trim().toLowerCase();
-    const numRoster = _numRoster.trim();
+    const name = typeof _name === "string" ? _name.trim() : "";
+    const email = String(_email ?? "")
+      .trim()
+      .toLowerCase();
+    const numRoster = typeof _numRoster === "string" ? _numRoster.trim() : "";
 
     let newClub: PendingClubPayload | null = null;
     if (_newClub && typeof _newClub === "object" && typeof _newClub.name === "string") {
@@ -122,7 +130,7 @@ export async function POST(event: APIEvent) {
     const club =
       _club?.id && !newClub ? { id: _club.id, name: _club.name || _club.id } : null;
 
-    if (!isNameValid || !isNumRosterValid || !isEmailValid) {
+    if (!isEmailValid) {
       return new Response(JSON.stringify({ error: "données invalides" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -130,6 +138,98 @@ export async function POST(event: APIEvent) {
     }
 
     const db = getDb();
+
+    /** Changement de club uniquement : même derby name, confirmation par e-mail. */
+    if (clubOnly) {
+      if (!club || club.id === "autre") {
+        if (!newClub || typeof newClub.name !== "string" || newClub.name.trim().length < 2) {
+          return new Response(
+            JSON.stringify({
+              error:
+                "indiquez un club dans la liste ou créez un club (nom d’au moins 2 caractères)",
+            }),
+            {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+      }
+
+      const pendingClubJsonForChange = newClub
+        ? JSON.stringify({ clubChangeOnly: true, newClub })
+        : JSON.stringify({ clubChangeOnly: true, existingClubId: club!.id });
+
+      const generatedCodeCo = Math.floor(100000 + Math.random() * 900000).toString();
+      const emailTokenCo = Buffer.from(`${generatedCodeCo}-${Date.now()}`).toString("base64");
+      const emailTokenExpiresAtCo = new Date(Date.now() + 20 * 60 * 1000);
+
+      await db
+        .delete(derbynamesTable)
+        .where(and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, false)));
+
+      const [confirmedOnly] = await db
+        .select()
+        .from(derbynamesTable)
+        .where(and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, true)))
+        .limit(1);
+
+      if (!confirmedOnly) {
+        return new Response(
+          JSON.stringify({
+            error: "aucun derby name confirmé pour cet e-mail — utilisez le formulaire complet",
+          }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      await db
+        .update(derbynamesTable)
+        .set({
+          emailToken: emailTokenCo,
+          emailTokenExpiresAt: emailTokenExpiresAtCo,
+          pendingClubJson: pendingClubJsonForChange,
+        })
+        .where(eq(derbynamesTable.derbyname, confirmedOnly.derbyname));
+
+      await db.insert(historyTable).values({
+        derbyname: confirmedOnly.derbyname,
+        action: "club_change_pending",
+        field: "clubId",
+        oldValue: confirmedOnly.clubId ?? "",
+        newValue: pendingClubJsonForChange.slice(0, 500),
+        changedBy: email,
+      });
+
+      await sendConfirmationEmail(confirmedOnly.name, email, emailTokenCo);
+
+      return new Response(
+        JSON.stringify({
+          player: {
+            name: confirmedOnly.name,
+            numRoster: confirmedOnly.numRoster,
+            email,
+            clubOnly: true,
+            derbyname: confirmedOnly.derbyname,
+          },
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    if (!isNameValid || !isNumRosterValid) {
+      return new Response(JSON.stringify({ error: "données invalides" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const derbyKey = name.toLowerCase();
 
     const pendingClubJson = newClub ? JSON.stringify(newClub) : null;

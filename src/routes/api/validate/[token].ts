@@ -50,23 +50,47 @@ export async function GET({ params: { token } }: APIEvent) {
       });
     }
 
-    const pending = parsePendingClubJson(entry.pendingClubJson ?? undefined);
     let resolvedClubId = entry.clubId;
+    const rawPending = entry.pendingClubJson?.trim();
 
-    if (pending) {
-      const newClubId = makeUserProposedClubId(pending.name);
-      await db.insert(clubsTable).values({
-        id: newClubId,
-        name: pending.name,
-        website: pending.website ?? null,
-        facebookUrl: pending.facebookUrl ?? null,
-        instagramUrl: pending.instagramUrl ?? null,
-        twitterUrl: pending.twitterUrl ?? null,
-        logoUrl: pending.logoUrl ?? null,
-        department: pending.department ?? null,
-        source: "user_proposed",
-      }).onDuplicateKeyUpdate({
-        set: {
+    if (rawPending) {
+      let parsedJson: Record<string, unknown> | null = null;
+      try {
+        parsedJson = JSON.parse(rawPending) as Record<string, unknown>;
+      } catch {
+        parsedJson = null;
+      }
+
+      let clubChangeParsed: {
+        existingClubId?: string;
+        newClubPayload?: NonNullable<ReturnType<typeof parsePendingClubJson>>;
+      } | null = null;
+
+      if (parsedJson?.clubChangeOnly === true) {
+        if (typeof parsedJson.existingClubId === "string" && parsedJson.existingClubId.trim()) {
+          clubChangeParsed = { existingClubId: parsedJson.existingClubId.trim() };
+        } else if (parsedJson.newClub && typeof parsedJson.newClub === "object") {
+          const nested = parsePendingClubJson(JSON.stringify(parsedJson.newClub));
+          if (nested) clubChangeParsed = { newClubPayload: nested };
+        }
+        if (!clubChangeParsed?.existingClubId && !clubChangeParsed?.newClubPayload) {
+          return new Response(
+            JSON.stringify({ error: "demande de changement de club invalide" }),
+            {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+      }
+
+      if (clubChangeParsed?.existingClubId) {
+        resolvedClubId = clubChangeParsed.existingClubId;
+      } else if (clubChangeParsed?.newClubPayload) {
+        const pending = clubChangeParsed.newClubPayload;
+        const newClubId = makeUserProposedClubId(pending.name);
+        await db.insert(clubsTable).values({
+          id: newClubId,
           name: pending.name,
           website: pending.website ?? null,
           facebookUrl: pending.facebookUrl ?? null,
@@ -74,10 +98,49 @@ export async function GET({ params: { token } }: APIEvent) {
           twitterUrl: pending.twitterUrl ?? null,
           logoUrl: pending.logoUrl ?? null,
           department: pending.department ?? null,
-          updatedAt: new Date(),
-        },
-      });
-      resolvedClubId = newClubId;
+          source: "user_proposed",
+        }).onDuplicateKeyUpdate({
+          set: {
+            name: pending.name,
+            website: pending.website ?? null,
+            facebookUrl: pending.facebookUrl ?? null,
+            instagramUrl: pending.instagramUrl ?? null,
+            twitterUrl: pending.twitterUrl ?? null,
+            logoUrl: pending.logoUrl ?? null,
+            department: pending.department ?? null,
+            updatedAt: new Date(),
+          },
+        });
+        resolvedClubId = newClubId;
+      } else if (!parsedJson?.clubChangeOnly) {
+        const pending = parsePendingClubJson(rawPending);
+        if (pending) {
+          const newClubId = makeUserProposedClubId(pending.name);
+          await db.insert(clubsTable).values({
+            id: newClubId,
+            name: pending.name,
+            website: pending.website ?? null,
+            facebookUrl: pending.facebookUrl ?? null,
+            instagramUrl: pending.instagramUrl ?? null,
+            twitterUrl: pending.twitterUrl ?? null,
+            logoUrl: pending.logoUrl ?? null,
+            department: pending.department ?? null,
+            source: "user_proposed",
+          }).onDuplicateKeyUpdate({
+            set: {
+              name: pending.name,
+              website: pending.website ?? null,
+              facebookUrl: pending.facebookUrl ?? null,
+              instagramUrl: pending.instagramUrl ?? null,
+              twitterUrl: pending.twitterUrl ?? null,
+              logoUrl: pending.logoUrl ?? null,
+              department: pending.department ?? null,
+              updatedAt: new Date(),
+            },
+          });
+          resolvedClubId = newClubId;
+        }
+      }
     }
 
     if (entry.replacesDerbyname) {

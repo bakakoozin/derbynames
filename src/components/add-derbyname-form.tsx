@@ -1,5 +1,5 @@
 import { ClubSelector, type ClubSelection } from './clubs-selector';
-import { createSignal, createEffect } from 'solid-js';
+import { Show, createSignal, createEffect } from 'solid-js';
 import { Fieldset } from '../ui/fieldset';
 import { useDebounce } from '../hooks/debounce.hook';
 import { toast } from '~/ui/Toast';
@@ -17,11 +17,12 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
   const [clubSel, setClubSel] = createSignal<ClubSelection>(initialClub)
   const [search, setSearch] = createSignal('')
   const [isUsed, setIsUsed] = createSignal(false)
+  const [clubOnly, setClubOnly] = createSignal(false)
   const debouncedSearch = useDebounce(search, 500)
 
   async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
-    if (isUsed()) return
+    if (isUsed() && !clubOnly()) return
 
     const sel = clubSel();
     if (sel.kind === 'create') {
@@ -36,10 +37,14 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
 
     try {
       const body: Record<string, unknown> = {
-        name: formData.get('name'),
-        numRoster: formData.get('numRoster'),
         email: formData.get('email'),
+        clubOnly: clubOnly(),
       };
+
+      if (!clubOnly()) {
+        body.name = formData.get('name');
+        body.numRoster = formData.get('numRoster');
+      }
 
       if (sel.kind === 'create') {
         body.newClub = sel.club;
@@ -77,42 +82,62 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
   }
 
   createEffect(() => {
+    if (clubOnly()) return
     if (debouncedSearch().length > 0) handleCheck()
   })
 
   return (
     <form onSubmit={handleSubmit} class="flex min-w-0 w-full max-w-full flex-col gap-3 p-2 box-border">
-      <Fieldset label='Entrez votre Derby name' name='name'>
+      <label class="flex cursor-pointer items-start gap-2 text-sm leading-snug text-dn-600">
         <input
-          class="input"
-          type="text"
-          id="name"
-          name="name"
-          value={search()}
-          onInput={(e) => {
-            setSearch(e.target.value)
-            setIsUsed(() => false)
+          type="checkbox"
+          class="mt-0.5 size-4 shrink-0 cursor-pointer accent-dn-500"
+          checked={clubOnly()}
+          onChange={(e) => {
+            const v = e.currentTarget.checked
+            setClubOnly(v)
+            if (v) setIsUsed(false)
           }}
-          required
         />
-        <div class='italic text-xs'>
-          {debouncedSearch() ? <span
-            data-valid={!isUsed}
-            class="data-[valid=true]:text-valid data-[valid=false]:text-invalid">
-            {isUsed() ? "Ce derby name est déjà utilisé" : "Ce derby name est libre !"}
-          </span> : <span class='opacity-0'>{"__"}</span>}
-        </div>
-      </Fieldset>
+        <span>
+          Je modifie <strong>uniquement mon club</strong> (même e-mail que sur la fiche déjà
+          validée — pas besoin de ressaisir derby name ni numéro).
+        </span>
+      </label>
 
-      <Fieldset label='Entrez votre numéro de joueureuse' name="numRoster">
-        <input
-          class="input"
-          type="text"
-          id="numRoster"
-          name="numRoster"
-          required
-        />
-      </Fieldset>
+      <Show when={!clubOnly()}>
+        <Fieldset label='Entrez votre Derby name' name='name'>
+          <input
+            class="input"
+            type="text"
+            id="name"
+            name="name"
+            value={search()}
+            onInput={(e) => {
+              setSearch(e.target.value)
+              setIsUsed(() => false)
+            }}
+            required
+          />
+          <div class='italic text-xs'>
+            {debouncedSearch() ? <span
+              data-valid={!isUsed}
+              class="data-[valid=true]:text-valid data-[valid=false]:text-invalid">
+              {isUsed() ? "Ce derby name est déjà utilisé" : "Ce derby name est libre !"}
+            </span> : <span class='opacity-0'>{"__"}</span>}
+          </div>
+        </Fieldset>
+
+        <Fieldset label='Entrez votre numéro de joueureuse' name="numRoster">
+          <input
+            class="input"
+            type="text"
+            id="numRoster"
+            name="numRoster"
+            required
+          />
+        </Fieldset>
+      </Show>
 
       <Fieldset label='Entrez email' name="email">
         <input
@@ -130,7 +155,7 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
 
       <div class="flex justify-between gap-2">
         <button type="reset" onClick={onClose} class='btn-cancel data-[cancel=true]:visible' data-cancel={!!onClose}>Annuler</button>
-        <button class="btn" type="submit" disabled={isUsed()}>Envoyer</button>
+        <button class="btn" type="submit" disabled={isUsed() && !clubOnly()}>Envoyer</button>
       </div>
     </form >
   );
