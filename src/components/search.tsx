@@ -14,18 +14,18 @@ export function Search() {
   }
 
   return (
-    <div class="flex flex-row space-x-2">
-      <label class="hidden" for="derby-name-search">Recherche</label>
+    <label class="flex flex-col gap-1 text-xs text-dn-500" for="derby-name-search">
+      Recherche
       <input
-        class="input"
+        class="input text-sm min-w-[10rem]"
         type="search"
         id="derby-name-search"
         name="derby-name-search"
-        placeholder="Recherche"
+        placeholder="Filtrer la liste…"
         autofocus
         value={searchValue()}
         onInput={handleChange}
       />
-    </div>
+    </label>
   );
 }

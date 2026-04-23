@@ -1,4 +1,5 @@
 import { For, createSignal, createEffect } from "solid-js";
+import { A } from "@solidjs/router";
 import { Search, searchValue } from "~/components/search";
 import { Loader } from "~/ui/loader";
 
@@ -82,11 +83,11 @@ export default function Home() {
         <h1 class="text-dn-600 h-full flex items-center gap-1 line-clamp-0 m-0">
           Liste des <span class=" font-bold"> DERBY NAMES</span>
         </h1>
-        <div class="flex flex-wrap gap-2 items-center">
-          <label class="flex flex-col text-xs text-dn-500">
+        <div class="flex flex-wrap gap-2 items-end">
+          <label class="flex flex-col gap-1 text-xs text-dn-500">
             Club
             <select
-              class="input text-sm min-w-[10rem]"
+              class="input cursor-pointer text-sm min-w-[10rem]"
               value={filterClubId()}
               onChange={(e) => setFilterClubId(e.currentTarget.value)}
             >
@@ -94,16 +95,18 @@ export default function Home() {
               <For each={clubs()}>
                 {(c) => (
                   <option value={c.id}>
-                    {c.name}
+                    {c.department?.trim()
+                      ? `${c.department} — ${c.name}`
+                      : c.name}
                   </option>
                 )}
               </For>
             </select>
           </label>
-          <label class="flex flex-col text-xs text-dn-500">
+          <label class="flex flex-col gap-1 text-xs text-dn-500">
             Département
             <select
-              class="input text-sm min-w-[8rem]"
+              class="input cursor-pointer text-sm min-w-[8rem]"
               value={filterDept()}
               onChange={(e) => setFilterDept(e.currentTarget.value)}
             >
@@ -137,7 +140,16 @@ export default function Home() {
                       {dName.numRoster}
                     </div>
                     <div class="flex w-full justify-between items-center gap-1">
-                      <div class="font-display text-dn-600">{dName.derbyname}</div>
+                      <A
+                        href={`/historique?${new URLSearchParams({
+                          derbyname: dName.derbyname,
+                          numRoster: dName.numRoster,
+                        }).toString()}`}
+                        class="font-display text-dn-600 underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dn-500 cursor-pointer min-w-0 truncate text-left"
+                        title="Voir l’historique des changements de nom"
+                      >
+                        {dName.derbyname}
+                      </A>
                       {dName.clubName && (
                         <div class="text-sm text-dn-500 italic">{dName.clubName}</div>
                       )}
