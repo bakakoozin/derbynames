@@ -1,25 +1,46 @@
 import { getDb } from "~/db";
-import { derbynamesTable, clubsTable, historyTable } from "~/db/schema";
-import { eq } from "drizzle-orm";
-import { APIEvent } from "node_modules/@solidjs/start/dist/server/types";
+import {
+  clubsTable,
+  derbynamesTable,
+  historyTable,
+} from "~/db/schema";
+import { and, asc, eq, type SQL } from "drizzle-orm";
+import type { APIEvent } from "@solidjs/start/server";
+import type { PendingClubPayload } from "~/utils/pending-club";
 
-export async function GET() {
+export async function GET(event: APIEvent) {
   try {
     const db = getDb();
+    const url = new URL(event.request.url);
+    const clubIdFilter = url.searchParams.get("clubId")?.trim();
+    const departmentFilter = url.searchParams.get("department")?.trim();
+
+    const conditions: SQL[] = [eq(derbynamesTable.emailConfirmed, true)];
+
+    if (clubIdFilter && clubIdFilter !== "" && clubIdFilter !== "all") {
+      conditions.push(eq(derbynamesTable.clubId, clubIdFilter));
+    }
+    if (departmentFilter && departmentFilter !== "" && departmentFilter !== "all") {
+      conditions.push(eq(clubsTable.department, departmentFilter));
+    }
+
     const names = await db
       .select({
         derbyname: derbynamesTable.derbyname,
         numRoster: derbynamesTable.numRoster,
         clubName: clubsTable.name,
+        department: clubsTable.department,
       })
       .from(derbynamesTable)
-      .leftJoin(clubsTable, eq(derbynamesTable.clubId, clubsTable.id));
+      .leftJoin(clubsTable, eq(derbynamesTable.clubId, clubsTable.id))
+      .where(and(...conditions))
+      .orderBy(asc(derbynamesTable.derbyname));
 
-    // Transformer les résultats pour avoir clubName au lieu de clubName (qui peut être null)
     const result = names.map((row) => ({
       derbyname: row.derbyname,
       numRoster: row.numRoster,
       clubName: row.clubName || null,
+      department: row.department || null,
     }));
 
     return new Response(JSON.stringify(result), {
@@ -41,29 +62,75 @@ export async function GET() {
 export async function POST(event: APIEvent) {
   try {
     const body = await event.request.json();
-    const { name: _name, numRoster: _numRoster, email: _email, club: _club } = body;
+    const {
+      name: _name,
+      numRoster: _numRoster,
+      email: _email,
+      club: _club,
+      newClub: _newClub,
+      clubOnly: _clubOnly,
+    } = body;
 
-    // Validation des données
+    const clubOnly = _clubOnly === true;
+
     const isNameValid = typeof _name === "string" && _name.length > 0;
-    const isNumRosterValid = typeof _numRoster === "string" && _numRoster.length > 0 && _numRoster.length < 5;
-    const isEmailValid = typeof _email === "string" && _email.length > 0 && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,15}$/.test(_email);
+    const isNumRosterValid =
+      typeof _numRoster === "string" &&
+      _numRoster.length > 0 &&
+      _numRoster.length < 5;
+    const isEmailValid =
+      typeof _email === "string" &&
+      _email.length > 0 &&
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,15}$/.test(_email);
 
-    // Vérification de sécurité (protection XSS)
     const regex = /<script|<ifr|<em|<img|javascript:/i;
-    if (regex.test(_name) || regex.test(_numRoster) || regex.test(_email)) {
+    if (
+      regex.test(_email) ||
+      (!clubOnly && (regex.test(String(_name)) || regex.test(String(_numRoster))))
+    ) {
       return new Response(JSON.stringify({ error: "données invalides" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    // Nettoyage des données
-    const name = _name.trim();
-    const email = _email.trim().toLowerCase();
-    const numRoster = _numRoster.trim();
-    const club = _club?.id ? { id: _club.id, name: _club.name || _club.id } : null;
+    const name = typeof _name === "string" ? _name.trim() : "";
+    const email = String(_email ?? "")
+      .trim()
+      .toLowerCase();
+    const numRoster = typeof _numRoster === "string" ? _numRoster.trim() : "";
 
-    if (!isNameValid || !isNumRosterValid || !isEmailValid) {
+    let newClub: PendingClubPayload | null = null;
+    if (_newClub && typeof _newClub === "object" && typeof _newClub.name === "string") {
+      const nm = _newClub.name.trim();
+      if (nm.length >= 2) {
+        newClub = {
+          name: nm,
+          website: typeof _newClub.website === "string" ? _newClub.website.trim() : undefined,
+          facebookUrl:
+            typeof _newClub.facebookUrl === "string" ? _newClub.facebookUrl.trim() : undefined,
+          instagramUrl:
+            typeof _newClub.instagramUrl === "string" ? _newClub.instagramUrl.trim() : undefined,
+          twitterUrl:
+            typeof _newClub.twitterUrl === "string" ? _newClub.twitterUrl.trim() : undefined,
+          logoUrl: typeof _newClub.logoUrl === "string" ? _newClub.logoUrl.trim() : undefined,
+          department:
+            typeof _newClub.department === "string" ? _newClub.department.trim() : undefined,
+        };
+        const blob = JSON.stringify(newClub);
+        if (regex.test(blob)) {
+          return new Response(JSON.stringify({ error: "données invalides (club)" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      }
+    }
+
+    const club =
+      _club?.id && !newClub ? { id: _club.id, name: _club.name || _club.id } : null;
+
+    if (!isEmailValid) {
       return new Response(JSON.stringify({ error: "données invalides" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -72,11 +139,204 @@ export async function POST(event: APIEvent) {
 
     const db = getDb();
 
-    // Vérifier si le derbyname existe déjà et est confirmé
+    /** Changement de club uniquement : même derby name, confirmation par e-mail. */
+    if (clubOnly) {
+      if (!club || club.id === "autre") {
+        if (!newClub || typeof newClub.name !== "string" || newClub.name.trim().length < 2) {
+          return new Response(
+            JSON.stringify({
+              error:
+                "indiquez un club dans la liste ou créez un club (nom d’au moins 2 caractères)",
+            }),
+            {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+      }
+
+      const pendingClubJsonForChange = newClub
+        ? JSON.stringify({ clubChangeOnly: true, newClub })
+        : JSON.stringify({ clubChangeOnly: true, existingClubId: club!.id });
+
+      const generatedCodeCo = Math.floor(100000 + Math.random() * 900000).toString();
+      const emailTokenCo = Buffer.from(`${generatedCodeCo}-${Date.now()}`).toString("base64");
+      const emailTokenExpiresAtCo = new Date(Date.now() + 20 * 60 * 1000);
+
+      await db
+        .delete(derbynamesTable)
+        .where(and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, false)));
+
+      const [confirmedOnly] = await db
+        .select()
+        .from(derbynamesTable)
+        .where(and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, true)))
+        .limit(1);
+
+      if (!confirmedOnly) {
+        return new Response(
+          JSON.stringify({
+            error: "aucun derby name confirmé pour cet e-mail — utilisez le formulaire complet",
+          }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      await db
+        .update(derbynamesTable)
+        .set({
+          emailToken: emailTokenCo,
+          emailTokenExpiresAt: emailTokenExpiresAtCo,
+          pendingClubJson: pendingClubJsonForChange,
+        })
+        .where(eq(derbynamesTable.derbyname, confirmedOnly.derbyname));
+
+      await db.insert(historyTable).values({
+        derbyname: confirmedOnly.derbyname,
+        action: "club_change_pending",
+        field: "clubId",
+        oldValue: confirmedOnly.clubId ?? "",
+        newValue: pendingClubJsonForChange.slice(0, 500),
+        changedBy: email,
+      });
+
+      await sendConfirmationEmail(confirmedOnly.name, email, emailTokenCo);
+
+      return new Response(
+        JSON.stringify({
+          player: {
+            name: confirmedOnly.name,
+            numRoster: confirmedOnly.numRoster,
+            email,
+            clubOnly: true,
+            derbyname: confirmedOnly.derbyname,
+          },
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    if (!isNameValid || !isNumRosterValid) {
+      return new Response(JSON.stringify({ error: "données invalides" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const derbyKey = name.toLowerCase();
+
+    const pendingClubJson = newClub ? JSON.stringify(newClub) : null;
+    let clubId =
+      club && club.id !== "autre" && !newClub ? club.id : null;
+
+    if (newClub) {
+      clubId = null;
+    }
+
+    const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const emailToken = Buffer.from(`${generatedCode}-${Date.now()}`).toString("base64");
+    const emailTokenExpiresAt = new Date(Date.now() + 20 * 60 * 1000);
+
+    const existingForEmail = await db
+      .select()
+      .from(derbynamesTable)
+      .where(eq(derbynamesTable.email, email));
+
+    const confirmedRow = existingForEmail.find((r) => r.emailConfirmed);
+
+    if (confirmedRow) {
+      await db
+        .delete(derbynamesTable)
+        .where(
+          and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, false)),
+        );
+      if (confirmedRow.derbyname.toLowerCase() === derbyKey) {
+        return new Response(
+          JSON.stringify({ error: "ce derby name est déjà le vôtre (déjà confirmé)" }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      const existingDerbyname = await db
+        .select()
+        .from(derbynamesTable)
+        .where(eq(derbynamesTable.derbyname, derbyKey))
+        .limit(1);
+
+      if (
+        existingDerbyname.length > 0 &&
+        existingDerbyname[0].emailConfirmed &&
+        existingDerbyname[0].email !== email
+      ) {
+        return new Response(JSON.stringify({ error: "nom déjà pris" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      await db.insert(derbynamesTable).values({
+        derbyname: derbyKey,
+        name,
+        numRoster,
+        email,
+        clubId,
+        emailConfirmed: false,
+        emailToken,
+        emailTokenExpiresAt,
+        pendingClubJson,
+        replacesDerbyname: confirmedRow.derbyname,
+      });
+
+      await db.insert(historyTable).values({
+        derbyname: derbyKey,
+        action: "replacement_pending",
+        field: "replacesDerbyname",
+        oldValue: confirmedRow.derbyname,
+        newValue: derbyKey,
+        changedBy: email,
+      });
+
+      await sendConfirmationEmail(name, email, emailToken);
+
+      return new Response(
+        JSON.stringify({
+          player: {
+            name,
+            numRoster,
+            email,
+            club: club ? { id: club.id, name: club.name } : null,
+            newClub,
+            emailConfirmed: false,
+            replacementOf: confirmedRow.derbyname,
+          },
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    await db
+      .delete(derbynamesTable)
+      .where(
+        and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, false)),
+      );
+
     const existingDerbyname = await db
       .select()
       .from(derbynamesTable)
-      .where(eq(derbynamesTable.derbyname, name.toLowerCase()))
+      .where(eq(derbynamesTable.derbyname, derbyKey))
       .limit(1);
 
     if (existingDerbyname.length > 0 && existingDerbyname[0].emailConfirmed) {
@@ -86,42 +346,9 @@ export async function POST(event: APIEvent) {
       });
     }
 
-
-    // Génération du code et du token
-    const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const emailToken = Buffer.from(`${generatedCode}-${Date.now()}`).toString('base64');
-    const emailTokenExpiresAt = new Date(Date.now() + 20 * 60 * 1000); // 20 minutes
-
-    // Déterminer le clubId (null si pas de club ou si club.id === 'autre')
-    const clubId = club && club.id !== 'autre' ? club.id : null;
-
-  // Vérifier aussi si l'email est déjà utilisé avec un derbyname confirmé
-    const existingEmail = await db
-      .select()
-      .from(derbynamesTable)
-      .where(eq(derbynamesTable.email, email))
-      .limit(1);
-
-    if (existingEmail.length > 0 && existingEmail[0].emailConfirmed) {
-
-      // TODO:
-      /* 
-      -créer un lien avec le nouveau derbyname, numéro de roster, id club
-      -envoyer un email avec le lien
-      -le lien doit contenir le token d'email et le derbyname
-      -nouveau endpoint pour gérer la confirmation de l'email avec le nouveau derbyname et save en base de données
-      -modifier pour dire "ajouter / modifier derbyname"
-      */
-      return new Response(JSON.stringify({ error: "email déjà utilisé" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    
-    // Insérer ou mettre à jour le derbyname
     try {
       await db.insert(derbynamesTable).values({
-        derbyname: name.toLowerCase(),
+        derbyname: derbyKey,
         name,
         numRoster,
         email,
@@ -129,10 +356,11 @@ export async function POST(event: APIEvent) {
         emailConfirmed: false,
         emailToken,
         emailTokenExpiresAt,
+        pendingClubJson,
+        replacesDerbyname: null,
       });
     } catch (error: any) {
-      // Si le derbyname existe déjà mais n'est pas confirmé, on le met à jour
-      if (error.code === 'ER_DUP_ENTRY') {
+      if (error.code === "ER_DUP_ENTRY") {
         await db
           .update(derbynamesTable)
           .set({
@@ -143,46 +371,74 @@ export async function POST(event: APIEvent) {
             emailToken,
             emailTokenExpiresAt,
             emailConfirmed: false,
+            pendingClubJson,
+            replacesDerbyname: null,
           })
-          .where(eq(derbynamesTable.derbyname, name.toLowerCase()));
+          .where(eq(derbynamesTable.derbyname, derbyKey));
       } else {
         throw error;
       }
     }
 
-    // Créer une entrée dans l'historique
     await db.insert(historyTable).values({
-      derbyname: name.toLowerCase(),
-      action: 'created',
+      derbyname: derbyKey,
+      action: "created",
       field: null,
       oldValue: null,
-      newValue: JSON.stringify({ name, numRoster, email, clubId }),
+      newValue: JSON.stringify({ name, numRoster, email, clubId, pendingClub: !!newClub }),
       changedBy: email,
     });
 
-    // Envoyer l'email de confirmation via Brevo
-    try {
-      const emailUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/validate/${emailToken}`;
-      const res = await fetch(process.env.EMAIL_API_URL || '', {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'api-key': process.env.EMAIL_API_KEY || '',
-          'content-type': 'application/json',
+    await sendConfirmationEmail(name, email, emailToken);
+
+    return new Response(
+      JSON.stringify({
+        player: {
+          name,
+          numRoster,
+          email,
+          club: club ? { id: club.id, name: club.name } : null,
+          newClub,
+          emailConfirmed: false,
         },
-        body: JSON.stringify({
-          sender: {
-            name: 'Derbynames',
-            email: process.env.EMAIL_FROM || 'noreply@derbynames.ovh'
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  } catch (error: any) {
+    console.error("Error creating derbyname:", error);
+    return new Response(JSON.stringify({ error: error.message || "Erreur serveur" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+async function sendConfirmationEmail(name: string, email: string, emailToken: string) {
+  try {
+    const emailUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/validate/${emailToken}`;
+    const res = await fetch(process.env.EMAIL_API_URL || "", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "api-key": process.env.EMAIL_API_KEY || "",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "Derbynames",
+          email: process.env.EMAIL_FROM || "noreply@derbynames.ovh",
+        },
+        to: [
+          {
+            email: email,
+            name: name,
           },
-          to: [
-            {
-              email: email,
-              name: name
-            }
-          ],
-          subject: "DERBY NAME !",
-          htmlContent: `<html>
+        ],
+        subject: "DERBY NAME !",
+        htmlContent: `<html>
             <head></head>
             <body>
               <h1>DERBY NAMES</h1>
@@ -193,35 +449,18 @@ export async function POST(event: APIEvent) {
               <p>Cordialement,</p>
               <p>L'équipe Derbynames</p>
             </body>
-          </html>`
-        })
-      });
+          </html>`,
+      }),
+    });
 
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({ message: 'Unknown error' }));
-        console.error("Error sending email:", errorData);
-        // On continue même si l'email échoue, le derbyname est créé
-      } else {
-        const data = await res.json();
-        console.log('Email sent successfully:', data);
-      }
-    } catch (error) {
-      console.error("Error sending email:", error);
-      // On continue même si l'email échoue, le derbyname est créé
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({ message: "Unknown error" }));
+      console.error("Error sending email:", errorData);
+    } else {
+      const data = await res.json();
+      console.log("Email sent successfully:", data);
     }
-
-    return new Response(JSON.stringify({
-      player: { name, numRoster, email, club, emailConfirmed: false }
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error: any) {
-    console.error("Error creating derbyname:", error);
-    return new Response(JSON.stringify({ error: error.message || "Erreur serveur" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+  } catch (error) {
+    console.error("Error sending email:", error);
   }
 }
-

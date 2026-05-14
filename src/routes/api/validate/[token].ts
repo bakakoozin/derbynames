@@ -1,7 +1,13 @@
 import type { APIEvent } from "@solidjs/start/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "~/db";
-import { derbynamesTable, historyTable } from "~/db/schema";
+import {
+  clubsTable,
+  derbynamesTable,
+  derbynameRenameHistoryTable,
+  historyTable,
+} from "~/db/schema";
+import { makeUserProposedClubId, parsePendingClubJson } from "~/utils/pending-club";
 
 export async function GET({ params: { token } }: APIEvent) {
   if (!token) {
@@ -44,17 +50,132 @@ export async function GET({ params: { token } }: APIEvent) {
       });
     }
 
-    // Mettre à jour le derbyname comme confirmé
+    let resolvedClubId = entry.clubId;
+    const rawPending = entry.pendingClubJson?.trim();
+
+    if (rawPending) {
+      let parsedJson: Record<string, unknown> | null = null;
+      try {
+        parsedJson = JSON.parse(rawPending) as Record<string, unknown>;
+      } catch {
+        parsedJson = null;
+      }
+
+      let clubChangeParsed: {
+        existingClubId?: string;
+        newClubPayload?: NonNullable<ReturnType<typeof parsePendingClubJson>>;
+      } | null = null;
+
+      if (parsedJson?.clubChangeOnly === true) {
+        if (typeof parsedJson.existingClubId === "string" && parsedJson.existingClubId.trim()) {
+          clubChangeParsed = { existingClubId: parsedJson.existingClubId.trim() };
+        } else if (parsedJson.newClub && typeof parsedJson.newClub === "object") {
+          const nested = parsePendingClubJson(JSON.stringify(parsedJson.newClub));
+          if (nested) clubChangeParsed = { newClubPayload: nested };
+        }
+        if (!clubChangeParsed?.existingClubId && !clubChangeParsed?.newClubPayload) {
+          return new Response(
+            JSON.stringify({ error: "demande de changement de club invalide" }),
+            {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+      }
+
+      if (clubChangeParsed?.existingClubId) {
+        resolvedClubId = clubChangeParsed.existingClubId;
+      } else if (clubChangeParsed?.newClubPayload) {
+        const pending = clubChangeParsed.newClubPayload;
+        const newClubId = makeUserProposedClubId(pending.name);
+        await db.insert(clubsTable).values({
+          id: newClubId,
+          name: pending.name,
+          website: pending.website ?? null,
+          facebookUrl: pending.facebookUrl ?? null,
+          instagramUrl: pending.instagramUrl ?? null,
+          twitterUrl: pending.twitterUrl ?? null,
+          logoUrl: pending.logoUrl ?? null,
+          department: pending.department ?? null,
+          source: "user_proposed",
+        }).onDuplicateKeyUpdate({
+          set: {
+            name: pending.name,
+            website: pending.website ?? null,
+            facebookUrl: pending.facebookUrl ?? null,
+            instagramUrl: pending.instagramUrl ?? null,
+            twitterUrl: pending.twitterUrl ?? null,
+            logoUrl: pending.logoUrl ?? null,
+            department: pending.department ?? null,
+            updatedAt: new Date(),
+          },
+        });
+        resolvedClubId = newClubId;
+      } else if (!parsedJson?.clubChangeOnly) {
+        const pending = parsePendingClubJson(rawPending);
+        if (pending) {
+          const newClubId = makeUserProposedClubId(pending.name);
+          await db.insert(clubsTable).values({
+            id: newClubId,
+            name: pending.name,
+            website: pending.website ?? null,
+            facebookUrl: pending.facebookUrl ?? null,
+            instagramUrl: pending.instagramUrl ?? null,
+            twitterUrl: pending.twitterUrl ?? null,
+            logoUrl: pending.logoUrl ?? null,
+            department: pending.department ?? null,
+            source: "user_proposed",
+          }).onDuplicateKeyUpdate({
+            set: {
+              name: pending.name,
+              website: pending.website ?? null,
+              facebookUrl: pending.facebookUrl ?? null,
+              instagramUrl: pending.instagramUrl ?? null,
+              twitterUrl: pending.twitterUrl ?? null,
+              logoUrl: pending.logoUrl ?? null,
+              department: pending.department ?? null,
+              updatedAt: new Date(),
+            },
+          });
+          resolvedClubId = newClubId;
+        }
+      }
+    }
+
+    if (entry.replacesDerbyname) {
+      const oldDn = entry.replacesDerbyname.trim().toLowerCase();
+      if (oldDn !== entry.derbyname.trim().toLowerCase()) {
+        const [oldRow] = await db
+          .select()
+          .from(derbynamesTable)
+          .where(eq(derbynamesTable.derbyname, oldDn))
+          .limit(1);
+
+        await db.insert(derbynameRenameHistoryTable).values({
+          email: entry.email,
+          oldDerbyname: oldDn,
+          newDerbyname: entry.derbyname,
+          numRoster: oldRow?.numRoster ?? entry.numRoster,
+          clubId: oldRow?.clubId ?? resolvedClubId,
+        });
+
+        await db.delete(derbynamesTable).where(eq(derbynamesTable.derbyname, oldDn));
+      }
+    }
+
     await db
       .update(derbynamesTable)
       .set({
         emailConfirmed: true,
         emailToken: null,
         emailTokenExpiresAt: null,
+        pendingClubJson: null,
+        replacesDerbyname: null,
+        clubId: resolvedClubId ?? null,
       })
       .where(eq(derbynamesTable.derbyname, entry.derbyname));
 
-    // Enregistrer dans l'historique
     await db.insert(historyTable).values({
       derbyname: entry.derbyname,
       action: "email_confirmed",

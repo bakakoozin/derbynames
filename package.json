@@ -8,7 +8,8 @@
     "env:from-example": "node scripts/generate-env-from-example.mjs",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:migrate": "tsx src/db/migrate.ts"
+    "clubs:import": "node scripts/import-clubs-ben-to.mjs",
+    "db:seed-clubs": "tsx scripts/seed-clubs-from-json.ts"
   },
   "dependencies": {
     "@solidjs/meta": "^0.29.4",
@@ -16,6 +17,7 @@
     "@solidjs/start": "^1.2.1",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
+    "marked": "^18.0.2",
     "mysql2": "^3.16.1",
     "solid-js": "^1.9.10",
     "vinxi": "^0.5.11"

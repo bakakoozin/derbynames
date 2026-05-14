@@ -2,11 +2,22 @@ import { AddDerbyNameForm } from '~/components/add-derbyname-form'
 import { MenuLink } from '~/components/menu-link'
 import { modal, Modal } from '~/components/modal'
 
-import { createSignal } from 'solid-js'
+import { createSignal, onMount } from 'solid-js'
 
 export function Menu() {
 
   const [isOpen, setIsOpen] = createSignal(false)
+  const [flags, setFlags] = createSignal<{ premiumBadges?: boolean }>({})
+
+  onMount(async () => {
+    try {
+      const res = await fetch('/api/feature-flags')
+      const j = await res.json().catch(() => ({}))
+      setFlags(j)
+    } catch {
+      setFlags({})
+    }
+  })
 
   const handleToggle = () => setIsOpen(!isOpen())
   const handleClose = () => setIsOpen(false)
@@ -35,7 +46,13 @@ export function Menu() {
         }, {
           link: '/clubs',
           text: 'CLUBS DE ROLLER DERBY'
-        }].map((link) => <MenuLink  {...link} />)}
+        }, {
+          link: '/historique',
+          text: 'HISTORIQUE DERBY NAMES'
+        }, ...(flags().premiumBadges ? [{
+          link: '/badge-info',
+          text: 'BADGE PREMIUM'
+        }] : [])].map((link) => <MenuLink  {...link} />)}
 
         <div class='border-b border-dn-500 my-2' />
         {[{
