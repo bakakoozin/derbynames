@@ -8,7 +8,6 @@
     "env:from-example": "node scripts/generate-env-from-example.mjs",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:migrate": "tsx src/db/migrate.ts",
     "clubs:import": "node scripts/import-clubs-ben-to.mjs",
     "db:seed-clubs": "tsx scripts/seed-clubs-from-json.ts"
   },

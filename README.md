@@ -62,7 +62,6 @@ Ne commitez **jamais** de secrets ; utilisez uniquement la configuration déploy
 | `pnpm run build` | Build production (Vinxi / Nitro) |
 | `pnpm run start` | Lance le build Node (après `build`) |
 | `pnpm run db:push` | Applique le schéma Drizzle (`drizzle-kit push`) |
-| `pnpm run db:migrate` | Migrations SQL (`src/db/migrate.ts`) |
 | `pnpm run db:studio` | Interface Drizzle Studio |
 | `pnpm run clubs:import` | Import / traitement des clubs (script projet) |
 | `pnpm run db:seed-clubs` | Seed des clubs depuis JSON |
