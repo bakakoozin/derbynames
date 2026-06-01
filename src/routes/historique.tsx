@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { useLocation } from "@solidjs/router";
 import { Loader } from "~/ui/loader";
 
@@ -18,15 +18,7 @@ export default function HistoriquePage() {
   const [rows, setRows] = createSignal<Row[]>([]);
   const [emailSent, setEmailSent] = createSignal(false);
 
-  const [publicLoading, setPublicLoading] = createSignal(false);
-  const [publicError, setPublicError] = createSignal<string | null>(null);
-  const [publicRows, setPublicRows] = createSignal<Row[]>([]);
-
   const token = () => new URLSearchParams(location.search).get("token")?.trim() ?? "";
-  const focusDerbyname = () =>
-    new URLSearchParams(location.search).get("derbyname")?.trim() ?? "";
-  const focusNumRoster = () =>
-    new URLSearchParams(location.search).get("numRoster")?.trim() ?? "";
 
   createEffect(() => {
     const t = token();
@@ -64,48 +56,6 @@ export default function HistoriquePage() {
     })();
   });
 
-  createEffect(() => {
-    const dn = focusDerbyname();
-    const nr = focusNumRoster();
-    if (!dn || !nr) {
-      setPublicRows([]);
-      setPublicError(null);
-      setPublicLoading(false);
-      return;
-    }
-
-    const ac = new AbortController();
-    onCleanup(() => ac.abort());
-
-    void (async () => {
-      setPublicLoading(true);
-      setPublicError(null);
-      try {
-        const qs = new URLSearchParams({ derbyname: dn, numRoster: nr }).toString();
-        const res = await fetch(`/api/rename-history-public?${qs}`, { signal: ac.signal });
-        const data = await res.json().catch(() => null);
-        const errPayload =
-          data &&
-          typeof data === "object" &&
-          typeof (data as { error?: unknown }).error === "string"
-            ? (data as { error: string }).error
-            : null;
-
-        if (!res.ok || errPayload || !Array.isArray((data as { items?: unknown })?.items)) {
-          setPublicError(errPayload || "Impossible de charger l’historique.");
-          return;
-        }
-
-        setPublicRows(((data as { items: Row[] }).items ?? []) as Row[]);
-      } catch (e: unknown) {
-        if (e instanceof DOMException && e.name === "AbortError") return;
-        setPublicError("Impossible de charger l’historique.");
-      } finally {
-        setPublicLoading(false);
-      }
-    })();
-  });
-
   const [emailSubmitting, setEmailSubmitting] = createSignal(false);
 
   async function requestLink(form: Event) {
@@ -134,9 +84,6 @@ export default function HistoriquePage() {
     }
   }
 
-  const hasPublicFocus = () =>
-    Boolean(focusDerbyname().length && focusNumRoster().length);
-
   return (
     <div class="grid h-full min-h-0 grid-rows-[auto_1fr] items-start gap-4 p-3">
       <h1 class="text-dn-600 m-0 text-xl font-bold">
@@ -144,15 +91,6 @@ export default function HistoriquePage() {
       </h1>
 
       <div class="max-w-lg mx-auto w-full flex min-h-0 flex-1 flex-col gap-6">
-        <ShowPublicBlock
-          when={hasPublicFocus()}
-          derbyname={focusDerbyname()}
-          numRoster={focusNumRoster()}
-          loading={publicLoading()}
-          error={publicError()}
-          rows={publicRows()}
-        />
-
         {!token() && (
           <form class="flex flex-col gap-2" onSubmit={requestLink}>
             <p class="text-sm text-dn-600">
@@ -202,54 +140,5 @@ export default function HistoriquePage() {
         )}
       </div>
     </div>
-  );
-}
-
-function ShowPublicBlock(props: {
-  when: boolean;
-  derbyname: string;
-  numRoster: string;
-  loading: boolean;
-  error: string | null;
-  rows: Row[];
-}) {
-  return (
-    <>
-      {props.when && (
-        <section class="flex flex-col gap-3 border-b border-dn-500/30 pb-6">
-          <h2 class="m-0 font-display text-lg text-dn-600">
-            Changements pour « {props.derbyname} » (#{props.numRoster})
-          </h2>
-          {props.loading && (
-            <div class="flex justify-center py-6">
-              <Loader />
-            </div>
-          )}
-          {props.error && (
-            <div class="bg-dn-500 text-dn-100 p-3 rounded">{props.error}</div>
-          )}
-          {!props.loading && !props.error && props.rows.length === 0 && (
-            <p class="text-sm text-dn-600">
-              Aucun changement de nom enregistré pour ce derby name et ce numéro de roster.
-            </p>
-          )}
-          {!props.loading && !props.error && props.rows.length > 0 && (
-            <ul class="flex flex-col gap-2">
-              {props.rows.map((r) => (
-                <li class="p-3 odd:bg-black/5 rounded border border-dn-500/20">
-                  <div class="font-display text-dn-700">
-                    {r.oldDerbyname} → {r.newDerbyname}
-                  </div>
-                  <div class="text-xs text-dn-500 mt-1">
-                    #{r.numRoster ?? "—"}
-                    {r.createdAt ? ` · ${new Date(r.createdAt).toLocaleString()}` : ""}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      )}
-    </>
   );
 }

@@ -1,5 +1,4 @@
 import { For, createSignal, createEffect } from "solid-js";
-import { A } from "@solidjs/router";
 import { Search, searchValue } from "~/components/search";
 import { Loader } from "~/ui/loader";
 
@@ -140,16 +139,9 @@ export default function Home() {
                       {dName.numRoster}
                     </div>
                     <div class="flex w-full justify-between items-center gap-1">
-                      <A
-                        href={`/historique?${new URLSearchParams({
-                          derbyname: dName.derbyname,
-                          numRoster: dName.numRoster,
-                        }).toString()}`}
-                        class="font-display text-dn-600 underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dn-500 cursor-pointer min-w-0 truncate text-left"
-                        title="Voir l’historique des changements de nom"
-                      >
+                      <div class="font-display text-dn-600 min-w-0 truncate text-left">
                         {dName.derbyname}
-                      </A>
+                      </div>
                       {dName.clubName && (
                         <div class="text-sm text-dn-500 italic">{dName.clubName}</div>
                       )}
