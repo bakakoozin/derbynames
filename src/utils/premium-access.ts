@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { getDb } from "~/db";
 import { clubMembershipsTable, derbynamesTable } from "~/db/schema";
 
@@ -7,12 +7,18 @@ import { clubMembershipsTable, derbynamesTable } from "~/db/schema";
  * Si `premiumValidUntil` est null → accès illimité ; sinon date future requise.
  */
 export async function derbynameHasPremiumBadgeAccess(derbyKey: string): Promise<boolean> {
+  const normalizedDerbyKey = derbyKey.trim().toLowerCase();
+  if (!normalizedDerbyKey) return false;
+
   const db = getDb();
   const [row] = await db
     .select()
     .from(derbynamesTable)
     .where(
-      and(eq(derbynamesTable.derbyname, derbyKey), eq(derbynamesTable.emailConfirmed, true)),
+      and(
+        sql`lower(${derbynamesTable.derbyname}) = ${normalizedDerbyKey}`,
+        eq(derbynamesTable.emailConfirmed, true),
+      ),
     )
     .limit(1);
 

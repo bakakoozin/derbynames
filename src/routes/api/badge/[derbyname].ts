@@ -1,5 +1,5 @@
 import type { APIEvent } from "@solidjs/start/server";
-import { eq } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { getDb } from "~/db";
 import { derbynamesTable } from "~/db/schema";
 import { isPremiumBadgesEnabled } from "~/utils/feature-flags";
@@ -31,7 +31,7 @@ export async function GET({ params }: APIEvent) {
   const [row] = await db
     .select()
     .from(derbynamesTable)
-    .where(eq(derbynamesTable.derbyname, key))
+    .where(sql`lower(${derbynamesTable.derbyname}) = ${key}`)
     .limit(1);
 
   const label = escapeXml(row?.name || key);

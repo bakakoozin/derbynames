@@ -4,9 +4,13 @@ import {
   derbynamesTable,
   historyTable,
 } from "~/db/schema";
-import { and, asc, eq, type SQL } from "drizzle-orm";
+import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 import type { APIEvent } from "@solidjs/start/server";
 import type { PendingClubPayload } from "~/utils/pending-club";
+
+function derbynameEqualsInsensitive(value: string) {
+  return sql`lower(${derbynamesTable.derbyname}) = ${value.trim().toLowerCase()}`;
+}
 
 export async function GET(event: APIEvent) {
   try {
@@ -270,7 +274,7 @@ export async function POST(event: APIEvent) {
       const existingDerbyname = await db
         .select()
         .from(derbynamesTable)
-        .where(eq(derbynamesTable.derbyname, derbyKey))
+        .where(derbynameEqualsInsensitive(derbyKey))
         .limit(1);
 
       if (
@@ -285,7 +289,7 @@ export async function POST(event: APIEvent) {
       }
 
       await db.insert(derbynamesTable).values({
-        derbyname: derbyKey,
+        derbyname: name,
         name,
         numRoster,
         email,
@@ -298,11 +302,11 @@ export async function POST(event: APIEvent) {
       });
 
       await db.insert(historyTable).values({
-        derbyname: derbyKey,
+        derbyname: name,
         action: "replacement_pending",
         field: "replacesDerbyname",
         oldValue: confirmedRow.derbyname,
-        newValue: derbyKey,
+        newValue: name,
         changedBy: email,
       });
 
@@ -336,7 +340,7 @@ export async function POST(event: APIEvent) {
     const existingDerbyname = await db
       .select()
       .from(derbynamesTable)
-      .where(eq(derbynamesTable.derbyname, derbyKey))
+      .where(derbynameEqualsInsensitive(derbyKey))
       .limit(1);
 
     if (existingDerbyname.length > 0 && existingDerbyname[0].emailConfirmed) {
@@ -348,7 +352,7 @@ export async function POST(event: APIEvent) {
 
     try {
       await db.insert(derbynamesTable).values({
-        derbyname: derbyKey,
+        derbyname: name,
         name,
         numRoster,
         email,
@@ -374,14 +378,14 @@ export async function POST(event: APIEvent) {
             pendingClubJson,
             replacesDerbyname: null,
           })
-          .where(eq(derbynamesTable.derbyname, derbyKey));
+          .where(derbynameEqualsInsensitive(derbyKey));
       } else {
         throw error;
       }
     }
 
     await db.insert(historyTable).values({
-      derbyname: derbyKey,
+      derbyname: name,
       action: "created",
       field: null,
       oldValue: null,

@@ -144,8 +144,8 @@ export async function GET({ params: { token } }: APIEvent) {
     }
 
     if (entry.replacesDerbyname) {
-      const oldDn = entry.replacesDerbyname.trim().toLowerCase();
-      if (oldDn !== entry.derbyname.trim().toLowerCase()) {
+      const oldDn = entry.replacesDerbyname.trim();
+      if (oldDn.toLowerCase() !== entry.derbyname.trim().toLowerCase()) {
         const [oldRow] = await db
           .select()
           .from(derbynamesTable)
