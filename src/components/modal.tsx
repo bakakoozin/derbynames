@@ -38,7 +38,7 @@ export function Modal(props: ModalProps) {
     {open() && (
       <div class="fixed inset-0 z-50 flex items-center justify-center bg-600 bg-opacity-50 p-3">
       <div
-        class="box-border max-h-[min(90vh,720px)] w-full max-w-[500px] min-w-0 overflow-x-hidden overflow-y-auto border border-dn-500 bg-dn-100 p-3 [scrollbar-gutter:stable]"
+        class="box-border h-[95dvh] w-full max-w-125 min-w-0 overflow-x-hidden overflow-y-auto border border-dn-500 bg-dn-100 p-3 [scrollbar-gutter:stable]"
         role="dialog"
         aria-modal="true"
       >
