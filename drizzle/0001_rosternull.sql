@@ -1,0 +1,1 @@
+ALTER TABLE `derbynames` MODIFY COLUMN `numRoster` varchar(50);

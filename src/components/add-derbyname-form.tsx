@@ -153,7 +153,6 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
             type="text"
             id="numRoster"
             name="numRoster"
-            required
           />
         </Fieldset>
       </Show>
