@@ -147,7 +147,7 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
           </div>
         </Fieldset>
 
-        <Fieldset label="Entrez votre numéro de joueureuse" name="numRoster">
+        <Fieldset label="Entrez votre numéro de roster" name="numRoster">
           <input
             class="input"
             type="text"

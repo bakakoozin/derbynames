@@ -155,7 +155,7 @@
   }
 
   .btn {
-    @apply bg-dn-500 text-dn-100 px-1 py-2 font-display text-lg flex items-center justify-center cursor-pointer border border-dn-100  transition-colors ease-in-out duration-200 hover:border-dn-500 hover:bg-dn-100 hover:text-dn-500 hover:border-transparent
+    @apply bg-dn-500 text-dn-100 px-1 py-2 font-display text-lg flex items-center justify-center cursor-pointer border border-dn-100  transition-colors ease-in-out duration-200 hover:border-dn-500 hover:bg-dn-100 hover:text-dn-500 
   }
 
   .btn-cancel {
@@ -164,7 +164,7 @@
 
   select,
   .input {
-    @apply bg-dn-100 text-dn-500 px-1 py-2 border border-dn-500 transition-colors ease-in-out duration-200 outline-none focus:border-b-dn-200 focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent hover:border-transparent
+    @apply bg-dn-100 text-dn-500 px-1 py-2 border border-dn-500 transition-colors ease-in-out duration-200 outline-none focus:border-b-dn-200 focus:border-t-transparent focus:border-r-transparent focus:border-l-transparent hover:border-b-dn-200 hover:border-t-transparent hover:border-r-transparent hover:border-l-transparent
   }
 }
 
