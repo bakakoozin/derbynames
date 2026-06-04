@@ -25,6 +25,7 @@ ENV NODE_ENV=production
 
 # Génère le .env à partir de .env.exemple AVANT le build,
 # en utilisant les variables d'environnement (DATABASE_URL, EMAIL_API_KEY, etc.)
+RUN pnpm run db:push
 RUN pnpm env:from-example && pnpm build
 
 #########################
@@ -48,5 +49,4 @@ ENV PORT=3000
 ENV HOST=0.0.0.0
 
 # On lance le serveur Node Nitro généré par SolidStart
-RUN pnpm run db:push
 CMD ["node", ".output/server/index.mjs"]
