@@ -16,6 +16,7 @@ RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
 
 # Dépendances
 COPY package.json pnpm-lock.yaml ./
+COPY drizzle.config.ts ./
 RUN pnpm install --frozen-lockfile
 
 # Code
@@ -25,7 +26,7 @@ ENV NODE_ENV=production
 
 # Génère le .env à partir de .env.exemple AVANT le build,
 # en utilisant les variables d'environnement (DATABASE_URL, EMAIL_API_KEY, etc.)
-RUN pnpm env:from-example && pnpm run db:push &&pnpm build
+RUN pnpm env:from-example && pnpm run db:push && pnpm build
 
 #########################
 # STAGE 2 : RUNTIME SSR #
