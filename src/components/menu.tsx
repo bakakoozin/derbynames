@@ -36,7 +36,7 @@ export function Menu() {
         data-open={isOpen()}
         onClick={handleClose}
         class='flex flex-col gap-2 px-2 pb-2 pr-4 md:pr-2 pt-14 md:pt-2 fixed md:relative top-0 bottom-0 left-0 bg-dn-100 z-[900] transition-all data-[open=false]:-left-[100%]  md:data-[open=false]:left-0' >
-        <Modal button={<div onClick={modal.open} class="btn text-center">AJOUTER MON DERBY NAME</div>} >
+        <Modal button={<div onClick={modal.open} class="btn text-center">AJOUTER / MODIFIER MON DERBY NAME</div>} >
           <AddDerbyNameForm onClose={modal.close} />
         </Modal >
         <div class='border-b border-dn-500 my-2' />

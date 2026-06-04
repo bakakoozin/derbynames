@@ -48,4 +48,5 @@ ENV PORT=3000
 ENV HOST=0.0.0.0
 
 # On lance le serveur Node Nitro généré par SolidStart
+RUN pnpm run db:push
 CMD ["node", ".output/server/index.mjs"]

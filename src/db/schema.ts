@@ -28,7 +28,7 @@ export const clubsTable = mysqlTable('clubs', {
 export const derbynamesTable = mysqlTable('derbynames', {
   derbyname: varchar({ length: 255 }).primaryKey(),
   name: varchar({ length: 255 }).notNull(),
-  numRoster: varchar({ length: 50 }).notNull(),
+  numRoster: varchar({ length: 50 }),
   email: varchar({ length: 255 }).notNull(),
   clubId: varchar({ length: 255 }),
   emailConfirmed: boolean().default(false).notNull(),
