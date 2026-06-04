@@ -114,11 +114,11 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
       </label>
 
       <Show when={!clubOnly()}>
-        <Fieldset label="Entrez email" name="email">
+        <Fieldset label="Email" name="email">
           <input class="input" type="email" id="email" name="email" required />
         </Fieldset>
 
-        <Fieldset label="Entrez votre Derby name" name="name">
+        <Fieldset label="Derby name" name="name">
           <input
             class="input"
             type="text"
@@ -147,7 +147,7 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
           </div>
         </Fieldset>
 
-        <Fieldset label="Entrez votre numéro de roster" name="numRoster">
+        <Fieldset label="Numéro de roster" name="numRoster">
           <input
             class="input"
             type="text"
