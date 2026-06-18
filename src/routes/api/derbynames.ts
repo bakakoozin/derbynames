@@ -1,5 +1,6 @@
 import { getDb } from "~/db";
 import {
+  actionsTable,
   clubsTable,
   derbynamesTable,
   historyTable,
@@ -7,9 +8,19 @@ import {
 import { and, asc, eq, sql, type SQL } from "drizzle-orm";
 import type { APIEvent } from "@solidjs/start/server";
 import type { PendingClubPayload } from "~/utils/pending-club";
+import { DERBY_TYPES, isDerbyType, type DerbyType } from "~/utils/constants";
+import { ensureUserIdByEmail } from "~/utils/users";
 
-function derbynameEqualsInsensitive(value: string) {
-  return sql`lower(${derbynamesTable.derbyname}) = ${value.trim().toLowerCase()}`;
+function derbynameEqualsInsensitiveByType(value: string, derbyType: DerbyType) {
+  return and(
+    sql`lower(${derbynamesTable.derbyname}) = ${value.trim().toLowerCase()}`,
+    eq(derbynamesTable.derbyType, derbyType),
+  );
+}
+
+function parseDerbyType(value: unknown): DerbyType | null {
+  if (isDerbyType(value)) return value;
+  return null;
 }
 
 export async function GET(event: APIEvent) {
@@ -18,6 +29,17 @@ export async function GET(event: APIEvent) {
     const url = new URL(event.request.url);
     const clubIdFilter = url.searchParams.get("clubId")?.trim();
     const departmentFilter = url.searchParams.get("department")?.trim();
+    const derbyTypeFilterRaw = url.searchParams.get("type")?.trim();
+    const derbyTypeFilter = derbyTypeFilterRaw ? parseDerbyType(derbyTypeFilterRaw) : null;
+
+    if (derbyTypeFilterRaw && !derbyTypeFilter) {
+      return new Response(JSON.stringify({ error: "type invalide" }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
 
     const conditions: SQL[] = [eq(derbynamesTable.emailConfirmed, true)];
 
@@ -27,10 +49,14 @@ export async function GET(event: APIEvent) {
     if (departmentFilter && departmentFilter !== "" && departmentFilter !== "all") {
       conditions.push(eq(clubsTable.department, departmentFilter));
     }
+    if (derbyTypeFilter) {
+      conditions.push(eq(derbynamesTable.derbyType, derbyTypeFilter));
+    }
 
     const names = await db
       .select({
         derbyname: derbynamesTable.derbyname,
+        derbyType: derbynamesTable.derbyType,
         numRoster: derbynamesTable.numRoster,
         clubName: clubsTable.name,
         department: clubsTable.department,
@@ -42,6 +68,7 @@ export async function GET(event: APIEvent) {
 
     const result = names.map((row) => ({
       derbyname: row.derbyname,
+      derbyType: row.derbyType,
       numRoster: row.numRoster,
       clubName: row.clubName || null,
       department: row.department || null,
@@ -66,6 +93,18 @@ export async function GET(event: APIEvent) {
 export async function POST(event: APIEvent) {
   try {
     const body = await event.request.json();
+    return await submitDerbynameAction(body);
+  } catch (error: any) {
+    console.error("Error creating derbyname:", error);
+    return new Response(JSON.stringify({ error: error.message || "Erreur serveur" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+export async function submitDerbynameAction(body: any): Promise<Response> {
+  try {
     const {
       name: _name,
       numRoster: _numRoster,
@@ -73,6 +112,7 @@ export async function POST(event: APIEvent) {
       club: _club,
       newClub: _newClub,
       clubOnly: _clubOnly,
+      type: _type,
     } = body;
 
     const clubOnly = _clubOnly === true;
@@ -103,6 +143,14 @@ export async function POST(event: APIEvent) {
       .trim()
       .toLowerCase();
     const numRoster = typeof _numRoster === "string" ? _numRoster.trim() : "";
+    const derbyType = parseDerbyType(_type) ?? DERBY_TYPES[0];
+
+    if (_type != null && !parseDerbyType(_type)) {
+      return new Response(JSON.stringify({ error: "type invalide" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     let newClub: PendingClubPayload | null = null;
     if (_newClub && typeof _newClub === "object" && typeof _newClub.name === "string") {
@@ -142,6 +190,7 @@ export async function POST(event: APIEvent) {
     }
 
     const db = getDb();
+    const userId = await ensureUserIdByEmail(db, email);
 
     /** Changement de club uniquement : même derby name, confirmation par e-mail. */
     if (clubOnly) {
@@ -170,12 +219,24 @@ export async function POST(event: APIEvent) {
 
       await db
         .delete(derbynamesTable)
-        .where(and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, false)));
+        .where(
+          and(
+            eq(derbynamesTable.email, email),
+            eq(derbynamesTable.derbyType, derbyType),
+            eq(derbynamesTable.emailConfirmed, false),
+          ),
+        );
 
       const [confirmedOnly] = await db
         .select()
         .from(derbynamesTable)
-        .where(and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, true)))
+        .where(
+          and(
+            eq(derbynamesTable.email, email),
+            eq(derbynamesTable.derbyType, derbyType),
+            eq(derbynamesTable.emailConfirmed, true),
+          ),
+        )
         .limit(1);
 
       if (!confirmedOnly) {
@@ -193,11 +254,14 @@ export async function POST(event: APIEvent) {
       await db
         .update(derbynamesTable)
         .set({
-          emailToken: emailTokenCo,
-          emailTokenExpiresAt: emailTokenExpiresAtCo,
-          pendingClubJson: pendingClubJsonForChange,
+          userId,
         })
-        .where(eq(derbynamesTable.derbyname, confirmedOnly.derbyname));
+        .where(
+          and(
+            eq(derbynamesTable.derbyname, confirmedOnly.derbyname),
+            eq(derbynamesTable.derbyType, derbyType),
+          ),
+        );
 
       await db.insert(historyTable).values({
         derbyname: confirmedOnly.derbyname,
@@ -208,6 +272,35 @@ export async function POST(event: APIEvent) {
         changedBy: email,
       });
 
+      await db
+        .update(actionsTable)
+        .set({
+          status: "cancelled",
+          completedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(actionsTable.userId, userId),
+            eq(actionsTable.actionType, "derbyname.confirm"),
+            eq(actionsTable.status, "pending"),
+          ),
+        );
+
+      await db.insert(actionsTable).values({
+        userId,
+        actionType: "derbyname.confirm",
+        status: "pending",
+        token: emailTokenCo,
+        expiresAt: emailTokenExpiresAtCo,
+        payload: JSON.stringify({
+          derbyname: confirmedOnly.derbyname,
+          derbyType,
+          pendingClubJson: pendingClubJsonForChange,
+          replacesDerbyname: null,
+          clubOnly: true,
+        }),
+      });
+
       await sendConfirmationEmail(confirmedOnly.name, email, emailTokenCo);
 
       return new Response(
@@ -216,6 +309,7 @@ export async function POST(event: APIEvent) {
             name: confirmedOnly.name,
             numRoster: confirmedOnly.numRoster,
             email,
+            type: derbyType,
             clubOnly: true,
             derbyname: confirmedOnly.derbyname,
           },
@@ -251,7 +345,7 @@ export async function POST(event: APIEvent) {
     const existingForEmail = await db
       .select()
       .from(derbynamesTable)
-      .where(eq(derbynamesTable.email, email));
+      .where(and(eq(derbynamesTable.email, email), eq(derbynamesTable.derbyType, derbyType)));
 
     const confirmedRow = existingForEmail.find((r) => r.emailConfirmed);
 
@@ -259,7 +353,11 @@ export async function POST(event: APIEvent) {
       await db
         .delete(derbynamesTable)
         .where(
-          and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, false)),
+          and(
+            eq(derbynamesTable.email, email),
+            eq(derbynamesTable.derbyType, derbyType),
+            eq(derbynamesTable.emailConfirmed, false),
+          ),
         );
       if (confirmedRow.derbyname.toLowerCase() === derbyKey) {
         return new Response(
@@ -274,7 +372,7 @@ export async function POST(event: APIEvent) {
       const existingDerbyname = await db
         .select()
         .from(derbynamesTable)
-        .where(derbynameEqualsInsensitive(derbyKey))
+        .where(derbynameEqualsInsensitiveByType(derbyKey, derbyType))
         .limit(1);
 
       if (
@@ -291,14 +389,12 @@ export async function POST(event: APIEvent) {
       await db.insert(derbynamesTable).values({
         derbyname: name,
         name,
+        derbyType,
         numRoster,
         email,
+        userId,
         clubId,
         emailConfirmed: false,
-        emailToken,
-        emailTokenExpiresAt,
-        pendingClubJson,
-        replacesDerbyname: confirmedRow.derbyname,
       });
 
       await db.insert(historyTable).values({
@@ -310,12 +406,41 @@ export async function POST(event: APIEvent) {
         changedBy: email,
       });
 
+      await db
+        .update(actionsTable)
+        .set({
+          status: "cancelled",
+          completedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(actionsTable.userId, userId),
+            eq(actionsTable.actionType, "derbyname.confirm"),
+            eq(actionsTable.status, "pending"),
+          ),
+        );
+
+      await db.insert(actionsTable).values({
+        userId,
+        actionType: "derbyname.confirm",
+        status: "pending",
+        token: emailToken,
+        expiresAt: emailTokenExpiresAt,
+        payload: JSON.stringify({
+          derbyname: name,
+          derbyType,
+          pendingClubJson,
+          replacesDerbyname: confirmedRow.derbyname,
+        }),
+      });
+
       await sendConfirmationEmail(name, email, emailToken);
 
       return new Response(
         JSON.stringify({
           player: {
             name,
+            derbyType,
             numRoster,
             email,
             club: club ? { id: club.id, name: club.name } : null,
@@ -334,13 +459,17 @@ export async function POST(event: APIEvent) {
     await db
       .delete(derbynamesTable)
       .where(
-        and(eq(derbynamesTable.email, email), eq(derbynamesTable.emailConfirmed, false)),
+        and(
+          eq(derbynamesTable.email, email),
+          eq(derbynamesTable.derbyType, derbyType),
+          eq(derbynamesTable.emailConfirmed, false),
+        ),
       );
 
     const existingDerbyname = await db
       .select()
       .from(derbynamesTable)
-      .where(derbynameEqualsInsensitive(derbyKey))
+      .where(derbynameEqualsInsensitiveByType(derbyKey, derbyType))
       .limit(1);
 
     if (existingDerbyname.length > 0 && existingDerbyname[0].emailConfirmed) {
@@ -354,14 +483,12 @@ export async function POST(event: APIEvent) {
       await db.insert(derbynamesTable).values({
         derbyname: name,
         name,
+        derbyType,
         numRoster,
         email,
+        userId,
         clubId,
         emailConfirmed: false,
-        emailToken,
-        emailTokenExpiresAt,
-        pendingClubJson,
-        replacesDerbyname: null,
       });
     } catch (error: any) {
       if (error.code === "ER_DUP_ENTRY") {
@@ -369,16 +496,14 @@ export async function POST(event: APIEvent) {
           .update(derbynamesTable)
           .set({
             name,
+            derbyType,
             numRoster,
             email,
+            userId,
             clubId,
-            emailToken,
-            emailTokenExpiresAt,
             emailConfirmed: false,
-            pendingClubJson,
-            replacesDerbyname: null,
           })
-          .where(derbynameEqualsInsensitive(derbyKey));
+          .where(derbynameEqualsInsensitiveByType(derbyKey, derbyType));
       } else {
         throw error;
       }
@@ -393,6 +518,35 @@ export async function POST(event: APIEvent) {
       changedBy: email,
     });
 
+    await db
+      .update(actionsTable)
+      .set({
+        status: "cancelled",
+        completedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(actionsTable.userId, userId),
+          eq(actionsTable.actionType, "derbyname.confirm"),
+          eq(actionsTable.status, "pending"),
+        ),
+      );
+
+    await db.insert(actionsTable).values({
+      userId,
+      actionType: "derbyname.confirm",
+      status: "pending",
+      token: emailToken,
+      expiresAt: emailTokenExpiresAt,
+      payload: JSON.stringify({
+        derbyname: name,
+        derbyType,
+        pendingClubJson,
+        replacesDerbyname: null,
+        newEntry: true,
+      }),
+    });
+
     await sendConfirmationEmail(name, email, emailToken);
 
     return new Response(
@@ -403,6 +557,7 @@ export async function POST(event: APIEvent) {
           email,
           club: club ? { id: club.id, name: club.name } : null,
           newClub,
+          type: derbyType,
           emailConfirmed: false,
         },
       }),

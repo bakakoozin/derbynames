@@ -25,10 +25,19 @@ export default function ClubsPage() {
   const [filterDept, setFilterDept] = createSignal<string>("all");
 
   createEffect(() => {
-    fetch("/api/clubs")
+    fetch("/api/rpc", {
+      method: "POST",
+      body: JSON.stringify({
+        method: "clubs.list",
+        params: {},
+      }),
+    })
       .then((res) => res.json())
-      .then((data: Club[]) => {
-        setClubs(data);
+      .then((rpc: { result?: Club[]; error?: string }) => {
+        if (!Array.isArray(rpc.result)) {
+          throw new Error(rpc.error || "Erreur de chargement");
+        }
+        setClubs(rpc.result);
         setLoading(false);
       })
       .catch((error) => {

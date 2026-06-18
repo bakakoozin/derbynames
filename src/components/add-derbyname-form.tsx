@@ -3,6 +3,7 @@ import { Show, createSignal, createEffect } from "solid-js";
 import { Fieldset } from "../ui/fieldset";
 import { useDebounce } from "../hooks/debounce.hook";
 import { toast } from "~/ui/Toast";
+import { DERBY_TYPES, type DerbyType } from "~/utils/constants";
 
 type AddDerbyNameFormProps = {
   onClose?: () => void;
@@ -18,6 +19,7 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
   const [search, setSearch] = createSignal("");
   const [isUsed, setIsUsed] = createSignal(false);
   const [clubOnly, setClubOnly] = createSignal(false);
+  const [derbyType, setDerbyType] = createSignal<DerbyType>(DERBY_TYPES[0]);
   const debouncedSearch = useDebounce(search, 500);
 
   async function handleSubmit(event: SubmitEvent) {
@@ -39,6 +41,7 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
       const body: Record<string, unknown> = {
         email: formData.get("email"),
         clubOnly: clubOnly(),
+        type: derbyType(),
       };
 
       if (!clubOnly()) {
@@ -52,9 +55,12 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
         body.club = sel.club;
       }
 
-      const response = await fetch("/api/derbynames", {
+      const response = await fetch("/api/rpc", {
         method: "POST",
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          method: "derbyname.submitAction",
+          params: body,
+        }),
       });
 
       if (!response.ok) {
@@ -77,10 +83,21 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
 
   const handleCheck = async () => {
     try {
-      const response = await fetch("api/check/" + debouncedSearch());
+      const response = await fetch("/api/rpc", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "derbyname.checkAvailability",
+          params: {
+            derbyname: debouncedSearch(),
+            type: derbyType(),
+          },
+        }),
+      });
       if (!response.ok) throw new Error(response.statusText);
-      const { count } = await response.json();
-      setIsUsed(() => count > 0);
+      const payload = (await response.json()) as {
+        result?: { available?: boolean; count?: number };
+      };
+      setIsUsed(() => (payload.result?.count ?? 0) > 0 || payload.result?.available === false);
     } catch (error) {
       toast.error("Erreur lors de la vérification du nom :" + error);
     }
@@ -113,11 +130,11 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
         </span>
       </label>
 
-      <Show when={!clubOnly()}>
-        <Fieldset label="Email" name="email">
-          <input class="input" type="email" id="email" name="email" required />
-        </Fieldset>
+      <Fieldset label="Email" name="email">
+        <input class="input" type="email" id="email" name="email" required />
+      </Fieldset>
 
+      <Show when={!clubOnly()}>
         <Fieldset label="Derby name" name="name">
           <input
             class="input"
@@ -156,6 +173,22 @@ export function AddDerbyNameForm({ onClose }: AddDerbyNameFormProps) {
           />
         </Fieldset>
       </Show>
+
+      <Fieldset label="Type de derbyname" name="type">
+        <select
+          class="input"
+          name="type"
+          value={derbyType()}
+          onChange={(e) => {
+            setDerbyType(e.currentTarget.value as DerbyType);
+            setIsUsed(() => false);
+          }}
+        >
+          <option value="player">Joueur / joueuse</option>
+          <option value="referee">Arbitre</option>
+          <option value="coach">Coach</option>
+        </select>
+      </Fieldset>
 
       <Fieldset label="Sélectionnez votre club" name="club">
         <ClubSelector onChange={setClubSel} name="club" />

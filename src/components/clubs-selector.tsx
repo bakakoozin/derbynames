@@ -96,9 +96,23 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
     }
 
     try {
-      const qs = q.trim() ? `?q=${encodeURIComponent(q.trim())}` : "";
-      const response = await fetch(`/api/clubs${qs}`);
-      const clubsData = (await response.json()) as Club[];
+      const response = await fetch("/api/rpc", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "clubs.list",
+          params: { q: q.trim() },
+        }),
+      });
+      const rpc = (await response.json()) as {
+        result?: Club[];
+        error?: string;
+      };
+
+      if (!response.ok || !Array.isArray(rpc.result)) {
+        throw new Error(rpc.error || "Erreur de chargement");
+      }
+
+      const clubsData = rpc.result;
 
       if (gen !== fetchGeneration) return;
 

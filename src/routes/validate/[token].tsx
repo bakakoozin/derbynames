@@ -15,6 +15,11 @@ type ValidateError = {
 
 type ValidateResponse = ValidateSuccess | ValidateError;
 
+type RpcValidateResponse = {
+  result?: ValidateResponse;
+  error?: string;
+};
+
 export default function Validate() {
   const { token } = useParams();
   const [loading, setLoading] = createSignal(true);
@@ -26,8 +31,15 @@ export default function Validate() {
     setError(null);
 
     try {
-      const response = await fetch(`/api/validate/${token}`);
-      const json = (await response.json().catch(() => null)) as ValidateResponse | null;
+      const response = await fetch("/api/rpc", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "derbyname.confirmAction",
+          params: { token },
+        }),
+      });
+      const rpc = (await response.json().catch(() => null)) as RpcValidateResponse | null;
+      const json = (rpc?.result ?? (rpc && rpc.error ? { error: rpc.error } : null)) as ValidateResponse | null;
 
       if (!response.ok || !json || "error" in json) {
         const message =
