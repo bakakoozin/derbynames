@@ -161,25 +161,34 @@ export async function POST(event: APIEvent) {
           clubId: derbynamesTable.clubId,
           clubName: clubsTable.name,
           parentClubId: clubsTable.parentClubId,
-          parentClubName: sql`${sql.raw(`parent_clubs.name`)}`.mapWith(String),
           department: clubsTable.department,
         })
         .from(derbynamesTable)
         .leftJoin(clubsTable, eq(derbynamesTable.clubId, clubsTable.id))
-        .leftJoin(
-          clubsTable.as('parent_clubs'),
-          eq(clubsTable.parentClubId, clubsTable.as('parent_clubs').id),
-        )
         .where(and(...conditions))
         .orderBy(asc(derbynamesTable.derbyname));
 
+      // Récupérer les noms des clubs parents
+      const parentIds = new Set(rows.map((r) => r.parentClubId).filter((id) => id));
+      let parentNameMap: Record<string, string> = {};
+      if (parentIds.size > 0) {
+        const parentIds_ = Array.from(parentIds);
+        const parents = await db
+          .select({ id: clubsTable.id, name: clubsTable.name })
+          .from(clubsTable)
+          .where(sql`${clubsTable.id} IN (${sql.join(parentIds_, sql`, `)})`);
+        parentNameMap = Object.fromEntries(parents.map((p) => [p.id, p.name]));
+      }
+
       return json(200, {
-        result: rows.map((row) => ({
+        result: rows.map((row: any) => ({
           derbyname: row.derbyname,
           derbyType: row.derbyType,
           numRoster: row.numRoster,
           clubId: row.clubId || null,
           clubName: row.clubName || null,
+          parentClubId: row.parentClubId || null,
+          parentClubName: row.parentClubId ? parentNameMap[row.parentClubId] || null : null,
           department: row.department || null,
         })),
       });

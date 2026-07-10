@@ -53,7 +53,8 @@ export async function GET(event: APIEvent) {
       conditions.push(eq(derbynamesTable.derbyType, derbyTypeFilter));
     }
 
-    const names = await db
+    // Récupérer les derbynames avec leurs clubs
+    const rows = await db
       .select({
         derbyname: derbynamesTable.derbyname,
         derbyType: derbynamesTable.derbyType,
@@ -61,26 +62,33 @@ export async function GET(event: APIEvent) {
         clubId: derbynamesTable.clubId,
         clubName: clubsTable.name,
         parentClubId: clubsTable.parentClubId,
-        parentClubName: sql`${sql.raw(`parent_clubs.name`)}`.mapWith(String),
         department: clubsTable.department,
       })
       .from(derbynamesTable)
       .leftJoin(clubsTable, eq(derbynamesTable.clubId, clubsTable.id))
-      .leftJoin(
-        clubsTable.as('parent_clubs'),
-        eq(clubsTable.parentClubId, clubsTable.as('parent_clubs').id),
-      )
       .where(and(...conditions))
       .orderBy(asc(derbynamesTable.derbyname));
 
-    const result = names.map((row) => ({
+    // Récupérer les noms des clubs parents
+    const parentIds = new Set(rows.map((r) => r.parentClubId).filter((id) => id));
+    let parentNameMap: Record<string, string> = {};
+    if (parentIds.size > 0) {
+      const parentIds_ = Array.from(parentIds);
+      const parents = await db
+        .select({ id: clubsTable.id, name: clubsTable.name })
+        .from(clubsTable)
+        .where(sql`${clubsTable.id} IN (${sql.join(parentIds_, sql`, `)})`);
+      parentNameMap = Object.fromEntries(parents.map((p) => [p.id, p.name]));
+    }
+
+    const result = rows.map((row) => ({
       derbyname: row.derbyname,
       derbyType: row.derbyType,
       numRoster: row.numRoster,
       clubId: row.clubId || null,
       clubName: row.clubName || null,
       parentClubId: row.parentClubId || null,
-      parentClubName: row.parentClubName || null,
+      parentClubName: row.parentClubId ? parentNameMap[row.parentClubId] || null : null,
       department: row.department || null,
     }));
 

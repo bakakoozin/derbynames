@@ -29,7 +29,7 @@ function RefereeJerseyIcon(props: { uid: string }) {
   );
 }
 
-type ClubOpt = { id: string; name: string; department?: string | null };
+type ClubOpt = { id: string; name: string; parentClubId?: string | null; department?: string | null };
 
 export default function Home() {
   const [derbyNames, setDerbyNames] = createSignal<Derbyname[]>([]);
@@ -40,7 +40,10 @@ export default function Home() {
 
   createEffect(() => {
     fetch("/api/clubs")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((list: ClubOpt[]) => {
         setClubs(list.filter((c) => c.id !== "autre"));
       })
@@ -60,13 +63,22 @@ export default function Home() {
     const qs = params.toString();
 
     fetch(`/api/derbynames${qs ? `?${qs}` : ""}`)
-      .then((res) => res.json())
-      .then((names: Derbyname[]) => {
-        setDerbyNames(names);
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((names) => {
+        if (Array.isArray(names)) {
+          setDerbyNames(names);
+        } else {
+          console.error("Unexpected derbynames response format:", names);
+          setDerbyNames([]);
+        }
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error loading derbynames:", error);
+        setDerbyNames([]);
         setLoading(false);
       });
   });
@@ -77,7 +89,7 @@ export default function Home() {
       const d = c.department?.trim();
       if (d) depts.add(d);
     }
-    derbyNames().forEach((d) => {
+    (derbyNames() ?? []).forEach((d) => {
       const x = d.department?.trim();
       if (x) depts.add(x);
     });
