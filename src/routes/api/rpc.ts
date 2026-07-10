@@ -58,6 +58,11 @@ export async function POST(event: APIEvent) {
           "clubs.list",
           "renameHistory.requestAccess",
           "renameHistory.listByToken",
+          "derbyname.createPlayer",
+          "derbyname.createReferee",
+          "derbyname.updatePlayerName",
+          "derbyname.updateRefereeName",
+          "derbyname.updateClub",
         ],
       });
     }
@@ -205,6 +210,47 @@ export async function POST(event: APIEvent) {
 
       return json(200, { result });
     }
+
+    // ── CQRS commands ──────────────────────────────────────────────────────────
+
+    if (method === "derbyname.createPlayer") {
+      const response = await submitDerbynameAction({ ...params, type: "player", clubOnly: false });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) return json(response.status, { error: (payload as any)?.error ?? "create_player_failed" });
+      return json(200, { result: payload });
+    }
+
+    if (method === "derbyname.createReferee") {
+      const response = await submitDerbynameAction({ ...params, type: "referee", clubOnly: false });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) return json(response.status, { error: (payload as any)?.error ?? "create_referee_failed" });
+      return json(200, { result: payload });
+    }
+
+    if (method === "derbyname.updatePlayerName") {
+      const response = await submitDerbynameAction({ ...params, type: "player", clubOnly: false });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) return json(response.status, { error: (payload as any)?.error ?? "update_player_failed" });
+      return json(200, { result: payload });
+    }
+
+    if (method === "derbyname.updateRefereeName") {
+      const response = await submitDerbynameAction({ ...params, type: "referee", clubOnly: false });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) return json(response.status, { error: (payload as any)?.error ?? "update_referee_failed" });
+      return json(200, { result: payload });
+    }
+
+    if (method === "derbyname.updateClub") {
+      const derbyTypeRaw = typeof params.derbyType === "string" ? params.derbyType.trim() : "";
+      if (!isDerbyType(derbyTypeRaw)) return json(400, { error: "invalid_type" });
+      const response = await submitDerbynameAction({ ...params, type: derbyTypeRaw, clubOnly: true });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) return json(response.status, { error: (payload as any)?.error ?? "update_club_failed" });
+      return json(200, { result: payload });
+    }
+
+    // ── Legacy / history ───────────────────────────────────────────────────────
 
     if (method === "renameHistory.requestAccess") {
       const email = typeof params.email === "string" ? params.email.trim().toLowerCase() : "";
