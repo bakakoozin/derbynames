@@ -23,6 +23,7 @@ test("parsePendingClubJson trims and normalizes optional fields", () => {
     name: "Team A",
     website: "https://club.test",
     department: "75",
+    parentClubId: undefined,
     facebookUrl: undefined,
     instagramUrl: undefined,
     twitterUrl: undefined,

@@ -5,10 +5,27 @@ import { Loader } from "~/ui/loader";
 type Club = {
   id: string;
   name: string;
+  parentClubId?: string | null;
   website?: string | null;
   department?: string | null;
   logoUrl?: string | null;
 };
+
+function buildOrderedClubs(list: Club[]): Array<Club & { isChild: boolean }> {
+  const parents = list.filter((c) => !c.parentClubId);
+  const children = list.filter((c) => !!c.parentClubId);
+  const result: Array<Club & { isChild: boolean }> = [];
+  for (const p of parents) {
+    result.push({ ...p, isChild: false });
+    for (const ch of children.filter((c) => c.parentClubId === p.id)) {
+      result.push({ ...ch, isChild: true });
+    }
+  }
+  for (const ch of children) {
+    if (!result.find((r) => r.id === ch.id)) result.push({ ...ch, isChild: true });
+  }
+  return result;
+}
 
 function departmentsFromClubs(list: Club[]): string[] {
   const depts = new Set<string>();
@@ -48,7 +65,7 @@ export default function ClubsPage() {
 
   const departments = (): string[] => departmentsFromClubs(clubs());
 
-  const filteredClubs = (): Club[] => {
+  const filteredClubs = (): Array<Club & { isChild: boolean }> => {
     let all = clubs();
     if (!all || all.length === 0) return [];
 
@@ -58,13 +75,16 @@ export default function ClubsPage() {
     }
 
     const search = searchValue().toLowerCase();
-    if (!search) return all;
+    if (search) {
+      all = all.filter(
+        (club) =>
+          club.name.toLowerCase().includes(search) ||
+          club.id.toLowerCase().includes(search) ||
+          (club.department && club.department.toLowerCase().includes(search)),
+      );
+    }
 
-    return all.filter((club) =>
-      club.name.toLowerCase().includes(search) ||
-      club.id.toLowerCase().includes(search) ||
-      (club.department && club.department.toLowerCase().includes(search)),
-    );
+    return buildOrderedClubs(all);
   };
 
   return (
@@ -106,12 +126,19 @@ export default function ClubsPage() {
             <div class="flex flex-col gap-2">
               <For each={filteredClubs()}>
                 {(club) => (
-                  <div class="p-2 odd:bg-[rgba(0,0,0,0.05)] flex gap-3 items-center flex-wrap">
+                  <div
+                    class={`flex gap-3 items-center flex-wrap p-2 odd:bg-[rgba(0,0,0,0.05)] ${
+                      club.isChild ? "border-l-2 border-dn-500/40 ml-4 pl-3" : ""
+                    }`}
+                  >
                     <div class="bg-dn-500 text-dn-100 flex min-h-[3rem] min-w-[3rem] shrink-0 items-center justify-center px-2 py-3 text-center font-display text-xs tabular-nums md:text-sm">
                       {club.department?.trim() || "—"}
                     </div>
                     <div class="flex-1 flex flex-col gap-1 min-w-[12rem]">
-                      <div class="font-display text-dn-600">
+                      <div class="font-display text-dn-600 flex items-center gap-2">
+                        {club.isChild && (
+                          <span class="text-xs text-dn-400">↳</span>
+                        )}
                         {club.name}
                       </div>
                       <div class="text-xs text-dn-500 flex flex-wrap gap-2">

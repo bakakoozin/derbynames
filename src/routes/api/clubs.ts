@@ -27,6 +27,7 @@ export async function GET(event: APIEvent) {
       .map((club) => ({
         id: club.id,
         name: club.name,
+        parentClubId: club.parentClubId ?? null,
         website: club.website ?? null,
         facebookUrl: club.facebookUrl ?? null,
         instagramUrl: club.instagramUrl ?? null,

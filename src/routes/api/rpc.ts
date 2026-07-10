@@ -158,11 +158,18 @@ export async function POST(event: APIEvent) {
           derbyname: derbynamesTable.derbyname,
           derbyType: derbynamesTable.derbyType,
           numRoster: derbynamesTable.numRoster,
+          clubId: derbynamesTable.clubId,
           clubName: clubsTable.name,
+          parentClubId: clubsTable.parentClubId,
+          parentClubName: sql`${sql.raw(`parent_clubs.name`)}`.mapWith(String),
           department: clubsTable.department,
         })
         .from(derbynamesTable)
         .leftJoin(clubsTable, eq(derbynamesTable.clubId, clubsTable.id))
+        .leftJoin(
+          clubsTable.as('parent_clubs'),
+          eq(clubsTable.parentClubId, clubsTable.as('parent_clubs').id),
+        )
         .where(and(...conditions))
         .orderBy(asc(derbynamesTable.derbyname));
 
@@ -171,6 +178,7 @@ export async function POST(event: APIEvent) {
           derbyname: row.derbyname,
           derbyType: row.derbyType,
           numRoster: row.numRoster,
+          clubId: row.clubId || null,
           clubName: row.clubName || null,
           department: row.department || null,
         })),

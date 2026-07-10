@@ -6,7 +6,10 @@ type Derbyname = {
   derbyname: string;
   derbyType: string;
   numRoster: string | null;
+  clubId: string | null;
   clubName: string | null;
+  parentClubId: string | null;
+  parentClubName: string | null;
   department: string | null;
 };
 
@@ -49,7 +52,10 @@ export default function Home() {
     const params = new URLSearchParams();
     const cid = filterClubId();
     const dept = filterDept();
-    if (cid && cid !== "all") params.set("clubId", cid);
+    // si club parent sélectionné (il a des enfants), on ne filtre pas côté API
+    // pour pouvoir inclure les collectifs ensuite en client-side
+    const hasChildren = clubs().some((c) => c.parentClubId === cid);
+    if (cid && cid !== "all" && !hasChildren) params.set("clubId", cid);
     if (dept && dept !== "all") params.set("department", dept);
     const qs = params.toString();
 
@@ -79,11 +85,22 @@ export default function Home() {
   };
 
   const filteredNames = (): Derbyname[] => {
-    const names = derbyNames();
-
+    let names = derbyNames();
     if (!names || names.length === 0) return [];
-    const search = searchValue().toLowerCase();
 
+    // filtre club hiérarchique côté client (parent + ses collectifs)
+    const cid = filterClubId();
+    if (cid && cid !== "all") {
+      const childIds = clubs()
+        .filter((c) => c.parentClubId === cid)
+        .map((c) => c.id);
+      if (childIds.length > 0) {
+        const allowed = new Set([cid, ...childIds]);
+        names = names.filter((d) => d.clubId != null && allowed.has(d.clubId));
+      }
+    }
+
+    const search = searchValue().toLowerCase();
     if (!search) return names;
     return names.filter(
       (dName: Derbyname) =>
@@ -91,6 +108,24 @@ export default function Home() {
         (dName.numRoster?.toLowerCase().includes(search) ?? false) ||
         (dName.clubName && dName.clubName.toLowerCase().includes(search)),
     );
+  };
+
+  // liste clubs ordonnée (parents puis leurs enfants indentés) pour le select
+  const orderedClubsForFilter = (): Array<ClubOpt & { isChild: boolean }> => {
+    const all = clubs();
+    const parents = all.filter((c) => !c.parentClubId);
+    const children = all.filter((c) => !!c.parentClubId);
+    const result: Array<ClubOpt & { isChild: boolean }> = [];
+    for (const p of parents) {
+      result.push({ ...p, isChild: false });
+      for (const ch of children.filter((c) => c.parentClubId === p.id)) {
+        result.push({ ...ch, isChild: true });
+      }
+    }
+    for (const ch of children) {
+      if (!result.find((r) => r.id === ch.id)) result.push({ ...ch, isChild: true });
+    }
+    return result;
   };
 
   return (
@@ -108,12 +143,14 @@ export default function Home() {
               onChange={(e) => setFilterClubId(e.currentTarget.value)}
             >
               <option value="all">Tous</option>
-              <For each={clubs()}>
+              <For each={orderedClubsForFilter()}>
                 {(c) => (
                   <option value={c.id}>
-                    {c.department?.trim()
-                      ? `${c.department} — ${c.name}`
-                      : c.name}
+                    {c.isChild
+                      ? `↳ ${c.name}`
+                      : c.department?.trim()
+                        ? `${c.department} — ${c.name}`
+                        : c.name}
                   </option>
                 )}
               </For>
@@ -165,7 +202,15 @@ export default function Home() {
                         {dName.derbyname}
                       </div>
                       {dName.clubName && (
-                        <div class="text-sm text-dn-500 italic">{dName.clubName}</div>
+                        <div class="text-sm text-dn-500 italic text-right">
+                          {dName.parentClubName ? (
+                            <>
+                              {dName.parentClubName} <span class="text-xs">›</span> {dName.clubName}
+                            </>
+                          ) : (
+                            dName.clubName
+                          )}
+                        </div>
                       )}
                     </div>
 

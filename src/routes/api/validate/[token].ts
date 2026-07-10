@@ -191,6 +191,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
         await db.insert(clubsTable).values({
           id: newClubId,
           name: pending.name,
+          parentClubId: pending.parentClubId ?? null,
           website: pending.website ?? null,
           facebookUrl: pending.facebookUrl ?? null,
           instagramUrl: pending.instagramUrl ?? null,
@@ -201,6 +202,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
         }).onDuplicateKeyUpdate({
           set: {
             name: pending.name,
+            parentClubId: pending.parentClubId ?? null,
             website: pending.website ?? null,
             facebookUrl: pending.facebookUrl ?? null,
             instagramUrl: pending.instagramUrl ?? null,
@@ -218,6 +220,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
           await db.insert(clubsTable).values({
             id: newClubId,
             name: pending.name,
+            parentClubId: pending.parentClubId ?? null,
             website: pending.website ?? null,
             facebookUrl: pending.facebookUrl ?? null,
             instagramUrl: pending.instagramUrl ?? null,
@@ -228,6 +231,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
           }).onDuplicateKeyUpdate({
             set: {
               name: pending.name,
+              parentClubId: pending.parentClubId ?? null,
               website: pending.website ?? null,
               facebookUrl: pending.facebookUrl ?? null,
               instagramUrl: pending.instagramUrl ?? null,
