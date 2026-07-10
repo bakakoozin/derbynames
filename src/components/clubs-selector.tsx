@@ -72,6 +72,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
   const [createName, setCreateName] = createSignal("");
   const [createDept, setCreateDept] = createSignal("");
   const [createWebsite, setCreateWebsite] = createSignal("");
+  const [isCollectif, setIsCollectif] = createSignal(false);
   const [createParentClubId, setCreateParentClubId] = createSignal("");
   const [createParentName, setCreateParentName] = createSignal(""); // label affiché
   const [parentSearch, setParentSearch] = createSignal("");
@@ -183,6 +184,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
     createName();
     createDept();
     createWebsite();
+    isCollectif();
     createParentClubId();
 
     if (!onChange) return;
@@ -198,7 +200,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
         kind: "create",
         club: {
           name: nm.length ? nm : " ",
-          parentClubId: createParentClubId().trim() || undefined,
+          parentClubId: isCollectif() ? (createParentClubId().trim() || undefined) : undefined,
           department: createDept().trim() || undefined,
           website: createWebsite().trim() || undefined,
         },
@@ -394,10 +396,26 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
             value={createName()}
             onInput={(e) => setCreateName(e.currentTarget.value)}
           />
-          <label class="text-xs text-dn-500">
-            Ce club est un collectif de… (optionnel)
+          <label class="flex items-center gap-2 text-xs text-dn-500 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isCollectif()}
+              onChange={(e) => {
+                setIsCollectif(e.currentTarget.checked);
+                if (!e.currentTarget.checked) {
+                  setCreateParentClubId("");
+                  setCreateParentName("");
+                  setParentSearch("");
+                }
+              }}
+            />
+            Ceci est un collectif / sous-section
           </label>
-          <div class="flex flex-col gap-1 border border-dn-500/60 p-2">
+          <Show when={isCollectif()}>
+            <label class="text-xs text-dn-500">
+              Club parent…
+            </label>
+            <div class="flex flex-col gap-1 border border-dn-500/60 p-2">
             <input
               class="input text-sm"
               placeholder="Rechercher un club parent…"
@@ -443,6 +461,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
               </p>
             </Show>
           </div>
+          </Show>
           <label class="text-xs text-dn-500" for="new-club-dept">
             Département (optionnel)
           </label>

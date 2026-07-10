@@ -70,7 +70,9 @@ export async function GET(event: APIEvent) {
       .orderBy(asc(derbynamesTable.derbyname));
 
     // Récupérer les noms des clubs parents
-    const parentIds = new Set(rows.map((r) => r.parentClubId).filter((id) => id));
+    const parentIds = new Set(
+      rows.map((r) => r.parentClubId?.trim()).filter((id) => id)
+    );
     let parentNameMap: Record<string, string> = {};
     if (parentIds.size > 0) {
       const parentIds_ = Array.from(parentIds);
@@ -87,8 +89,10 @@ export async function GET(event: APIEvent) {
       numRoster: row.numRoster,
       clubId: row.clubId || null,
       clubName: row.clubName || null,
-      parentClubId: row.parentClubId || null,
-      parentClubName: row.parentClubId ? parentNameMap[row.parentClubId] || null : null,
+      parentClubId: row.parentClubId?.trim() || null,
+      parentClubName: row.parentClubId
+        ? parentNameMap[row.parentClubId.trim()] || null
+        : null,
       department: row.department || null,
     }));
 
@@ -188,6 +192,8 @@ export async function submitDerbynameAction(body: any): Promise<Response> {
           logoUrl: typeof _newClub.logoUrl === "string" ? _newClub.logoUrl.trim() : undefined,
           department:
             typeof _newClub.department === "string" ? _newClub.department.trim() : undefined,
+          parentClubId:
+            typeof _newClub.parentClubId === "string" ? _newClub.parentClubId.trim() : undefined,
         };
         const blob = JSON.stringify(newClub);
         if (regex.test(blob)) {

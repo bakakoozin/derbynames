@@ -169,7 +169,9 @@ export async function POST(event: APIEvent) {
         .orderBy(asc(derbynamesTable.derbyname));
 
       // Récupérer les noms des clubs parents
-      const parentIds = new Set(rows.map((r) => r.parentClubId).filter((id) => id));
+      const parentIds = new Set(
+        rows.map((r) => r.parentClubId?.trim()).filter((id) => id)
+      );
       let parentNameMap: Record<string, string> = {};
       if (parentIds.size > 0) {
         const parentIds_ = Array.from(parentIds);
@@ -187,8 +189,10 @@ export async function POST(event: APIEvent) {
           numRoster: row.numRoster,
           clubId: row.clubId || null,
           clubName: row.clubName || null,
-          parentClubId: row.parentClubId || null,
-          parentClubName: row.parentClubId ? parentNameMap[row.parentClubId] || null : null,
+          parentClubId: row.parentClubId?.trim() || null,
+          parentClubName: row.parentClubId
+            ? parentNameMap[row.parentClubId.trim()] || null
+            : null,
           department: row.department || null,
         })),
       });
