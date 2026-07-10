@@ -81,6 +81,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
     let derbyTypeKey = "";
     let actionPendingClubJson: string | null = null;
     let actionReplacesDerbyname: string | null = null;
+    let actionClubOnly = false;
 
     try {
       const parsed = action.payload ? JSON.parse(action.payload) as {
@@ -88,6 +89,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
         derbyType?: string;
         pendingClubJson?: string | null;
         replacesDerbyname?: string | null;
+        clubOnly?: boolean;
       } : {};
       derbynameKey = typeof parsed.derbyname === "string" ? parsed.derbyname.trim() : "";
       derbyTypeKey = typeof parsed.derbyType === "string" ? parsed.derbyType.trim() : "";
@@ -95,11 +97,13 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
         typeof parsed.pendingClubJson === "string" ? parsed.pendingClubJson : null;
       actionReplacesDerbyname =
         typeof parsed.replacesDerbyname === "string" ? parsed.replacesDerbyname.trim() : null;
+      actionClubOnly = parsed.clubOnly === true;
     } catch {
       derbynameKey = "";
       derbyTypeKey = "";
       actionPendingClubJson = null;
       actionReplacesDerbyname = null;
+      actionClubOnly = false;
     }
 
     if (!derbynameKey || !derbyTypeKey) {
@@ -124,11 +128,13 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
         and(
           eq(derbynamesTable.derbyname, derbynameKey),
           eq(derbynamesTable.derbyType, derbyTypeKey),
+          // clubOnly : on cherche la ligne déjà confirmée ; sinon on cherche la ligne en attente
+          eq(derbynamesTable.emailConfirmed, actionClubOnly),
         ),
       )
       .limit(1);
 
-    if (!entry || entry.emailConfirmed) {
+    if (!entry) {
       await db
         .update(actionsTable)
         .set({

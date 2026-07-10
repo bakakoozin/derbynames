@@ -1,13 +1,30 @@
-import { For, createSignal, createEffect } from "solid-js";
+import { For, Show, createSignal, createEffect } from "solid-js";
 import { Search, searchValue } from "~/components/search";
 import { Loader } from "~/ui/loader";
 
 type Derbyname = {
   derbyname: string;
-  numRoster: string;
+  derbyType: string;
+  numRoster: string | null;
   clubName: string | null;
   department: string | null;
 };
+
+function RefereeJerseyIcon(props: { uid: string }) {
+  const cid = `jc-${props.uid}`;
+  const shirtPath = "M12 2.5C11 3.5 9.5 4.2 8.5 4.6L3 6.5L4.5 10.5L7 9.5L7 21L17 21L17 9.5L19.5 10.5L21 6.5L15.5 4.6C14.5 4.2 13 3.5 12 2.5Z";
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto size-6" aria-label="Arbitre">
+      <defs>
+        <clipPath id={cid}><path d={shirtPath} /></clipPath>
+      </defs>
+      <rect x="0" y="0" width="24" height="24" fill="currentColor" clip-path={`url(#${cid})`} opacity="0.25" />
+      <rect x="7" y="0" width="3" height="24" fill="currentColor" clip-path={`url(#${cid})`} />
+      <rect x="14" y="0" width="3" height="24" fill="currentColor" clip-path={`url(#${cid})`} />
+      <path d={shirtPath} stroke="currentColor" stroke-width="1" stroke-linejoin="round" />
+    </svg>
+  );
+}
 
 type ClubOpt = { id: string; name: string; department?: string | null };
 
@@ -71,7 +88,7 @@ export default function Home() {
     return names.filter(
       (dName: Derbyname) =>
         dName.derbyname.toLowerCase().includes(search) ||
-        dName.numRoster.toLowerCase().includes(search) ||
+        (dName.numRoster?.toLowerCase().includes(search) ?? false) ||
         (dName.clubName && dName.clubName.toLowerCase().includes(search)),
     );
   };
@@ -132,11 +149,16 @@ export default function Home() {
           {!loading() && (
             <div class="flex flex-col gap-2">
               <For each={filteredNames()}>
-                {(dName: Derbyname) => (
+                {(dName: Derbyname, i) => (
                   <div class="p-2 odd:bg-[rgba(0,0,0,0.05)] flex gap-3 items-center">
 
-                    <div class="bg-dn-500 text-dn-100 p-3 w-24 text-center">
-                      {dName.numRoster}
+                    <div class="bg-dn-500 text-dn-100 p-3 w-24 text-center flex items-center justify-center">
+                      <Show
+                        when={dName.derbyType === "referee"}
+                        fallback={<span>{dName.numRoster}</span>}
+                      >
+                        <RefereeJerseyIcon uid={`${i()}`} />
+                      </Show>
                     </div>
                     <div class="flex w-full justify-between items-center gap-1">
                       <div class="font-display text-dn-600 min-w-0 truncate text-left">

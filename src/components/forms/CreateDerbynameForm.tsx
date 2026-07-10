@@ -58,7 +58,7 @@ export function CreateDerbynameForm(props: Props) {
     const body: Record<string, unknown> = {
       email: fd.get("email"),
       name: fd.get("name"),
-      numRoster: fd.get("numRoster") || undefined,
+      numRoster: props.type !== "referee" ? (fd.get("numRoster") || undefined) : undefined,
     };
     if (sel.kind === "create") body.newClub = sel.club;
     else if (sel.club.id !== "autre") body.club = sel.club;
@@ -104,9 +104,11 @@ export function CreateDerbynameForm(props: Props) {
         </Show>
       </Fieldset>
 
-      <Fieldset label="Numéro de roster (optionnel)" name="numRoster">
-        <input class="input" type="text" name="numRoster" maxlength="4" />
-      </Fieldset>
+      <Show when={props.type !== "referee"}>
+        <Fieldset label="Numéro de roster (optionnel)" name="numRoster">
+          <input class="input" type="text" name="numRoster" maxlength="4" />
+        </Fieldset>
+      </Show>
 
       <Fieldset label="Club (optionnel)">
         <ClubSelector onChange={setClubSel} />

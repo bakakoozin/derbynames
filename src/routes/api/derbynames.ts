@@ -118,19 +118,21 @@ export async function submitDerbynameAction(body: any): Promise<Response> {
     const clubOnly = _clubOnly === true;
 
     const isNameValid = typeof _name === "string" && _name.length > 0;
+    // numRoster est optionnel : absent ou vide = valide ; présent = max 4 caractères
     const isNumRosterValid =
-      typeof _numRoster === "string" &&
-      _numRoster.length > 0 &&
-      _numRoster.length < 5;
+      _numRoster == null ||
+      _numRoster === "" ||
+      (typeof _numRoster === "string" && _numRoster.length < 5);
     const isEmailValid =
       typeof _email === "string" &&
       _email.length > 0 &&
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,15}$/.test(_email);
 
     const regex = /<script|<ifr|<em|<img|javascript:/i;
+    const numRosterStr = typeof _numRoster === "string" ? _numRoster : "";
     if (
       regex.test(_email) ||
-      (!clubOnly && (regex.test(String(_name)) || regex.test(String(_numRoster))))
+      (!clubOnly && (regex.test(String(_name)) || (numRosterStr && regex.test(numRosterStr))))
     ) {
       return new Response(JSON.stringify({ error: "données invalides" }), {
         status: 400,

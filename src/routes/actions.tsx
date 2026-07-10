@@ -68,7 +68,7 @@ function ActionItem(props: {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        class="flex w-full items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-dn-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dn-500"
+        class="flex w-full cursor-pointer items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-dn-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dn-500"
       >
         <span class="text-dn-500">{props.icon}</span>
         <span class="font-display text-sm font-bold uppercase tracking-wide text-dn-500">
@@ -91,11 +91,8 @@ function ActionItem(props: {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                class="btn inline-flex items-center gap-2 text-sm"
+                class="btn text-sm"
               >
-                <svg viewBox="0 0 16 16" fill="none" class="size-4 shrink-0" aria-hidden="true">
-                  <path d="m3 3 10 10M13 3 3 13" stroke="currentColor" stroke-width="1.75" />
-                </svg>
                 Fermer
               </button>
             </div>
