@@ -1,6 +1,8 @@
 export type PendingClubPayload = {
   /** Nom affiché du club */
   name: string;
+  /** Si défini, ce nouveau club est un collectif de ce club parent */
+  parentClubId?: string;
   website?: string;
   facebookUrl?: string;
   instagramUrl?: string;
@@ -16,6 +18,7 @@ export function parsePendingClubJson(raw: string | null | undefined): PendingClu
     if (typeof v?.name !== 'string' || v.name.trim().length === 0) return null;
     return {
       name: v.name.trim(),
+      parentClubId: typeof v.parentClubId === 'string' && v.parentClubId.trim() ? v.parentClubId.trim() : undefined,
       website: v.website?.trim() || undefined,
       facebookUrl: v.facebookUrl?.trim() || undefined,
       instagramUrl: v.instagramUrl?.trim() || undefined,

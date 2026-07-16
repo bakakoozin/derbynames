@@ -1,7 +1,8 @@
 import type { APIEvent } from "@solidjs/start/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb } from "~/db";
 import {
+  actionsTable,
   clubsTable,
   derbynamesTable,
   derbynameRenameHistoryTable,
@@ -10,6 +11,10 @@ import {
 import { makeUserProposedClubId, parsePendingClubJson } from "~/utils/pending-club";
 
 export async function GET({ params: { token } }: APIEvent) {
+  return confirmDerbynameAction(token);
+}
+
+export async function confirmDerbynameAction(token: string | undefined): Promise<Response> {
   if (!token) {
     return new Response(JSON.stringify({ error: "token manquant" }), {
       status: 400,
@@ -20,13 +25,30 @@ export async function GET({ params: { token } }: APIEvent) {
   try {
     const db = getDb();
 
-    const [entry] = await db
-      .select()
-      .from(derbynamesTable)
-      .where(eq(derbynamesTable.emailToken, token))
+    const [action] = await db
+      .select({
+        id: actionsTable.id,
+        status: actionsTable.status,
+        expiresAt: actionsTable.expiresAt,
+        payload: actionsTable.payload,
+      })
+      .from(actionsTable)
+      .where(
+        and(
+          eq(actionsTable.token, token),
+          eq(actionsTable.actionType, "derbyname.confirm"),
+        ),
+      )
       .limit(1);
 
-    if (!entry) {
+    if (action?.status === "completed" || action?.status === "cancelled") {
+      return new Response(JSON.stringify({ error: "token invalide" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    if (!action) {
       return new Response(JSON.stringify({ error: "token invalide" }), {
         status: 404,
         headers: { "Content-Type": "application/json" },
@@ -34,26 +56,103 @@ export async function GET({ params: { token } }: APIEvent) {
     }
 
     const now = new Date();
-    const rawExpires = entry.emailTokenExpiresAt as unknown as Date | string | null;
+    const actionExpires = action?.expiresAt instanceof Date
+      ? action.expiresAt
+      : action?.expiresAt
+        ? new Date(action.expiresAt as unknown as string)
+        : null;
 
-    let expiresAt: Date | null = null;
-    if (rawExpires instanceof Date) {
-      expiresAt = rawExpires;
-    } else if (rawExpires) {
-      expiresAt = new Date(rawExpires);
-    }
+    if (!actionExpires || actionExpires.getTime() < now.getTime() || action.status === "expired") {
+      await db
+        .update(actionsTable)
+        .set({
+          status: "expired",
+          completedAt: new Date(),
+        })
+        .where(and(eq(actionsTable.id, action.id), eq(actionsTable.status, "pending")));
 
-    if (!expiresAt || expiresAt.getTime() < now.getTime()) {
       return new Response(JSON.stringify({ error: "token expiré" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    let resolvedClubId = entry.clubId;
-    const rawPending = entry.pendingClubJson?.trim();
+    let derbynameKey = "";
+    let derbyTypeKey = "";
+    let actionPendingClubJson: string | null = null;
+    let actionReplacesDerbyname: string | null = null;
+    let actionClubOnly = false;
 
-    if (rawPending) {
+    try {
+      const parsed = action.payload ? JSON.parse(action.payload) as {
+        derbyname?: string;
+        derbyType?: string;
+        pendingClubJson?: string | null;
+        replacesDerbyname?: string | null;
+        clubOnly?: boolean;
+      } : {};
+      derbynameKey = typeof parsed.derbyname === "string" ? parsed.derbyname.trim() : "";
+      derbyTypeKey = typeof parsed.derbyType === "string" ? parsed.derbyType.trim() : "";
+      actionPendingClubJson =
+        typeof parsed.pendingClubJson === "string" ? parsed.pendingClubJson : null;
+      actionReplacesDerbyname =
+        typeof parsed.replacesDerbyname === "string" ? parsed.replacesDerbyname.trim() : null;
+      actionClubOnly = parsed.clubOnly === true;
+    } catch {
+      derbynameKey = "";
+      derbyTypeKey = "";
+      actionPendingClubJson = null;
+      actionReplacesDerbyname = null;
+      actionClubOnly = false;
+    }
+
+    if (!derbynameKey || !derbyTypeKey) {
+      await db
+        .update(actionsTable)
+        .set({
+          status: "cancelled",
+          completedAt: new Date(),
+        })
+        .where(and(eq(actionsTable.id, action.id), eq(actionsTable.status, "pending")));
+
+      return new Response(JSON.stringify({ error: "token invalide" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const [entry] = await db
+      .select()
+      .from(derbynamesTable)
+      .where(
+        and(
+          eq(derbynamesTable.derbyname, derbynameKey),
+          eq(derbynamesTable.derbyType, derbyTypeKey),
+          // clubOnly : on cherche la ligne déjà confirmée ; sinon on cherche la ligne en attente
+          eq(derbynamesTable.emailConfirmed, actionClubOnly),
+        ),
+      )
+      .limit(1);
+
+    if (!entry) {
+      await db
+        .update(actionsTable)
+        .set({
+          status: "cancelled",
+          completedAt: new Date(),
+        })
+        .where(and(eq(actionsTable.id, action.id), eq(actionsTable.status, "pending")));
+
+      return new Response(JSON.stringify({ error: "token invalide" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    let resolvedClubId = entry.clubId;
+    const rawPending = actionPendingClubJson?.trim() || "";
+
+    if (rawPending.length > 0) {
       let parsedJson: Record<string, unknown> | null = null;
       try {
         parsedJson = JSON.parse(rawPending) as Record<string, unknown>;
@@ -92,6 +191,7 @@ export async function GET({ params: { token } }: APIEvent) {
         await db.insert(clubsTable).values({
           id: newClubId,
           name: pending.name,
+          parentClubId: pending.parentClubId ?? null,
           website: pending.website ?? null,
           facebookUrl: pending.facebookUrl ?? null,
           instagramUrl: pending.instagramUrl ?? null,
@@ -102,6 +202,7 @@ export async function GET({ params: { token } }: APIEvent) {
         }).onDuplicateKeyUpdate({
           set: {
             name: pending.name,
+            parentClubId: pending.parentClubId ?? null,
             website: pending.website ?? null,
             facebookUrl: pending.facebookUrl ?? null,
             instagramUrl: pending.instagramUrl ?? null,
@@ -119,6 +220,7 @@ export async function GET({ params: { token } }: APIEvent) {
           await db.insert(clubsTable).values({
             id: newClubId,
             name: pending.name,
+            parentClubId: pending.parentClubId ?? null,
             website: pending.website ?? null,
             facebookUrl: pending.facebookUrl ?? null,
             instagramUrl: pending.instagramUrl ?? null,
@@ -129,6 +231,7 @@ export async function GET({ params: { token } }: APIEvent) {
           }).onDuplicateKeyUpdate({
             set: {
               name: pending.name,
+              parentClubId: pending.parentClubId ?? null,
               website: pending.website ?? null,
               facebookUrl: pending.facebookUrl ?? null,
               instagramUrl: pending.instagramUrl ?? null,
@@ -143,24 +246,37 @@ export async function GET({ params: { token } }: APIEvent) {
       }
     }
 
-    if (entry.replacesDerbyname) {
-      const oldDn = entry.replacesDerbyname.trim();
+    if (actionReplacesDerbyname) {
+      const oldDn = actionReplacesDerbyname.trim();
       if (oldDn.toLowerCase() !== entry.derbyname.trim().toLowerCase()) {
         const [oldRow] = await db
           .select()
           .from(derbynamesTable)
-          .where(eq(derbynamesTable.derbyname, oldDn))
+          .where(
+            and(
+              eq(derbynamesTable.derbyname, oldDn),
+              eq(derbynamesTable.derbyType, entry.derbyType),
+            ),
+          )
           .limit(1);
 
         await db.insert(derbynameRenameHistoryTable).values({
           email: entry.email,
+          derbyType: entry.derbyType,
           oldDerbyname: oldDn,
           newDerbyname: entry.derbyname,
           numRoster: oldRow?.numRoster ?? entry.numRoster,
           clubId: oldRow?.clubId ?? resolvedClubId,
         });
 
-        await db.delete(derbynamesTable).where(eq(derbynamesTable.derbyname, oldDn));
+        await db
+          .delete(derbynamesTable)
+          .where(
+            and(
+              eq(derbynamesTable.derbyname, oldDn),
+              eq(derbynamesTable.derbyType, entry.derbyType),
+            ),
+          );
       }
     }
 
@@ -168,13 +284,14 @@ export async function GET({ params: { token } }: APIEvent) {
       .update(derbynamesTable)
       .set({
         emailConfirmed: true,
-        emailToken: null,
-        emailTokenExpiresAt: null,
-        pendingClubJson: null,
-        replacesDerbyname: null,
         clubId: resolvedClubId ?? null,
       })
-      .where(eq(derbynamesTable.derbyname, entry.derbyname));
+      .where(
+        and(
+          eq(derbynamesTable.derbyname, entry.derbyname),
+          eq(derbynamesTable.derbyType, entry.derbyType),
+        ),
+      );
 
     await db.insert(historyTable).values({
       derbyname: entry.derbyname,
@@ -185,11 +302,20 @@ export async function GET({ params: { token } }: APIEvent) {
       changedBy: entry.email,
     });
 
+    await db
+      .update(actionsTable)
+      .set({
+        status: "completed",
+        completedAt: new Date(),
+      })
+      .where(and(eq(actionsTable.token, token), eq(actionsTable.status, "pending")));
+
     return new Response(
       JSON.stringify({
         ok: true,
         derbyname: entry.derbyname,
         email: entry.email,
+        derbyType: entry.derbyType,
         emailConfirmed: true,
       }),
       {

@@ -33,13 +33,20 @@ export default function HistoriquePage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/rename-history?token=${encodeURIComponent(t)}`);
-        const data = await res.json().catch(() => null);
+        const res = await fetch("/api/rpc", {
+          method: "POST",
+          body: JSON.stringify({
+            method: "renameHistory.listByToken",
+            params: { token: t },
+          }),
+        });
+        const rpc = await res.json().catch(() => null) as
+          | { result?: { items?: Row[] }; error?: string }
+          | null;
+        const data = rpc?.result ?? null;
         const errPayload =
-          data &&
-          typeof data === "object" &&
-          typeof (data as { error?: unknown }).error === "string"
-            ? (data as { error: string }).error
+          rpc && typeof rpc.error === "string"
+            ? rpc.error
             : null;
 
         if (!res.ok || errPayload || !Array.isArray((data as { items?: unknown })?.items)) {
@@ -66,13 +73,16 @@ export default function HistoriquePage() {
     setEmailSubmitting(true);
     setError(null);
     try {
-      const res = await fetch("/api/rename-history", {
+      const res = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          method: "renameHistory.requestAccess",
+          params: { email },
+        }),
       });
       if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
+        const j = await res.json().catch(() => ({})) as { error?: string };
         setError(j.error || "Demande impossible.");
         return;
       }

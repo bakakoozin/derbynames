@@ -1,10 +1,11 @@
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal, onMount } from "solid-js";
 import { toast } from "~/ui/Toast";
 import { useDebounce } from "~/hooks/debounce.hook";
 
 type Club = {
   id: string;
   name: string;
+  parentClubId?: string | null;
   website?: string | null;
   logoUrl?: string | null;
   department?: string | null;
@@ -16,6 +17,7 @@ export type ClubSelection =
       kind: "create";
       club: {
         name: string;
+        parentClubId?: string;
         website?: string;
         department?: string;
         facebookUrl?: string;
@@ -70,6 +72,39 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
   const [createName, setCreateName] = createSignal("");
   const [createDept, setCreateDept] = createSignal("");
   const [createWebsite, setCreateWebsite] = createSignal("");
+  const [isCollectif, setIsCollectif] = createSignal(false);
+  const [createParentClubId, setCreateParentClubId] = createSignal("");
+  const [createParentName, setCreateParentName] = createSignal(""); // label affiché
+  const [parentSearch, setParentSearch] = createSignal("");
+  const [parentClubs, setParentClubs] = createSignal<Club[]>([]);
+
+  onMount(async () => {
+    try {
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        body: JSON.stringify({ method: "clubs.list", params: {} }),
+      });
+      const rpc = (await res.json()) as { result?: Club[] };
+      if (Array.isArray(rpc.result)) {
+        setParentClubs(
+          rpc.result
+            .filter((c) => c.id !== "autre" && !c.parentClubId)
+            .sort((a, b) => a.name.localeCompare(b.name, "fr")),
+        );
+      }
+    } catch {}
+  });
+
+  const filteredParentClubs = (): Club[] => {
+    const q = parentSearch().toLowerCase().trim();
+    return q
+      ? parentClubs().filter(
+          (c) =>
+            c.name.toLowerCase().includes(q) ||
+            (c.department?.toLowerCase().includes(q) ?? false),
+        )
+      : parentClubs();
+  };
 
   let fetchGeneration = 0;
 
@@ -96,9 +131,23 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
     }
 
     try {
-      const qs = q.trim() ? `?q=${encodeURIComponent(q.trim())}` : "";
-      const response = await fetch(`/api/clubs${qs}`);
-      const clubsData = (await response.json()) as Club[];
+      const response = await fetch("/api/rpc", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "clubs.list",
+          params: { q: q.trim() },
+        }),
+      });
+      const rpc = (await response.json()) as {
+        result?: Club[];
+        error?: string;
+      };
+
+      if (!response.ok || !Array.isArray(rpc.result)) {
+        throw new Error(rpc.error || "Erreur de chargement");
+      }
+
+      const clubsData = rpc.result;
 
       if (gen !== fetchGeneration) return;
 
@@ -135,6 +184,8 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
     createName();
     createDept();
     createWebsite();
+    isCollectif();
+    createParentClubId();
 
     if (!onChange) return;
 
@@ -149,6 +200,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
         kind: "create",
         club: {
           name: nm.length ? nm : " ",
+          parentClubId: isCollectif() ? (createParentClubId().trim() || undefined) : undefined,
           department: createDept().trim() || undefined,
           website: createWebsite().trim() || undefined,
         },
@@ -183,6 +235,26 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
   const clubsSansAutre = (): Club[] => clubs().filter((c) => c.id !== "autre");
 
   const hasSearchQuery = (): boolean => debouncedSearch().trim().length >= 1;
+
+  // liste ordonnée : autre en tête, puis parents avec leurs enfants indentés après eux
+  const orderedClubs = (): Array<Club & { isChild: boolean }> => {
+    const all = clubs();
+    const autre = all.filter((c) => c.id === "autre");
+    const parents = all.filter((c) => c.id !== "autre" && !c.parentClubId);
+    const children = all.filter((c) => c.id !== "autre" && !!c.parentClubId);
+    const result: Array<Club & { isChild: boolean }> = [];
+    for (const s of autre) result.push({ ...s, isChild: false });
+    for (const p of parents) {
+      result.push({ ...p, isChild: false });
+      for (const ch of children.filter((c) => c.parentClubId === p.id)) {
+        result.push({ ...ch, isChild: true });
+      }
+    }
+    for (const ch of children) {
+      if (!result.find((r) => r.id === ch.id)) result.push({ ...ch, isChild: true });
+    }
+    return result;
+  };
 
   return (
     <div class="flex min-h-0 min-w-0 w-full max-w-full flex-col gap-2 overflow-x-hidden">
@@ -223,7 +295,7 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
         <Show when={!blockingLoad()}>
           <div class="flex h-full min-h-0 flex-col">
             <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-gutter:stable]">
-              <For each={clubs()}>
+              <For each={orderedClubs()}>
                 {(club) => {
                   const selected = () => selectedClubId() === club.id;
                   return (
@@ -231,6 +303,8 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
                     type="button"
                     aria-pressed={selected()}
                     class={`flex w-full cursor-pointer gap-3 items-center p-2 text-left transition ${
+                      club.isChild ? "pl-5" : ""
+                    } ${
                       selected()
                         ? "border-l-4 border-dn-500 bg-dn-500/25 shadow-[inset_0_0_0_1px_rgba(86,89,82,0.12)]"
                         : "odd:bg-[rgba(0,0,0,0.05)] hover:bg-dn-500/15"
@@ -248,7 +322,11 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
                                 : "bg-dn-500 text-dn-100"
                             }`}
                           >
-                            {club.department?.trim() || "—"}
+                            {club.isChild ? (
+                              <span class="text-base leading-none">↳</span>
+                            ) : (
+                              club.department?.trim() || "—"
+                            )}
                           </div>
                           <span
                             class={`min-w-0 flex-1 truncate font-display ${
@@ -318,6 +396,72 @@ export function ClubSelector({ defaultValue = "autre", name, onChange }: ClubSel
             value={createName()}
             onInput={(e) => setCreateName(e.currentTarget.value)}
           />
+          <label class="flex items-center gap-2 text-xs text-dn-500 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isCollectif()}
+              onChange={(e) => {
+                setIsCollectif(e.currentTarget.checked);
+                if (!e.currentTarget.checked) {
+                  setCreateParentClubId("");
+                  setCreateParentName("");
+                  setParentSearch("");
+                }
+              }}
+            />
+            Ceci est un collectif / sous-section
+          </label>
+          <Show when={isCollectif()}>
+            <label class="text-xs text-dn-500">
+              Club parent…
+            </label>
+            <div class="flex flex-col gap-1 border border-dn-500/60 p-2">
+            <input
+              class="input text-sm"
+              placeholder="Rechercher un club parent…"
+              value={parentSearch()}
+              onInput={(e) => setParentSearch(e.currentTarget.value)}
+            />
+            <div class="h-28 overflow-y-auto [scrollbar-gutter:stable]">
+              <button
+                type="button"
+                class={`w-full cursor-pointer p-1 text-left text-sm font-display ${
+                  !createParentClubId() ? "bg-dn-500/20 font-semibold" : "hover:bg-dn-500/10"
+                }`}
+                onClick={() => { setCreateParentClubId(""); setCreateParentName(""); }}
+              >
+                Aucun (club indépendant)
+              </button>
+              <For each={filteredParentClubs()}>
+                {(c) => (
+                  <button
+                    type="button"
+                    class={`w-full cursor-pointer p-1 text-left text-sm font-display ${
+                      createParentClubId() === c.id
+                        ? "bg-dn-500/20 font-semibold"
+                        : "hover:bg-dn-500/10"
+                    }`}
+                    onClick={() => {
+                      setCreateParentClubId(c.id);
+                      setCreateParentName(c.name);
+                      setParentSearch("");
+                    }}
+                  >
+                    {c.department ? `${c.department} — ` : ""}{c.name}
+                  </button>
+                )}
+              </For>
+              <Show when={parentClubs().length === 0}>
+                <p class="p-2 text-xs text-dn-500">Chargement…</p>
+              </Show>
+            </div>
+            <Show when={!!createParentClubId()}>
+              <p class="text-xs text-dn-500">
+                Collectif de : <strong>{createParentName()}</strong>
+              </p>
+            </Show>
+          </div>
+          </Show>
           <label class="text-xs text-dn-500" for="new-club-dept">
             Département (optionnel)
           </label>

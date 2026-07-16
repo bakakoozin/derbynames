@@ -1,15 +1,35 @@
-import { For, createSignal, createEffect } from "solid-js";
+import { For, Show, createSignal, createEffect } from "solid-js";
 import { Search, searchValue } from "~/components/search";
 import { Loader } from "~/ui/loader";
 
 type Derbyname = {
   derbyname: string;
-  numRoster: string;
+  derbyType: string;
+  numRoster: string | null;
+  clubId: string | null;
   clubName: string | null;
+  parentClubId: string | null;
+  parentClubName: string | null;
   department: string | null;
 };
 
-type ClubOpt = { id: string; name: string; department?: string | null };
+function RefereeJerseyIcon(props: { uid: string }) {
+  const cid = `jc-${props.uid}`;
+  const shirtPath = "M12 2.5C11 3.5 9.5 4.2 8.5 4.6L3 6.5L4.5 10.5L7 9.5L7 21L17 21L17 9.5L19.5 10.5L21 6.5L15.5 4.6C14.5 4.2 13 3.5 12 2.5Z";
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto size-6" aria-label="Arbitre">
+      <defs>
+        <clipPath id={cid}><path d={shirtPath} /></clipPath>
+      </defs>
+      <rect x="0" y="0" width="24" height="24" fill="currentColor" clip-path={`url(#${cid})`} opacity="0.25" />
+      <rect x="7" y="0" width="3" height="24" fill="currentColor" clip-path={`url(#${cid})`} />
+      <rect x="14" y="0" width="3" height="24" fill="currentColor" clip-path={`url(#${cid})`} />
+      <path d={shirtPath} stroke="currentColor" stroke-width="1" stroke-linejoin="round" />
+    </svg>
+  );
+}
+
+type ClubOpt = { id: string; name: string; parentClubId?: string | null; department?: string | null };
 
 export default function Home() {
   const [derbyNames, setDerbyNames] = createSignal<Derbyname[]>([]);
@@ -20,7 +40,10 @@ export default function Home() {
 
   createEffect(() => {
     fetch("/api/clubs")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((list: ClubOpt[]) => {
         setClubs(list.filter((c) => c.id !== "autre"));
       })
@@ -32,18 +55,30 @@ export default function Home() {
     const params = new URLSearchParams();
     const cid = filterClubId();
     const dept = filterDept();
-    if (cid && cid !== "all") params.set("clubId", cid);
+    // si club parent sélectionné (il a des enfants), on ne filtre pas côté API
+    // pour pouvoir inclure les collectifs ensuite en client-side
+    const hasChildren = clubs().some((c) => c.parentClubId === cid);
+    if (cid && cid !== "all" && !hasChildren) params.set("clubId", cid);
     if (dept && dept !== "all") params.set("department", dept);
     const qs = params.toString();
 
     fetch(`/api/derbynames${qs ? `?${qs}` : ""}`)
-      .then((res) => res.json())
-      .then((names: Derbyname[]) => {
-        setDerbyNames(names);
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((names) => {
+        if (Array.isArray(names)) {
+          setDerbyNames(names);
+        } else {
+          console.error("Unexpected derbynames response format:", names);
+          setDerbyNames([]);
+        }
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error loading derbynames:", error);
+        setDerbyNames([]);
         setLoading(false);
       });
   });
@@ -54,7 +89,7 @@ export default function Home() {
       const d = c.department?.trim();
       if (d) depts.add(d);
     }
-    derbyNames().forEach((d) => {
+    (derbyNames() ?? []).forEach((d) => {
       const x = d.department?.trim();
       if (x) depts.add(x);
     });
@@ -62,18 +97,47 @@ export default function Home() {
   };
 
   const filteredNames = (): Derbyname[] => {
-    const names = derbyNames();
-
+    let names = derbyNames();
     if (!names || names.length === 0) return [];
-    const search = searchValue().toLowerCase();
 
+    // filtre club hiérarchique côté client (parent + ses collectifs)
+    const cid = filterClubId();
+    if (cid && cid !== "all") {
+      const childIds = clubs()
+        .filter((c) => c.parentClubId === cid)
+        .map((c) => c.id);
+      if (childIds.length > 0) {
+        const allowed = new Set([cid, ...childIds]);
+        names = names.filter((d) => d.clubId != null && allowed.has(d.clubId));
+      }
+    }
+
+    const search = searchValue().toLowerCase();
     if (!search) return names;
     return names.filter(
       (dName: Derbyname) =>
         dName.derbyname.toLowerCase().includes(search) ||
-        dName.numRoster.toLowerCase().includes(search) ||
+        (dName.numRoster?.toLowerCase().includes(search) ?? false) ||
         (dName.clubName && dName.clubName.toLowerCase().includes(search)),
     );
+  };
+
+  // liste clubs ordonnée (parents puis leurs enfants indentés) pour le select
+  const orderedClubsForFilter = (): Array<ClubOpt & { isChild: boolean }> => {
+    const all = clubs();
+    const parents = all.filter((c) => !c.parentClubId);
+    const children = all.filter((c) => !!c.parentClubId);
+    const result: Array<ClubOpt & { isChild: boolean }> = [];
+    for (const p of parents) {
+      result.push({ ...p, isChild: false });
+      for (const ch of children.filter((c) => c.parentClubId === p.id)) {
+        result.push({ ...ch, isChild: true });
+      }
+    }
+    for (const ch of children) {
+      if (!result.find((r) => r.id === ch.id)) result.push({ ...ch, isChild: true });
+    }
+    return result;
   };
 
   return (
@@ -91,12 +155,14 @@ export default function Home() {
               onChange={(e) => setFilterClubId(e.currentTarget.value)}
             >
               <option value="all">Tous</option>
-              <For each={clubs()}>
+              <For each={orderedClubsForFilter()}>
                 {(c) => (
                   <option value={c.id}>
-                    {c.department?.trim()
-                      ? `${c.department} — ${c.name}`
-                      : c.name}
+                    {c.isChild
+                      ? `↳ ${c.name}`
+                      : c.department?.trim()
+                        ? `${c.department} — ${c.name}`
+                        : c.name}
                   </option>
                 )}
               </For>
@@ -132,18 +198,31 @@ export default function Home() {
           {!loading() && (
             <div class="flex flex-col gap-2">
               <For each={filteredNames()}>
-                {(dName: Derbyname) => (
+                {(dName: Derbyname, i) => (
                   <div class="p-2 odd:bg-[rgba(0,0,0,0.05)] flex gap-3 items-center">
 
-                    <div class="bg-dn-500 text-dn-100 p-3 w-24 text-center">
-                      {dName.numRoster}
+                    <div class="bg-dn-500 text-dn-100 p-3 w-24 text-center flex items-center justify-center">
+                      <Show
+                        when={dName.derbyType === "referee"}
+                        fallback={<span>{dName.numRoster}</span>}
+                      >
+                        <RefereeJerseyIcon uid={`${i()}`} />
+                      </Show>
                     </div>
                     <div class="flex w-full justify-between items-center gap-1">
                       <div class="font-display text-dn-600 min-w-0 truncate text-left">
                         {dName.derbyname}
                       </div>
                       {dName.clubName && (
-                        <div class="text-sm text-dn-500 italic">{dName.clubName}</div>
+                        <div class="text-sm text-dn-500 italic text-right">
+                          {dName.parentClubName ? (
+                            <>
+                              {dName.parentClubName} <span class="text-xs">›</span> {dName.clubName}
+                            </>
+                          ) : (
+                            dName.clubName
+                          )}
+                        </div>
                       )}
                     </div>
 

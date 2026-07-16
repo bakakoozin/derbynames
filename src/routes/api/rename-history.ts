@@ -1,15 +1,21 @@
 import type { APIEvent } from "@solidjs/start/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb } from "~/db";
 import {
+  actionsTable,
   derbynameRenameHistoryTable,
   derbynamesTable,
-  renameHistoryAccessTokensTable,
+  usersTable,
 } from "~/db/schema";
+import { ensureUserIdByEmail } from "~/utils/users";
 
 export async function GET(event: APIEvent) {
+  const token = new URL(event.request.url).searchParams.get("token")?.trim();
+  return getRenameHistoryByToken(token);
+}
+
+export async function getRenameHistoryByToken(token: string | undefined): Promise<Response> {
   try {
-    const token = new URL(event.request.url).searchParams.get("token")?.trim();
     if (!token) {
       return new Response(JSON.stringify({ error: "token manquant" }), {
         status: 400,
@@ -18,26 +24,56 @@ export async function GET(event: APIEvent) {
     }
 
     const db = getDb();
-    const [access] = await db
-      .select()
-      .from(renameHistoryAccessTokensTable)
-      .where(eq(renameHistoryAccessTokensTable.token, token))
+    let resolvedEmail: string | null = null;
+
+    const [actionAccess] = await db
+      .select({
+        userEmail: usersTable.email,
+        expiresAt: actionsTable.expiresAt,
+        status: actionsTable.status,
+      })
+      .from(actionsTable)
+      .innerJoin(usersTable, eq(actionsTable.userId, usersTable.id))
+      .where(
+        and(
+          eq(actionsTable.token, token),
+          eq(actionsTable.actionType, "renameHistory.requestAccess"),
+        ),
+      )
       .limit(1);
 
-    if (!access) {
-      return new Response(JSON.stringify({ error: "lien invalide" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (actionAccess) {
+      const actionExpires = actionAccess.expiresAt instanceof Date
+        ? actionAccess.expiresAt
+        : actionAccess.expiresAt
+          ? new Date(actionAccess.expiresAt as unknown as string)
+          : null;
+
+      if (!actionExpires || actionExpires.getTime() < Date.now()) {
+        await db
+          .update(actionsTable)
+          .set({ status: "expired", completedAt: new Date() })
+          .where(and(eq(actionsTable.token, token), eq(actionsTable.status, "pending")));
+
+        return new Response(JSON.stringify({ error: "lien expiré" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      if (actionAccess.status === "cancelled" || actionAccess.status === "expired") {
+        return new Response(JSON.stringify({ error: "lien invalide" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      resolvedEmail = actionAccess.userEmail;
     }
 
-    const expiresAt = access.expiresAt instanceof Date
-      ? access.expiresAt
-      : new Date(access.expiresAt as unknown as string);
-
-    if (expiresAt.getTime() < Date.now()) {
-      return new Response(JSON.stringify({ error: "lien expiré" }), {
-        status: 400,
+    if (!resolvedEmail) {
+      return new Response(JSON.stringify({ error: "lien invalide" }), {
+        status: 404,
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -45,7 +81,7 @@ export async function GET(event: APIEvent) {
     const rows = await db
       .select()
       .from(derbynameRenameHistoryTable)
-      .where(eq(derbynameRenameHistoryTable.email, access.email));
+      .where(eq(derbynameRenameHistoryTable.email, resolvedEmail));
 
     return new Response(
       JSON.stringify({
@@ -75,6 +111,18 @@ export async function POST(event: APIEvent) {
   try {
     const body = await event.request.json();
     const emailRaw = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    return requestRenameHistoryAccess(emailRaw);
+  } catch (e: unknown) {
+    console.error(e);
+    return new Response(JSON.stringify({ error: "Erreur serveur" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+export async function requestRenameHistoryAccess(emailRaw: string): Promise<Response> {
+  try {
     if (!emailRaw || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,15}$/.test(emailRaw)) {
       return new Response(JSON.stringify({ error: "email invalide" }), {
         status: 400,
@@ -102,11 +150,29 @@ export async function POST(event: APIEvent) {
     const randomPart = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
     const token = Buffer.from(randomPart).toString("base64url");
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+    const userId = await ensureUserIdByEmail(db, emailRaw);
 
-    await db.insert(renameHistoryAccessTokensTable).values({
-      email: emailRaw,
+    await db
+      .update(actionsTable)
+      .set({
+        status: "cancelled",
+        completedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(actionsTable.userId, userId),
+          eq(actionsTable.actionType, "renameHistory.requestAccess"),
+          eq(actionsTable.status, "pending"),
+        ),
+      );
+
+    await db.insert(actionsTable).values({
+      userId,
+      actionType: "renameHistory.requestAccess",
+      status: "pending",
       token,
       expiresAt,
+      payload: JSON.stringify({ email: emailRaw }),
     });
 
     const base = process.env.FRONTEND_URL || "http://localhost:3000";

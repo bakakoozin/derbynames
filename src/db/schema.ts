@@ -7,11 +7,14 @@ import {
   varchar,
 } from 'drizzle-orm/mysql-core';
 import { relations } from 'drizzle-orm';
+import { DERBY_TYPES } from '~/utils/constants';
 
 // Table des clubs
 export const clubsTable = mysqlTable('clubs', {
   id: varchar({ length: 255 }).primaryKey(),
   name: varchar({ length: 255 }).notNull(),
+  /** Si défini, ce club est un collectif/sous-section de parentClubId */
+  parentClubId: varchar({ length: 255 }),
   website: varchar({ length: 500 }),
   facebookUrl: varchar({ length: 500 }),
   instagramUrl: varchar({ length: 500 }),
@@ -27,17 +30,13 @@ export const clubsTable = mysqlTable('clubs', {
 // Table principale des derbynames
 export const derbynamesTable = mysqlTable('derbynames', {
   derbyname: varchar({ length: 255 }).primaryKey(),
+  derbyType: varchar({ length: 20 }).notNull().default(DERBY_TYPES[0]),
   name: varchar({ length: 255 }).notNull(),
   numRoster: varchar({ length: 50 }),
   email: varchar({ length: 255 }).notNull(),
+  userId: int(),
   clubId: varchar({ length: 255 }),
   emailConfirmed: boolean().default(false).notNull(),
-  emailToken: varchar({ length: 255 }),
-  emailTokenExpiresAt: timestamp(),
-  /** JSON string : proposition de club (nom, urls…) avant validation email — pas d’INSERT clubs avant validation */
-  pendingClubJson: text(),
-  /** Si défini, à la confirmation du nouveau derbyname, supprimer l’ancienne ligne confirmée */
-  replacesDerbyname: varchar({ length: 255 }),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow().onUpdateNow(),
 });
@@ -46,6 +45,7 @@ export const derbynamesTable = mysqlTable('derbynames', {
 export const derbynameRenameHistoryTable = mysqlTable('derbyname_rename_history', {
   id: int().primaryKey().autoincrement(),
   email: varchar({ length: 255 }).notNull(),
+  derbyType: varchar({ length: 20 }).notNull().default(DERBY_TYPES[0]),
   oldDerbyname: varchar({ length: 255 }).notNull(),
   newDerbyname: varchar({ length: 255 }).notNull(),
   numRoster: varchar({ length: 50 }),
@@ -53,13 +53,26 @@ export const derbynameRenameHistoryTable = mysqlTable('derbyname_rename_history'
   createdAt: timestamp().defaultNow(),
 });
 
-/** Jeton usage unique pour consulter l’historique des derby names par email (magic link) */
-export const renameHistoryAccessTokensTable = mysqlTable('rename_history_access_tokens', {
+/** Identité utilisateur canonique (pivot pour actions validées par mail) */
+export const usersTable = mysqlTable('users', {
   id: int().primaryKey().autoincrement(),
-  email: varchar({ length: 255 }).notNull(),
-  token: varchar({ length: 255 }).notNull().unique(),
-  expiresAt: timestamp().notNull(),
+  email: varchar({ length: 255 }).notNull().unique(),
   createdAt: timestamp().defaultNow(),
+  updatedAt: timestamp().defaultNow().onUpdateNow(),
+});
+
+/** Action générique en attente/validée (token mail, expiration, payload) */
+export const actionsTable = mysqlTable('actions', {
+  id: int().primaryKey().autoincrement(),
+  userId: int().notNull(),
+  actionType: varchar({ length: 100 }).notNull(),
+  status: varchar({ length: 20 }).notNull().default('pending'),
+  token: varchar({ length: 255 }).unique(),
+  expiresAt: timestamp(),
+  payload: text(),
+  completedAt: timestamp(),
+  createdAt: timestamp().defaultNow(),
+  updatedAt: timestamp().defaultNow().onUpdateNow(),
 });
 
 // Table d'historique des changements (journal générique)
@@ -124,11 +137,27 @@ export const derbynamesRelations = relations(derbynamesTable, ({ one, many }) =>
     fields: [derbynamesTable.clubId],
     references: [clubsTable.id],
   }),
+  user: one(usersTable, {
+    fields: [derbynamesTable.userId],
+    references: [usersTable.id],
+  }),
   history: many(historyTable),
 }));
 
 export const clubsRelations = relations(clubsTable, ({ many }) => ({
   derbynames: many(derbynamesTable),
+}));
+
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  derbynames: many(derbynamesTable),
+  actions: many(actionsTable),
+}));
+
+export const actionsRelations = relations(actionsTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [actionsTable.userId],
+    references: [usersTable.id],
+  }),
 }));
 
 export const historyRelations = relations(historyTable, ({ one }) => ({
