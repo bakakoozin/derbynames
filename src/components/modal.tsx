@@ -37,27 +37,32 @@ export function Modal(props: ModalProps) {
     {props.button}
     {open() && (
       <div class="fixed inset-0 z-50 flex items-center justify-center bg-600 bg-opacity-50 p-3">
-      <div
-        class="box-border h-[95dvh] w-full max-w-125 min-w-0 overflow-x-hidden overflow-y-auto border border-dn-500 bg-dn-100 p-3 [scrollbar-gutter:stable]"
-        role="dialog"
-        aria-modal="true"
-      >
-        {props.closeButton &&
-          <div class="flex justify-end">
-            <button
-              type="button"
-              onClick={modal.close}
-              class="btn inline-flex items-center gap-2"
-            >
-              <IconCloseFlat class="size-5 shrink-0 text-dn-100" />
-              Fermer
-            </button>
-          </div>
-        }
+        <div
+          class="
+            box-border h-[95dvh] w-full
+            max-w-125 min-w-0 overflow-x-hidden
+            overflow-y-auto border border-dn-500
+            bg-dn-100 p-3 [scrollbar-gutter:stable]
+          "
+          role="dialog"
+          aria-modal="true"
+        >
+          {props.closeButton &&
+            <div class="flex justify-end">
+              <button
+                type="button"
+                onClick={modal.close}
+                class="btn inline-flex items-center gap-2"
+              >
+                <IconCloseFlat class="size-5 shrink-0 text-dn-100" />
+                Fermer
+              </button>
+            </div>
+          }
 
-        {props.children}
+          {props.children}
+        </div>
       </div>
-    </div>
     )}
   </>
 }
