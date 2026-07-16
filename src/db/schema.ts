@@ -7,7 +7,12 @@ import {
   varchar,
 } from 'drizzle-orm/mysql-core';
 import { relations } from 'drizzle-orm';
-import { DERBY_TYPES } from '~/utils/constants';
+
+// ⚠️ Inline (et non import depuis ~/utils/constants) :
+// Drizzle Kit charge ce fichier via esbuild-register, qui ne résout pas
+// les `paths` du tsconfig.json → l'alias `~/*` ferait échouer `drizzle-kit push`.
+// À garder en miroir de `DERBY_TYPES[0]` dans src/utils/constants.ts.
+const DEFAULT_DERBY_TYPE = 'player' as const;
 
 // Table des clubs
 export const clubsTable = mysqlTable('clubs', {
@@ -30,7 +35,7 @@ export const clubsTable = mysqlTable('clubs', {
 // Table principale des derbynames
 export const derbynamesTable = mysqlTable('derbynames', {
   derbyname: varchar({ length: 255 }).primaryKey(),
-  derbyType: varchar({ length: 20 }).notNull().default(DERBY_TYPES[0]),
+  derbyType: varchar({ length: 20 }).notNull().default(DEFAULT_DERBY_TYPE),
   name: varchar({ length: 255 }).notNull(),
   numRoster: varchar({ length: 50 }),
   email: varchar({ length: 255 }).notNull(),
@@ -45,7 +50,7 @@ export const derbynamesTable = mysqlTable('derbynames', {
 export const derbynameRenameHistoryTable = mysqlTable('derbyname_rename_history', {
   id: int().primaryKey().autoincrement(),
   email: varchar({ length: 255 }).notNull(),
-  derbyType: varchar({ length: 20 }).notNull().default(DERBY_TYPES[0]),
+  derbyType: varchar({ length: 20 }).notNull().default(DEFAULT_DERBY_TYPE),
   oldDerbyname: varchar({ length: 255 }).notNull(),
   newDerbyname: varchar({ length: 255 }).notNull(),
   numRoster: varchar({ length: 50 }),
