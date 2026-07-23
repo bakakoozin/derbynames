@@ -4,11 +4,13 @@ import { createHandler, StartServer } from "@solidjs/start/server";
 export default createHandler(() => (
   <StartServer
     document={({ assets, children, scripts }) => (
-      <html lang="en">
+      <html lang="fr">
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
+          <link rel="manifest" href="/manifest.webmanifest" />
+          <link rel="apple-touch-icon" href="/pwa-icon-192.png" />
           {assets}
         </head>
         <body>
