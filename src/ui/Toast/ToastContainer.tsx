@@ -1,4 +1,4 @@
-import { For, createMemo } from "solid-js"
+import { createMemo, For } from "solid-js"
 import { Toast } from "./Toast"
 import { ToastCtrl } from "./Toast.ctrl"
 
@@ -28,6 +28,7 @@ export const ToastContainer = (props: ToastContainerProps) => {
             data-[position=bottom-center]:bottom-4 data-[position=bottom-center]:left-1/2 data-[position=bottom-center]:-translate-x-1/2
             data-[position=bottom-right]:bottom-4 data-[position=bottom-right]:right-4"
       data-position={position()}
+      role="status"
       aria-live="polite"
       aria-label="Notifications"
     >

@@ -1,5 +1,5 @@
-import { createSignal, onMount, Show } from "solid-js";
 import { marked } from "marked";
+import { createSignal, onMount, Show } from "solid-js";
 import announcementsMd from "~/content/announcements.md?raw";
 
 const STORAGE_KEY = "derbynames-announce-dismissed-sha256";
@@ -72,6 +72,7 @@ export function AnnouncementModal() {
             </div>
             <div
               class="announcement-md min-h-0 flex-1 overflow-y-auto px-3 py-3 [scrollbar-gutter:stable]"
+              tabindex="0"
               innerHTML={html()}
             />
             <div class="shrink-0 border-t border-dn-500/40 bg-dn-100 p-3">

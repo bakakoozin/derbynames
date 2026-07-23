@@ -61,6 +61,12 @@ Ne commitez **jamais** de secrets ; utilisez uniquement la configuration déploy
 | `pnpm run dev` | Serveur de développement |
 | `pnpm run build` | Build production (Vinxi / Nitro) |
 | `pnpm run start` | Lance le build Node (après `build`) |
+| `pnpm run typecheck` | Vérification TypeScript sans émission |
+| `pnpm run test:unit` | Tests unitaires Node |
+| `pnpm run test:e2e` | Smoke, accessibilité axe et métadonnées SEO avec Playwright |
+| `pnpm run audit:lighthouse` | Build puis budgets Lighthouse performance / accessibilité / SEO |
+| `pnpm run audit:deps` | Audit des dépendances hautes et critiques |
+| `pnpm run test:ci` | Contrôles applicatifs locaux (types, unitaires, build et navigateur) |
 | `pnpm run db:push` | Applique le schéma Drizzle (`drizzle-kit push`) |
 | `pnpm run db:studio` | Interface Drizzle Studio |
 | `pnpm run clubs:import` | Import / traitement des clubs (script projet) |
@@ -85,7 +91,23 @@ La fermeture « Compris » mémorise un **hash** du contenu dans `localStorage` 
 
 ## Développement & qualité
 
-Avant une PR ou un commit, exécuter la commande CI du dépôt : ici **`pnpm run build`**.
+Après `pnpm install`, installer Chromium une fois pour les tests navigateur :
+
+```bash
+pnpm exec playwright install chromium
+```
+
+Avant une pull request, exécuter :
+
+```bash
+pnpm run test:ci
+pnpm run audit:lighthouse
+pnpm run audit:deps
+```
+
+Les tests Playwright interceptent `/api/clubs` et `/api/derbynames` : ils vérifient la page publique sans accéder à une base MySQL ni à des données réelles. Les critères observables sont décrits dans `specs/features/quality-harness.feature`.
+
+La CI sépare les contrôles applicatifs, le navigateur/accessibilité, Lighthouse et la sécurité. Les rapports Playwright et Lighthouse sont publiés comme artefacts. L’audit de dépendances reste informatif tant que les vulnérabilités initiales, suivies dans le ticket associé au harnais, ne sont pas corrigées.
 
 ---
 

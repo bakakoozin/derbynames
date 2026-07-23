@@ -1,6 +1,5 @@
-import { MenuLink } from '~/components/menu-link'
-
 import { createSignal, onMount } from 'solid-js'
+import { MenuLink } from '~/components/menu-link'
 
 export function Menu() {
 
@@ -22,11 +21,18 @@ export function Menu() {
 
   return (
     <>
-      <div class="fixed top-4 left-2 flex gap-1 flex-col z-50 md:hidden cursor-pointer" onClick={handleToggle}>
+      <button
+        type="button"
+        class="fixed top-4 left-2 flex gap-1 flex-col z-50 md:hidden cursor-pointer"
+        aria-label={isOpen() ? "Fermer le menu" : "Ouvrir le menu"}
+        aria-expanded={isOpen()}
+        aria-controls="main-navigation"
+        onClick={handleToggle}
+      >
         {
-          Array(3).fill(0).map((_, i) => <div class={`h-2 w-8 bg-dn-500`} />)
+          Array(3).fill(0).map(() => <div class={`h-2 w-8 bg-dn-500`} />)
         }
-      </div>
+      </button>
       <div data-open={isOpen()} class="
         z-30
           fixed inset-0 backdrop-filter backdrop-blur-sm
@@ -34,17 +40,18 @@ export function Menu() {
           data-[open=false]:opacity-0 md:opacity-0">
         <div class="fixed inset-0 bg-dn-500 opacity-10" />
       </div>
-      <div
+      <nav
+        id="main-navigation"
+        aria-label="Navigation principale"
         data-open={isOpen()}
-        onClick={handleClose}
         class="
           z-30 md:z-10
           flex flex-col gap-2 px-2 pb-2 pr-4 md:pr-2 pt-14 md:pt-2
           fixed md:relative top-0 bottom-0 left-0 bg-dn-100
-          transition-all data-[open=false]:-left-[100%]
+          transition-all data-[open=false]:-left-full
           md:data-[open=false]:left-0
         ">
-        <MenuLink link="/actions" text="AJOUTER / MODIFIER MON DERBY NAME" />
+        <MenuLink link="/actions" text="AJOUTER / MODIFIER MON DERBY NAME" onClick={handleClose} />
         <div class='border-b border-dn-500 my-2' />
         {[{
           link: '/',
@@ -58,7 +65,7 @@ export function Menu() {
         }, ...(flags().premiumBadges ? [{
           link: '/badge-info',
           text: 'BADGE PREMIUM'
-        }] : [])].map((link) => <MenuLink  {...link} />)}
+        }] : [])].map((link) => <MenuLink {...link} onClick={handleClose} />)}
 
         <div class='border-b border-dn-500 my-2' />
         {[{
@@ -68,8 +75,8 @@ export function Menu() {
         }, {
           link: '/legal',
           text: 'Mentions légales'
-        }].map((link) => <MenuLink {...link} />)}
-      </div>
+        }].map((link) => <MenuLink {...link} onClick={handleClose} />)}
+      </nav>
     </>
   )
 }

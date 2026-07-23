@@ -7,6 +7,11 @@
     "start": "vinxi start",
     "test": "node --test --import tsx \"src/**/*.test.ts\"",
     "test:unit": "node --test --import tsx \"src/**/*.test.ts\"",
+    "test:e2e": "playwright test",
+    "test:ci": "pnpm run typecheck && pnpm run test:unit && pnpm run build && pnpm run test:e2e",
+    "typecheck": "tsc --noEmit --pretty false -p tsconfig.quality.json",
+    "audit:deps": "pnpm audit --audit-level high",
+    "audit:lighthouse": "pnpm run build && lhci autorun --config=./lighthouserc.json",
     "env:from-example": "node scripts/generate-env-from-example.mjs",
     "db:push": "drizzle-kit push",
     "db:backfill-actions": "tsx scripts/backfill-users-actions.ts",
@@ -29,11 +34,16 @@
     "vinxi": "^0.5.11"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
+    "@lhci/cli": "0.15.1",
+    "@playwright/test": "1.61.1",
     "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^24.10.9",
     "drizzle-kit": "^0.31.8",
     "tailwindcss": "^4.1.18",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "typescript": "5.9.2",
+    "vite": "6.4.3"
   },
   "engines": {
     "node": ">=22"
@@ -48,7 +58,8 @@
       "h3": ">=1.15.9",
       "seroval@<1.4.1": ">=1.4.1",
       "seroval@<=1.4.0": ">=1.4.1",
-      "tar": ">=7.5.11",
+      "tar": ">=7.5.19",
+      "tmp": ">=0.2.6",
       "serialize-javascript": ">=7.0.5",
       "node-forge": ">=1.4.0",
       "picomatch": ">=4.0.4",
