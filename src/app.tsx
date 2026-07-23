@@ -1,12 +1,12 @@
-import { Router, A } from '@solidjs/router';
+import { A, Router } from '@solidjs/router';
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 import "./app.css";
+import { Meta, MetaProvider, Title } from '@solidjs/meta'
+import { AnnouncementModal } from '~/components/announcement-modal';
 import { Logo } from '~/components/logo';
 import { Menu } from '~/components/menu';
-import { AnnouncementModal } from '~/components/announcement-modal';
 import { ToastContainer } from './ui/Toast';
-import { Meta, MetaProvider, Title } from '@solidjs/meta'
 
 
 export default function App() {
@@ -18,6 +18,10 @@ export default function App() {
 
             <Title>Derby Names</Title>
             <Meta name="author" content="Derby Names" />
+            <Meta
+              name="description"
+              content="Répertoire public des derby names du roller derby et de leurs clubs."
+            />
             <Meta name="robots" content="index, follow" />
             <Meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <Meta name="generator" content="Derby Names" />

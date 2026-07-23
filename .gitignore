@@ -10,6 +10,11 @@ app.config.timestamp_*.js
 .env
 .env*.local
 
+# Test and audit reports
+/playwright-report
+/test-results
+/.lighthouseci
+
 # dependencies
 /node_modules
 
