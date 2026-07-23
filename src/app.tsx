@@ -26,6 +26,8 @@ export default function App() {
             <Meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <Meta name="generator" content="Derby Names" />
             <Meta name="theme-color" content="#000000" />
+            <Meta name="application-name" content="Derby Names" />
+            <Meta name="apple-mobile-web-app-title" content="Derby Names" />
             <Meta name="apple-mobile-web-app-capable" content="yes" />
             <Meta name="apple-mobile-web-app-status-bar-style" content="black" />
           </MetaProvider>

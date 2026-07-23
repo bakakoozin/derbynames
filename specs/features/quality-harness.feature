@@ -18,6 +18,14 @@ Fonctionnalité: Harnais qualité de Derby Names
     Et les robots autorisent l'indexation
     Et la page possède une description
 
+  Scénario: L'application expose les prérequis d'installation PWA
+    Étant donné que la page d'accueil est servie
+    Quand le harnais inspecte les métadonnées PWA
+    Alors un manifeste web est déclaré
+    Et le manifeste permet un affichage standalone
+    Et les icônes installables 192 et 512 pixels sont disponibles
+    Et un service worker est servi
+
   Scénario: Les budgets Lighthouse sont respectés
     Étant donné que le build de production est disponible
     Quand Lighthouse audite la page d'accueil
