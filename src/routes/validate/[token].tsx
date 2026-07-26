@@ -108,7 +108,7 @@ export default function Validate() {
                 <span class="font-mono">{data()!.email}</span>
               </p>
               <p class="mt-3 text-sm">
-                Tu peux maintenant utiliser ce derby name, il est réservé pour toi.
+                Ton derby name a bien été enregistré.
               </p>
             </div>
           )}
