@@ -1,0 +1,11 @@
+node_modules
+.pnpm-store
+.vinxi
+.output
+playwright-report
+lighthouse-reports
+coverage
+.git
+.env
+.env.*
+!.env.exemple

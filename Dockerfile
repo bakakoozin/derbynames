@@ -13,11 +13,12 @@ ENV VITE_FRONTEND_URL=$VITE_FRONTEND_URL
 ENV VITE_API_DERBY=$VITE_API_DERBY
 ENV CAPROVER_GIT_COMMIT_SHA=$CAPROVER_GIT_COMMIT_SHA
 
-# pnpm via corepack (comme dans ton exemple)
-RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
+# pnpm 11 lit les overrides et les autorisations de scripts depuis
+# pnpm-workspace.yaml, qui fait donc partie de l'installation reproductible.
+RUN corepack enable && corepack prepare pnpm@11.18.0 --activate
 
 # Dépendances
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY drizzle.config.ts ./
 RUN pnpm install --frozen-lockfile
 
