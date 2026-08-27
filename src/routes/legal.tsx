@@ -36,11 +36,11 @@ const sections: Section[] = [
     title: "Hébergement",
     content: [
       {
-        title: "Cloudflare",
+        title: "IONOS",
         content: "",
         link: {
-          href: "https://www.cloudflare.com/fr-fr/",
-          label: "Lien vers le site de Cloudflare",
+          href: "https://www.ionos.fr/",
+          label: "Lien vers le site de IONOS",
         },
       },
     ],
