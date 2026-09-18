@@ -28,6 +28,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
     const [action] = await db
       .select({
         id: actionsTable.id,
+        userId: actionsTable.userId,
         status: actionsTable.status,
         expiresAt: actionsTable.expiresAt,
         payload: actionsTable.payload,
@@ -127,6 +128,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
       .where(
         and(
           eq(derbynamesTable.derbyname, derbynameKey),
+          eq(derbynamesTable.userId, action.userId),
           eq(derbynamesTable.derbyType, derbyTypeKey),
           // clubOnly : on cherche la ligne déjà confirmée ; sinon on cherche la ligne en attente
           eq(derbynamesTable.emailConfirmed, actionClubOnly),
@@ -255,6 +257,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
           .where(
             and(
               eq(derbynamesTable.derbyname, oldDn),
+              eq(derbynamesTable.email, entry.email),
               eq(derbynamesTable.derbyType, entry.derbyType),
             ),
           )
@@ -274,6 +277,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
           .where(
             and(
               eq(derbynamesTable.derbyname, oldDn),
+              eq(derbynamesTable.email, entry.email),
               eq(derbynamesTable.derbyType, entry.derbyType),
             ),
           );
@@ -289,6 +293,7 @@ export async function confirmDerbynameAction(token: string | undefined): Promise
       .where(
         and(
           eq(derbynamesTable.derbyname, entry.derbyname),
+          eq(derbynamesTable.email, entry.email),
           eq(derbynamesTable.derbyType, entry.derbyType),
         ),
       );

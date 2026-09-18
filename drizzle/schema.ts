@@ -108,7 +108,7 @@ export const derbynames = mysqlTable("derbynames", {
 },
 (table) => [
 	index("derbynames_email_derbyType_confirmed_idx").on(table.email, table.derbyType, table.emailConfirmed),
-	primaryKey({ columns: [table.derbyname], name: "derbynames_derbyname"}),
+	primaryKey({ columns: [table.derbyname, table.email, table.derbyType], name: "derbynames_derbyname_email_derbyType"}),
 ]);
 
 export const history = mysqlTable("history", {

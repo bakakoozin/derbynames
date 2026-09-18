@@ -11,13 +11,6 @@ import type { PendingClubPayload } from "~/utils/pending-club";
 import { DERBY_TYPES, isDerbyType, type DerbyType } from "~/utils/constants";
 import { ensureUserIdByEmail } from "~/utils/users";
 
-function derbynameEqualsInsensitiveByType(value: string, derbyType: DerbyType) {
-  return and(
-    sql`lower(${derbynamesTable.derbyname}) = ${value.trim().toLowerCase()}`,
-    eq(derbynamesTable.derbyType, derbyType),
-  );
-}
-
 function parseDerbyType(value: unknown): DerbyType | null {
   if (isDerbyType(value)) return value;
   return null;
@@ -354,8 +347,6 @@ export async function submitDerbynameAction(body: any): Promise<Response> {
       });
     }
 
-    const derbyKey = name.toLowerCase();
-
     const pendingClubJson = newClub ? JSON.stringify(newClub) : null;
     let clubId =
       club && club.id !== "autre" && !newClub ? club.id : null;
@@ -385,31 +376,71 @@ export async function submitDerbynameAction(body: any): Promise<Response> {
             eq(derbynamesTable.emailConfirmed, false),
           ),
         );
-      if (confirmedRow.derbyname.toLowerCase() === derbyKey) {
+      if (confirmedRow.derbyname.toLowerCase() === name.toLowerCase()) {
+        await db
+          .update(derbynamesTable)
+          .set({
+            name,
+            numRoster,
+            userId,
+            clubId,
+          })
+          .where(
+            and(
+              eq(derbynamesTable.derbyname, confirmedRow.derbyname),
+              eq(derbynamesTable.email, email),
+              eq(derbynamesTable.derbyType, derbyType),
+            ),
+          );
+
+        await db
+          .update(actionsTable)
+          .set({
+            status: "cancelled",
+            completedAt: new Date(),
+          })
+          .where(
+            and(
+              eq(actionsTable.userId, userId),
+              eq(actionsTable.actionType, "derbyname.confirm"),
+              eq(actionsTable.status, "pending"),
+            ),
+          );
+
+        await db.insert(actionsTable).values({
+          userId,
+          actionType: "derbyname.confirm",
+          status: "pending",
+          token: emailToken,
+          expiresAt: emailTokenExpiresAt,
+          payload: JSON.stringify({
+            derbyname: confirmedRow.derbyname,
+            derbyType,
+            pendingClubJson,
+            replacesDerbyname: null,
+            clubOnly: true,
+          }),
+        });
+
+        await sendConfirmationEmail(name, email, emailToken);
+
         return new Response(
-          JSON.stringify({ error: "ce derby name est déjà le vôtre (déjà confirmé)" }),
+          JSON.stringify({
+            player: {
+              name,
+              derbyType,
+              numRoster,
+              email,
+              club: club ? { id: club.id, name: club.name } : null,
+              newClub,
+              emailConfirmed: true,
+            },
+          }),
           {
-            status: 400,
+            status: 200,
             headers: { "Content-Type": "application/json" },
           },
         );
-      }
-
-      const existingDerbyname = await db
-        .select()
-        .from(derbynamesTable)
-        .where(derbynameEqualsInsensitiveByType(derbyKey, derbyType))
-        .limit(1);
-
-      if (
-        existingDerbyname.length > 0 &&
-        existingDerbyname[0].emailConfirmed &&
-        existingDerbyname[0].email !== email
-      ) {
-        return new Response(JSON.stringify({ error: "nom déjà pris" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        });
       }
 
       await db.insert(derbynamesTable).values({
@@ -492,48 +523,16 @@ export async function submitDerbynameAction(body: any): Promise<Response> {
         ),
       );
 
-    const existingDerbyname = await db
-      .select()
-      .from(derbynamesTable)
-      .where(derbynameEqualsInsensitiveByType(derbyKey, derbyType))
-      .limit(1);
-
-    if (existingDerbyname.length > 0 && existingDerbyname[0].emailConfirmed) {
-      return new Response(JSON.stringify({ error: "nom déjà pris" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    try {
-      await db.insert(derbynamesTable).values({
-        derbyname: name,
-        name,
-        derbyType,
-        numRoster,
-        email,
-        userId,
-        clubId,
-        emailConfirmed: false,
-      });
-    } catch (error: any) {
-      if (error.code === "ER_DUP_ENTRY") {
-        await db
-          .update(derbynamesTable)
-          .set({
-            name,
-            derbyType,
-            numRoster,
-            email,
-            userId,
-            clubId,
-            emailConfirmed: false,
-          })
-          .where(derbynameEqualsInsensitiveByType(derbyKey, derbyType));
-      } else {
-        throw error;
-      }
-    }
+    await db.insert(derbynamesTable).values({
+      derbyname: name,
+      name,
+      derbyType,
+      numRoster,
+      email,
+      userId,
+      clubId,
+      emailConfirmed: false,
+    });
 
     await db.insert(historyTable).values({
       derbyname: name,

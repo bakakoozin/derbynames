@@ -2,6 +2,7 @@ import {
   boolean,
   int,
   mysqlTable,
+  primaryKey,
   text,
   timestamp,
   varchar,
@@ -34,7 +35,7 @@ export const clubsTable = mysqlTable('clubs', {
 
 // Table principale des derbynames
 export const derbynamesTable = mysqlTable('derbynames', {
-  derbyname: varchar({ length: 255 }).primaryKey(),
+  derbyname: varchar({ length: 255 }).notNull(),
   derbyType: varchar({ length: 20 }).notNull().default(DEFAULT_DERBY_TYPE),
   name: varchar({ length: 255 }).notNull(),
   numRoster: varchar({ length: 50 }),
@@ -44,7 +45,9 @@ export const derbynamesTable = mysqlTable('derbynames', {
   emailConfirmed: boolean().default(false).notNull(),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow().onUpdateNow(),
-});
+}, (table) => [
+  primaryKey({ columns: [table.derbyname, table.email, table.derbyType] }),
+]);
 
 /** Historique des derby names remplacés (après confirmation email du nouveau) */
 export const derbynameRenameHistoryTable = mysqlTable('derbyname_rename_history', {

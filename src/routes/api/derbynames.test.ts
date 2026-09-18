@@ -242,31 +242,18 @@ test("POST clubOnly succeeds for an existing confirmed derbyname", async () => {
   assert.ok(action, "should create a confirmation action");
 });
 
-test("POST returns 400 when the requested derbyname is already taken", async () => {
+test("POST allows a derbyname already confirmed for another email", async () => {
   installMocks();
-  // No existing for email, but the derbyname is already taken by someone else.
   queue = [[]];
-  // Second call (existingDerbyname) returns an existing confirmed derbyname
-  // with a different email.
-  queue.push([
-    {
-      derbyname: "alpha",
-      derbyType: "player",
-      name: "Someone",
-      email: "other@example.com",
-      emailConfirmed: true,
-      numRoster: "1",
-      clubId: "c1",
-    },
-  ]);
   const { POST } = await importApi();
   const res = await POST(postEvent({
     name: "alpha",
     email: "a@b.co",
     type: "player",
   }));
-  assert.equal(res.status, 400);
-  assert.deepEqual(await res.json(), { error: "nom déjà pris" });
+  assert.equal(res.status, 200);
+  const derbyname = insertCalls.find((call) => (call.values as any).derbyname === "alpha");
+  assert.equal((derbyname?.values as any).email, "a@b.co");
 });
 
 test("POST creates a new derbyname and returns the player shape", async () => {
@@ -311,8 +298,6 @@ test("POST replacement: same email already has a confirmed derbyname", async () 
     numRoster: "1",
     clubId: "c1",
   }]];
-  // existingDerbyname lookup for the new name returns nothing
-  queue.push([]);
   const { POST } = await importApi();
   const res = await POST(postEvent({
     name: "alpha",
@@ -326,7 +311,7 @@ test("POST replacement: same email already has a confirmed derbyname", async () 
   assert.ok(dnInsert);
 });
 
-test("POST replacement blocked when the new derbyname is already taken by another email", async () => {
+test("POST replacement allows a derbyname already confirmed for another email", async () => {
   installMocks();
   queue = [[{
     derbyname: "old-1",
@@ -337,26 +322,18 @@ test("POST replacement blocked when the new derbyname is already taken by anothe
     numRoster: "1",
     clubId: "c1",
   }]];
-  queue.push([{
-    derbyname: "alpha",
-    derbyType: "player",
-    name: "Bob",
-    email: "bob@example.com",
-    emailConfirmed: true,
-    numRoster: "9",
-    clubId: "c2",
-  }]);
   const { POST } = await importApi();
   const res = await POST(postEvent({
     name: "alpha",
     email: "alice@example.com",
     type: "player",
   }));
-  assert.equal(res.status, 400);
-  assert.deepEqual(await res.json(), { error: "nom déjà pris" });
+  assert.equal(res.status, 200);
+  const derbyname = insertCalls.find((call) => (call.values as any).derbyname === "alpha");
+  assert.equal((derbyname?.values as any).email, "alice@example.com");
 });
 
-test("POST replacement blocked when trying to keep the same name", async () => {
+test("POST updates a confirmed derbyname when the name is resubmitted", async () => {
   installMocks();
   queue = [[{
     derbyname: "alpha",
@@ -371,10 +348,15 @@ test("POST replacement blocked when trying to keep the same name", async () => {
   const res = await POST(postEvent({
     name: "alpha",
     email: "alice@example.com",
+    numRoster: "42",
     type: "player",
   }));
-  assert.equal(res.status, 400);
-  assert.deepEqual(await res.json(), { error: "ce derby name est déjà le vôtre (déjà confirmé)" });
+  assert.equal(res.status, 200);
+  assert.ok(updateCalls.some((call) => (call.set as any).numRoster === "42"));
+  assert.equal(
+    insertCalls.filter((call) => (call.values as any).derbyname === "alpha").length,
+    0,
+  );
 });
 
 test("GET returns the derbyname list with parent club names", async () => {
