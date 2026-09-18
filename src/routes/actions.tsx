@@ -116,8 +116,8 @@ export default function ActionsPage() {
       <ul class="divide-y divide-dn-500 border border-dn-500">
         <ActionItem
           icon={<IconUserPlus />}
-          label="Nouveau derby name — joueur"
-          modalTitle="Créer mon derby name (joueuse / joueur)"
+          label="Nouveau derby name — joueur·euse"
+          modalTitle="Créer mon derby name (joueur·euse)"
         >
           {(onClose) => <CreateDerbynameForm type="player" onClose={onClose} />}
         </ActionItem>
@@ -132,8 +132,8 @@ export default function ActionsPage() {
 
         <ActionItem
           icon={<IconPencilSquare />}
-          label="Changer de derby name — joueur"
-          modalTitle="Modifier mon derby name + roster (joueur)"
+          label="Changer de derby name — joueur·euse"
+          modalTitle="Modifier mon derby name + roster (joueur·euse)"
         >
           {(onClose) => <UpdateDerbynameNameForm type="player" onClose={onClose} />}
         </ActionItem>
