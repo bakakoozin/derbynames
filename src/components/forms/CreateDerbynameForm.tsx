@@ -1,7 +1,6 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { ClubSelector, type ClubSelection } from "~/components/clubs-selector";
 import { Fieldset } from "~/ui/fieldset";
-import { useDebounce } from "~/hooks/debounce.hook";
 import { toast } from "~/ui/Toast";
 
 type Props = {
@@ -21,31 +20,6 @@ const initialClub: ClubSelection = {
 
 export function CreateDerbynameForm(props: Props) {
   const [clubSel, setClubSel] = createSignal<ClubSelection>(initialClub);
-  const [search, setSearch] = createSignal("");
-  const [isUsed, setIsUsed] = createSignal(false);
-  const debouncedSearch = useDebounce(search, 500);
-
-  const handleCheck = async () => {
-    try {
-      const res = await fetch("/api/rpc", {
-        method: "POST",
-        body: JSON.stringify({
-          method: "derbyname.checkAvailability",
-          params: { derbyname: debouncedSearch(), type: props.type },
-        }),
-      });
-      if (!res.ok) throw new Error(res.statusText);
-      const data = (await res.json()) as { result?: { available?: boolean; count?: number } };
-      setIsUsed((data.result?.count ?? 0) > 0 || data.result?.available === false);
-    } catch (e) {
-      toast.error("Erreur lors de la vérification du nom : " + e);
-    }
-  };
-
-  createEffect(() => {
-    if (debouncedSearch().length > 0) handleCheck();
-    else setIsUsed(false);
-  });
 
   async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
@@ -90,18 +64,8 @@ export function CreateDerbynameForm(props: Props) {
           class="input"
           type="text"
           name="name"
-          value={search()}
-          onInput={(e) => { setSearch(e.target.value); setIsUsed(false); }}
           required
         />
-        <Show when={debouncedSearch().length > 0}>
-          <span
-            class="text-xs italic"
-            classList={{ "text-green-600": !isUsed(), "text-red-600": isUsed() }}
-          >
-            {isUsed() ? "Ce derby name est déjà utilisé" : "Ce derby name est libre !"}
-          </span>
-        </Show>
       </Fieldset>
 
       <Show when={props.type !== "referee"}>
@@ -114,7 +78,7 @@ export function CreateDerbynameForm(props: Props) {
         <ClubSelector onChange={setClubSel} />
       </Fieldset>
 
-      <button type="submit" class="btn" disabled={isUsed()}>
+      <button type="submit" class="btn">
         Confirmer par e-mail
       </button>
     </form>
