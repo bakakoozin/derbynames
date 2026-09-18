@@ -309,6 +309,8 @@ test("POST replacement: same email already has a confirmed derbyname", async () 
   assert.equal(body.player.replacementOf, "old-1");
   const dnInsert = insertCalls.find((i) => (i.values as any).derbyname === "alpha");
   assert.ok(dnInsert);
+  assert.equal((dnInsert.values as any).clubId, "c1");
+  assert.equal((dnInsert.values as any).numRoster, "1");
 });
 
 test("POST replacement allows a derbyname already confirmed for another email", async () => {
@@ -353,6 +355,7 @@ test("POST updates a confirmed derbyname when the name is resubmitted", async ()
   }));
   assert.equal(res.status, 200);
   assert.ok(updateCalls.some((call) => (call.set as any).numRoster === "42"));
+  assert.ok(updateCalls.some((call) => (call.set as any).clubId === "c1"));
   assert.equal(
     insertCalls.filter((call) => (call.values as any).derbyname === "alpha").length,
     0,

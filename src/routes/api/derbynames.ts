@@ -159,7 +159,7 @@ export async function submitDerbynameAction(body: any): Promise<Response> {
     const email = String(_email ?? "")
       .trim()
       .toLowerCase();
-    const numRoster = typeof _numRoster === "string" ? _numRoster.trim() : "";
+    let numRoster = typeof _numRoster === "string" ? _numRoster.trim() : "";
     const derbyType = parseDerbyType(_type) ?? DERBY_TYPES[0];
 
     if (_type != null && !parseDerbyType(_type)) {
@@ -367,6 +367,13 @@ export async function submitDerbynameAction(body: any): Promise<Response> {
     const confirmedRow = existingForEmail.find((r) => r.emailConfirmed);
 
     if (confirmedRow) {
+      if (!clubId && !newClub) {
+        clubId = confirmedRow.clubId;
+      }
+      if (!numRoster) {
+        numRoster = confirmedRow.numRoster ?? "";
+      }
+
       await db
         .delete(derbynamesTable)
         .where(
