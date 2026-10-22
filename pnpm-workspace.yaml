@@ -33,3 +33,4 @@ overrides:
   source-map-js: '>=1.2.2'
   vinxi>vite: '>=6.4.5 <7'
   browserslist: '>=4.28.7 <5'
+  compression: '>=1.8.2 <2'
