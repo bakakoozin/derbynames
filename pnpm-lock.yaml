@@ -11,7 +11,7 @@ overrides:
   minimatch@5: '>=5.1.8'
   esbuild@<=0.24.2: '>=0.25.0'
   h3@<=1.15.4: '>=1.15.5'
-  seroval@<=1.5.2: '>=1.5.3'
+  seroval: '>=1.6.3 <2'
   nitropack: '>=2.13.4'
   tar: '>=7.5.19'
   tmp: '>=0.2.6'
@@ -3448,9 +3448,9 @@ packages:
     peerDependencies:
       seroval: '>=1.5.3'
 
-  seroval@1.5.6:
-    resolution: {integrity: sha512-rVQVWjjSvlINzaQPZH5JFqsqEsIWdTxY3iJZCnTL/5gQbXIRooVZKI60tVCkOVfzcRPejboxO2t0P89dg5mQaA==}
-    engines: {node: '>=10'}
+  seroval@1.7.0:
+    resolution: {integrity: sha512-FU+LUkmDzWNsJ6oubZFN3dGPKny53DRhPJG6nftEaXDL8MIn19+kEE1Gvc+63Go+qPOwVUlKIdKhsu2HN6tksw==}
+    engines: {node: '>=20'}
 
   serve-placeholder@2.0.2:
     resolution: {integrity: sha512-/TMG8SboeiQbZJWRlfTCqMs2DD3SZgWp0kDQePz9yUuCnDfDh/92gf7/PxGhzXTKBIPASIHxFcZndoNbp6QOLQ==}
@@ -5213,8 +5213,8 @@ snapshots:
       error-stack-parser: 2.1.4
       html-to-image: 1.11.13
       radix3: 1.1.2
-      seroval: 1.5.6
-      seroval-plugins: 1.5.0(seroval@1.5.6)
+      seroval: 1.7.0
+      seroval-plugins: 1.5.0(seroval@1.7.0)
       shiki: 1.29.2
       source-map-js: 1.2.1
       terracotta: 1.1.0(solid-js@1.9.14)
@@ -7604,15 +7604,15 @@ snapshots:
 
   serialize-javascript@7.1.0: {}
 
-  seroval-plugins@1.5.0(seroval@1.5.6):
+  seroval-plugins@1.5.0(seroval@1.7.0):
     dependencies:
-      seroval: 1.5.6
+      seroval: 1.7.0
 
-  seroval-plugins@1.5.6(seroval@1.5.6):
+  seroval-plugins@1.5.6(seroval@1.7.0):
     dependencies:
-      seroval: 1.5.6
+      seroval: 1.7.0
 
-  seroval@1.5.6: {}
+  seroval@1.7.0: {}
 
   serve-placeholder@2.0.2:
     dependencies:
@@ -7711,8 +7711,8 @@ snapshots:
   solid-js@1.9.14:
     dependencies:
       csstype: 3.2.3
-      seroval: 1.5.6
-      seroval-plugins: 1.5.6(seroval@1.5.6)
+      seroval: 1.7.0
+      seroval-plugins: 1.5.6(seroval@1.7.0)
 
   solid-refresh@0.6.3(solid-js@1.9.14)(supports-color@10.2.2):
     dependencies:
