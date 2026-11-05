@@ -1,5 +1,6 @@
 {
   "name": "derbynames",
+  "packageManager": "pnpm@11.18.0",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
